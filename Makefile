@@ -32,6 +32,8 @@ TARGET = MySDLProgram
 # all : $(OBJS)
 # 	$(CC) $(OBJS) $(INCLUDE_PATHS) $(LIBRARY_PATHS) $(COMPILER_FLAGS) $(LINKER_FLAGS) -o $(OBJ_NAME)
 
+.PHONY: all
+
 all, $(BIN): $(SRCS) | $(BUILD_DIR)
 	$(CC) $(SRCS) $(COMPILER_FLAGS) $(LINKER_FLAGS) -o $(BIN)
 
