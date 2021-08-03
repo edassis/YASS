@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "*.asm": "asm",
+        "*.s": "asm",
+        "stdio.h": "c",
+        "sdl.h": "c"
+    }
+}
