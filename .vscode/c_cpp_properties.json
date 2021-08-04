@@ -1,7 +1,7 @@
 {
     "configurations": [
         {
-            "name": "Win32",
+            "name": "MINGW64_MSYS2",
             "includePath": [
                 "${workspaceFolder}/**"
             ],
@@ -12,9 +12,9 @@
             ],
             "windowsSdkVersion": "10.0.16299.0",
             "compilerPath": "C:/msys64/mingw64/bin/gcc.exe",
-            "cStandard": "c17",
+            "cStandard": "c11",
             "intelliSenseMode": "${default}",
-            "cppStandard": "c++17"
+            "cppStandard": "c++11"
         }
     ],
     "version": 4

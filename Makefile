@@ -21,7 +21,7 @@ BIN = $(BUILD_DIR)/$(TARGET)
 # 	-w suppresses all warnings
 # 	-Wl,-subsystem,windows gets rid of the console window
 # COMPILER_FLAGS = -w -Wl,-subsystem,windows
-COMPILER_FLAGS = -Wall -std=c++11
+COMPILER_FLAGS = -g -Wall -std=c++11
 
 #LINKER_FLAGS specifies the libraries we're linking against
 LINKER_FLAGS = -lmingw32 -lSDL2main -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2

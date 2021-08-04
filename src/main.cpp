@@ -1,7 +1,7 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
 
-const int WIDTH = 800, HEIGHT = 600;
+const int WIDTH = 1200, HEIGHT = 720;
 
 int main(int argc, char *argv[]) {
     SDL_Window *window;
