@@ -4,9 +4,8 @@
             "name": "MINGW64",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}",
                 "${workspaceFolder}/include",
-                "C:/dev/SDL2-2.0.16/x86_64-w64-mingw32/**"
+                "C:/dev/SDL2-mingw64/x86_64-w64-mingw32/**"
             ],
             "defines": [
                 "_DEBUG",

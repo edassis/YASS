@@ -31,7 +31,7 @@ ifeq ($(OS),Windows_NT)
 RMDIR = rd /s /q
 RM = del /q
 
-SDL_PATHS = C:/dev/SDL2-2.0.16/x86_64-w64-mingw32
+SDL_PATHS = C:/dev/SDL2-mingw64/x86_64-w64-mingw32
 
 SDL_INC_PATH = $(addsuffix /include,$(SDL_PATHS))
 LINK_PATH = $(addprefix -L,$(addsuffix /lib, $(SDL_PATHS)))

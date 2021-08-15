@@ -60,7 +60,6 @@ Game::Game(string title, int width, int height) {
 }
 
 Game::~Game() {
-    cout << "game trolando" << endl;
     SDL_DestroyRenderer(this->renderer);
     SDL_DestroyWindow(this->window);
 
