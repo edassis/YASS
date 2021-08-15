@@ -3,7 +3,8 @@
         "*.asm": "asm",
         "*.s": "asm",
         "stdio.h": "c",
-        "sdl.h": "c"
+        "sdl.h": "c",
+        "iostream": "cpp"
     },
 
     // TERMINAL

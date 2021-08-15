@@ -1,47 +1,118 @@
-#CC specifies which compiler we're using
-CC = g++
+COMPILER = g++
 
-# Directories
-SRC_DIR = src
-BUILD_DIR = build
+RMDIR = rm -rdf
 
-# Source files
-# SRCS := $(wildcard $(SRC_DIR)/*.cpp)
-SRCS = $(SRC_DIR)/main.cpp
+RM = rm -f
 
-BIN = $(BUILD_DIR)/$(TARGET)
+DEP_FLAGS = -M -MT $@ -MT $(BIN_PATH)/$(*F).o -MP -MF $@
 
-# INCLUDE_PATHS specifies the additional include paths we'll need
-# INCLUDE_PATHS = -IC:\msys64\mingw64\include\SDL2
+LIBS = -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lm
 
-# LIBRARY_PATHS specifies the additional library paths we'll need
-# LIBRARY_PATHS = -LC:\msys64\mingw64\lib
+INC_PATHS = -I$(INC_PATH) $(addprefix -I,$(SDL_INC_PATH))
 
-# COMPILER_FLAGS specifies the additional compilation options we're using
-# 	-w suppresses all warnings
-# 	-Wl,-subsystem,windows gets rid of the console window
-# COMPILER_FLAGS = -w -Wl,-subsystem,windows
-COMPILER_FLAGS = -g -Wall -std=c++11
+FLAGS = -std=c++11 -Wall -pedantic -Wextra -Wno-unused-parameter -Werror=init-self
+DFLAGS = -ggdb -O0 -DDEBUG
+RFLAGS = -O3 -mtune=native
 
-#LINKER_FLAGS specifies the libraries we're linking against
-LINKER_FLAGS = -lmingw32 -lSDL2main -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2
+INC_PATH = include
+SRC_PATH = src
+BIN_PATH = bin
+DEP_PATH = dep
 
-TARGET = MySDLProgram
+CPP_FILES = $(wildcard $(SRC_PATH)/application/*.cpp) $(wildcard $(SRC_PATH)/engine/*.cpp)
+INC_FILES = $(wildcard $(INC_PATH)/application/*.h) $(wildcard $(INC_PATH)/engine*.h)
+FILE_NAMES = $(sort $(notdir $(CPP_FILES:.cpp=)) $(notdir $(INC_FILES:.h=)))
+DEP_FILES = $(addprefix $(DEP_PATH)/,$(addsuffix .d,$(FILE_NAMES)))
+OBJ_FILES = $(addprefix $(BIN_PATH)/,$(notdir $(CPP_FILES:.cpp=.o)))
 
-#This is the target that compiles our executable
-# all : $(OBJS)
-# 	$(CC) $(OBJS) $(INCLUDE_PATHS) $(LIBRARY_PATHS) $(COMPILER_FLAGS) $(LINKER_FLAGS) -o $(OBJ_NAME)
+EXEC = JOGO
 
-.PHONY: all
+ifeq ($(OS),Windows_NT)
+RMDIR = rd /s /q
+RM = del /q
 
-all, $(BIN): $(SRCS) | $(BUILD_DIR)
-	$(CC) $(SRCS) $(COMPILER_FLAGS) $(LINKER_FLAGS) -o $(BIN)
+SDL_PATHS = C:/dev/SDL2-2.0.16/x86_64-w64-mingw32
 
-$(BUILD_DIR):
-	mkdir -p $@
+SDL_INC_PATH = $(addsuffix /include,$(SDL_PATHS))
+LINK_PATH = $(addprefix -L,$(addsuffix /lib, $(SDL_PATHS)))
+FLAGS += -mwindows
+DFLAGS += -mconsole
+LIBS := -lmingw32 -lSDL2main $(LIBS) 
 
-exec: $(BIN)
-	$(BIN).exe
+EXEC := $(EXEC).exe
+
+else
+
+UNAME_S := $(shell uname -s)
+
+ifeq ($(UNAME_S), Darwin)
+LIBS = -lm -framework SDL2 -framework SDL2_image -framework SDL2_mixer -framework SDL2_ttf
+
+endif
+endif
+
+.PRECIOUS: $(DEP_FILES)
+.PHONY: release debug clean folders help
+
+
+all: $(EXEC)
+
+$(EXEC): $(OBJ_FILES)
+	$(COMPILER) -o $@ $^ $(LINK_PATH) $(LIBS) $(FLAGS)
+
+# Application
+$(BIN_PATH)/%.o: $(DEP_PATH)/application/%.d | folders
+	$(COMPILER) $(INC_PATHS) $(addprefix $(SRC_PATH)/application/,$(notdir $(<:.d=.cpp))) -c $(FLAGS) -o $@
+
+$(DEP_PATH)/application/%.d: $(SRC_PATH)/application/%.cpp | folders
+	$(COMPILER) $(INC_PATHS) $< $(DEP_FLAGS) $(FLAGS)
+
+# Engine
+$(BIN_PATH)/%.o: $(DEP_PATH)/engine/%.d | folders
+	$(COMPILER) $(INC_PATHS) $(addprefix $(SRC_PATH)/engine/,$(notdir $(<:.d=.cpp))) -c $(FLAGS) -o $@
+
+$(DEP_PATH)/engine/%.d: $(SRC_PATH)/engine/%.cpp | folders
+	$(COMPILER) $(INC_PATHS) $< $(DEP_FLAGS) $(FLAGS)
 
 clean:
-	@$(RM) -rv $(BUILD_DIR)/*
+	-$(RMDIR) $(DEP_PATH)
+	-$(RMDIR) $(BIN_PATH)
+	-$(RM) $(EXEC)
+
+
+.SECONDEXPANSION:
+-include $$(DEP_FILES)
+
+release: FLAGS += $(RFLAGS)
+release: $(EXEC)
+
+debug: FLAGS += $(DFLAGS)
+debug: $(EXEC)
+
+folders:
+ifeq ($(OS), Windows_NT)
+	@if NOT exist $(DEP_PATH) (mkdir $(DEP_PATH) )
+	@if NOT exist $(DEP_PATH)\application (mkdir $(DEP_PATH)\application )
+	@if NOT exist $(DEP_PATH)\engine (mkdir $(DEP_PATH)\engine )
+	@if NOT exist $(BIN_PATH) (mkdir $(BIN_PATH) )
+	@if NOT exist $(INC_PATH) (mkdir $(INC_PATH) )
+	@if NOT exist $(SRC_PATH) (mkdir $(SRC_PATH) )
+else
+	@mkdir -p $(DEP_PATH) $(DEP_PATH)/application $(DEP_PATH)/engine $(BIN_PATH) $(INC_PATH) $(SRC_PATH)
+endif
+
+print-% : ; @echo $* = $($*)
+
+help:
+ifeq ($(OS), Windows_NT)
+	@echo.
+endif
+	@echo Available targets:
+	@echo - release: Builds the release version
+	@echo - debug: Builds the debug version
+	@echo - clean: Cleans generated files
+	@echo - folders: Generates project directories
+	@echo - help: Show this help
+ifeq ($(OS), Windows_NT)
+	@echo.
+endif

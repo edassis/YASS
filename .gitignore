@@ -1,5 +1,7 @@
 # Binary files
 build/
+bin/
+dep/
 *.exe
 *.out
 
