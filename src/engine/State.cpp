@@ -2,6 +2,10 @@
 
 #define INCLUDE_SDL
 #include "engine/SDL_include.h"
+#include <stdio.h>
+
+using std::cout;
+using std::endl;
 
 State::State() {
     this->quitRequested = false;
@@ -10,12 +14,19 @@ State::State() {
     this->music = Music();
 }
 
+State::~State() {}
+
 bool State::QuitRequested() {
     return this->quitRequested;
 }
 
 void State::LoadAssets() {
     // Pré-carrega os assets.
+    this->bg.Open("assets/img/ocean.jpg");
+    this->music.Open("assets/audio/boom.wav");
+    if(this->music.IsOpen()) {
+        this->music.Play();
+    }
 }
 
 void State::Update(float dt) {

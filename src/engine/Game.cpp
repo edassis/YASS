@@ -1,5 +1,4 @@
 #include "engine/Game.h"
-#include "engine/State.h"
 
 #define INCLUDE_SDL
 #define INCLUDE_SDL_IMAGE
@@ -8,6 +7,8 @@
 
 using std::cout;
 using std::endl;
+
+Game *Game::instance = nullptr;
 
 Game::Game(string title, int width, int height) {
     int _error = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER);
@@ -28,13 +29,15 @@ Game::Game(string title, int width, int height) {
         cout << "Failed to initialize Mix: " << Mix_GetError() << endl;
         throw 1;
     }
+
     _error = Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024);   // obrigatório
     if(_error) {
         cout << "Failed to open audio: " << Mix_GetError() << endl;
         throw 1;
     }
-    int _channels = Mix_AllocateChannels(MIX_CHANNELS);   // quantas trilhas sonoras podem ser executadas simultaneamente
-    if(_channels < MIX_CHANNELS) {
+
+    int _channels = Mix_AllocateChannels(NUM_CHANNELS);   // quantas trilhas sonoras podem ser executadas simultaneamente
+    if(_channels < NUM_CHANNELS) {
         cout << "Failed to allocate channels: " << Mix_GetError() << endl;
         throw 1;
     }
@@ -44,6 +47,7 @@ Game::Game(string title, int width, int height) {
         cout << "Failed to create window: " << SDL_GetError() << endl;
         throw 1;
     }
+
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     if(renderer == nullptr) {
         cout << "Failed to create render: " << SDL_GetError() << endl;
@@ -56,6 +60,7 @@ Game::Game(string title, int width, int height) {
 }
 
 Game::~Game() {
+    cout << "game trolando" << endl;
     SDL_DestroyRenderer(this->renderer);
     SDL_DestroyWindow(this->window);
 
@@ -70,6 +75,8 @@ Game::~Game() {
 // Game main loop
 void Game::Run() {
     while(!this->state->QuitRequested()) {
+        this->state->Update();
+        this->state->Render();
         SDL_RenderPresent(this->renderer);
 
         SDL_Delay(FRAME_DURATION);
@@ -91,5 +98,3 @@ Game& Game::GetInstance() {
 
     return *Game::instance;
 }
-
-Game *Game::instance = nullptr;

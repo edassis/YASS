@@ -8,7 +8,7 @@
     },
 
     // TERMINAL
-    "terminal.integrated.defaultProfile.windows": "MSYS2",
+    "terminal.integrated.defaultProfile.windows": "Command Prompt",
     "terminal.integrated.profiles.windows": {
         "PowerShell": {
             "source": "PowerShell",

@@ -1,14 +1,14 @@
 #ifndef __GAME_H__
 #define __GAME_H__
 
+#include "engine/State.h"
 #include <iostream>
 
-#define MIX_CHANNELS 32
+#define NUM_CHANNELS 32
 #define FRAME_DURATION 33   // ms
 
 using std::string;
 
-class State;
 class SDL_Window;
 class SDL_Renderer;
 

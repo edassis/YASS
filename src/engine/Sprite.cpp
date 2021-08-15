@@ -29,17 +29,13 @@ void Sprite::Open(string file) {
         this->texture = nullptr;
     }
 
-    SDL_Texture *newTexture = IMG_LoadTexture(Game::GetInstance().GetRenderer(), file.c_str());
-    if(newTexture == nullptr) {
+    this->texture = IMG_LoadTexture(Game::GetInstance().GetRenderer(), file.c_str());
+    if(this->texture == nullptr) {
         cout << "Failed to load texture: " << IMG_GetError() << endl;
         return;
     }
-    this->texture = newTexture;
 
-    // Uint32 format;
-    // int access;
-    // int w, h;
-    int _error = SDL_QueryTexture(newTexture, nullptr, nullptr, &this->width, &this->height);
+    int _error = SDL_QueryTexture(this->texture, nullptr, nullptr, &this->width, &this->height);
     if(_error) {
         cout << "Failed to query texture: " << SDL_GetError() << endl;
         return;
@@ -55,6 +51,8 @@ void Sprite::SetClip(int x, int y, int w, int h) {
 }
 
 void Sprite::Render(int x, int y) {
+    if(this->texture == nullptr) return;
+
     SDL_Rect dstRect;
     dstRect.x = x;
     dstRect.y = y;

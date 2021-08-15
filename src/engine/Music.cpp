@@ -13,12 +13,14 @@ Music::Music() {
 
 Music::Music(string file) {
     this->Open(file);
+    this->Play();
 }
 
 Music::~Music() {
+    if(this->music == nullptr) return;  // Por que o desconstruct está sendo chamado?
+
     this->Stop();   
     Mix_FreeMusic(this->music);     // BUG? deve intenrromper o fadeout instantaneamente
-    // this->music = nullptr;
 }
 
 void Music::Play(int times) {

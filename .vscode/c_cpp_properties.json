@@ -1,12 +1,12 @@
 {
     "configurations": [
         {
-            "name": "MINGW64_MSYS2",
+            "name": "MINGW64",
             "includePath": [
                 "${workspaceFolder}/**",
                 "${workspaceFolder}",
-                "${workspaceFolder}/header",
-                "${workspaceFolder}/include"
+                "${workspaceFolder}/include",
+                "C:/dev/SDL2-2.0.16/x86_64-w64-mingw32/**"
             ],
             "defines": [
                 "_DEBUG",
@@ -14,7 +14,7 @@
                 "_UNICODE"
             ],
             "windowsSdkVersion": "10.0.16299.0",
-            "compilerPath": "C:/msys64/mingw64/bin/gcc.exe",
+            "compilerPath": "C:/dev/mingw64/bin/gcc.exe",
             "cStandard": "c11",
             "intelliSenseMode": "${default}",
             "cppStandard": "c++11"

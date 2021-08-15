@@ -11,10 +11,11 @@ class State {
         bool quitRequested;
     public:
         State();
+        ~State();
 
         bool QuitRequested();
         void LoadAssets();
-        void Update(float dt);
+        void Update(float dt = 0.0);
         void Render();
 };
 
