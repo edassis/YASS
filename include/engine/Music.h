@@ -7,10 +7,6 @@
 
 using std::string;
 
-// #define INCLUDE_SDL_MUSIC
-// #include "engine/SDL_include.h"
-// struct Mix_Music;   // teste
-
 class Music {
     public:
         Music();
