@@ -19,7 +19,7 @@ class Game {
         SDL_Renderer *renderer;
         State *state;
 
-        Game(string title = "Eduardo Ferreira de Assis - 170102289", int width = 1024, int height = 600);
+        Game(string title = "Eduardo Ferreira de Assis - 17/0102289", int width = 1024, int height = 600);
     public:
         ~Game();
 

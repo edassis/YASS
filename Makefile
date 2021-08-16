@@ -35,8 +35,7 @@ SDL_PATHS = C:/dev/SDL2-mingw64/x86_64-w64-mingw32
 
 SDL_INC_PATH = $(addsuffix /include,$(SDL_PATHS))
 LINK_PATH = $(addprefix -L,$(addsuffix /lib, $(SDL_PATHS)))
-# FLAGS += -mwindows
-# DFLAGS += -mconsole
+RFLAGS += -Wl,-subsystem,windows # Will not open a console window
 LIBS := -lmingw32 -lSDL2main $(LIBS) 
 
 EXEC := $(EXEC).exe
@@ -54,8 +53,7 @@ endif
 .PRECIOUS: $(DEP_FILES)
 .PHONY: release debug clean folders help
 
-
-all: $(EXEC)
+all: debug
 
 $(EXEC): $(OBJ_FILES)
 	$(COMPILER) -o $@ $^ $(LINK_PATH) $(LIBS) $(FLAGS)
