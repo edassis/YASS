@@ -8,14 +8,14 @@
             "name": "Depurar SDL",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}\\build\\MySDLProgram.exe",
+            "program": "${workspaceFolder}/JOGO.exe",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": true,
             "MIMode": "gdb",
-            "miDebuggerPath": "C:\\msys64\\mingw64\\bin\\gdb.exe",
+            "miDebuggerPath": "C:/dev/mingw64/bin/gdb.exe",
             "setupCommands": [
                 {
                     "description": "Habilitar a reformatação automática para gdb",
