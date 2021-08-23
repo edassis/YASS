@@ -3,16 +3,17 @@
 #define INCLUDE_SDL_IMAGE
 #include "engine/SDL_include.h"
 #include "engine/Game.h"
+#include "engine/GameObject.h"
 #include <iostream>
 
 using std::cout;
 using std::endl;
 
-Sprite::Sprite() {
+Sprite::Sprite(GameObject &associated) {
     this->texture = nullptr;
 }
 
-Sprite::Sprite(string file) {
+Sprite::Sprite(GameObject &associated, string file) {
     this->texture = nullptr;
     this->Open(file);
 }
@@ -41,6 +42,9 @@ void Sprite::Open(string file) {
         return;
     }
     this->SetClip(0, 0, this->width, this->height);
+
+    associated.box.w = this->width;
+    associated.box.h = this->height;
 }
 
 void Sprite::SetClip(int x, int y, int w, int h) {
@@ -50,12 +54,12 @@ void Sprite::SetClip(int x, int y, int w, int h) {
     this->clipRect.h = h;
 }
 
-void Sprite::Render(int x, int y) {
+void Sprite::Render() {
     if(this->texture == nullptr) return;
 
     SDL_Rect dstRect;
-    dstRect.x = x;
-    dstRect.y = y;
+    dstRect.x = this->associated.box.x;
+    dstRect.y = this->associated.box.y;
     dstRect.w = this->clipRect.w;
     dstRect.h = this->clipRect.h;
 
@@ -76,3 +80,9 @@ int Sprite::GetHeight() {
 bool Sprite::IsOpen() {
     return (this->texture != nullptr) ? true : false;
 }
+
+void Sprite::Update(float dt) {}
+
+void Sprite::Render() {}
+
+bool Sprite::Is(string type) {}
