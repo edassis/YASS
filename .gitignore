@@ -4,6 +4,7 @@ bin/
 dep/
 *.exe
 *.out
+JOGO
 
 test_cmake/
 

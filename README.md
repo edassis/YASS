@@ -1,3 +1,3 @@
 # TAC Repository
 
-It stores the engine and games that will be created during TAC discipline.
+Stores the engine and games made during TAC discipline.
