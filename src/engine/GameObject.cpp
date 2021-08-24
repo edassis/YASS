@@ -37,11 +37,15 @@ void GameObject::AddComponent(Component *cpt) {
 }
 
 void GameObject::RemoveComponent(Component *cpt) {
-    for(unsigned i = 0; i < components.size(); i++) {
-        if(components[i] == cpt) {
-            delete components[i];
-            components.erase(components.begin()+i);
+    // Q: what would happen if components change during the loop (impossible right?)?
+    for(auto it = components.begin(); it != components.end(); ) {
+        if(*it == cpt) {
+            // delete *it;
+            it = components.erase(it);
             break;  // each component should have just 1 pointer.
+        }
+        else {
+            it++;
         }
     }
 }
@@ -52,4 +56,6 @@ Component* GameObject::GetComponent(string type) {
             return each;
         }
     }
+
+    return nullptr;
 }

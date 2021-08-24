@@ -12,9 +12,8 @@ class Component {
         GameObject &associated;
 
     public:
-        Component();
-        Component(GameObject &associated);
-        virtual ~Component();
+        Component(GameObject &associated) : associated(associated) {};
+        virtual ~Component() {};
         
         virtual void Update(float dt) =0;
         virtual void Render() =0;

@@ -3,11 +3,17 @@
 
 #include "engine/Sprite.h"
 #include "engine/Music.h"
+#include <vector>
+#include <memory>
+
+using std::vector;
+using std::unique_ptr;
 
 class State {
     private:
-        Sprite bg;
+        Sprite *bg;
         Music music;
+        vector<unique_ptr<GameObject>> objectArray;
         bool quitRequested;
     public:
         State();
@@ -17,6 +23,8 @@ class State {
         void LoadAssets();
         void Update(float dt = 0.0);
         void Render();
+        void Input();
+        void AddObject(int mouseX, int mouseY);
 };
 
 #endif

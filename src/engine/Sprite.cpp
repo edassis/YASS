@@ -9,11 +9,11 @@
 using std::cout;
 using std::endl;
 
-Sprite::Sprite(GameObject &associated) {
+Sprite::Sprite(GameObject &associated) : Component(associated) {
     this->texture = nullptr;
-}
+}   
 
-Sprite::Sprite(GameObject &associated, string file) {
+Sprite::Sprite(GameObject &associated, string file) : Component(associated) {
     this->texture = nullptr;
     this->Open(file);
 }
@@ -57,11 +57,11 @@ void Sprite::SetClip(int x, int y, int w, int h) {
 void Sprite::Render() {
     if(this->texture == nullptr) return;
 
-    SDL_Rect dstRect;
+    SDL_Rect dstRect;      // Q: how this works?
     dstRect.x = this->associated.box.x;
     dstRect.y = this->associated.box.y;
-    dstRect.w = this->clipRect.w;
-    dstRect.h = this->clipRect.h;
+    dstRect.w = this->associated.box.w;
+    dstRect.h = this->associated.box.h;
 
     int _error = SDL_RenderCopy(Game::GetInstance().GetRenderer(), this->texture, &this->clipRect, &dstRect);
     if(_error) {
@@ -82,7 +82,3 @@ bool Sprite::IsOpen() {
 }
 
 void Sprite::Update(float dt) {}
-
-void Sprite::Render() {}
-
-bool Sprite::Is(string type) {}
