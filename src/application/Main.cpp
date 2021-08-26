@@ -11,11 +11,11 @@ using std::endl;
 #define VDUMP(x) std::cout << #x << " " << x << std::endl
 
 int main(int argc, char **argv) {
-    Game myGame = Game::GetInstance();
+    Game &myGame = Game::GetInstance();
 
-    // myGame.GetState().LoadAssets();
+    myGame.GetState().LoadAssets();
 
-    // myGame.Run();
+    myGame.Run();
 
 
     // // Is test:
@@ -24,7 +24,7 @@ int main(int argc, char **argv) {
     
     // cout << (spt.Is("Sprite") ? "true" : "false") << endl;
 
-    getchar();
+    // getchar();
     
     return 0;
 }

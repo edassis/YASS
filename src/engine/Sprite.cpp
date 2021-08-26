@@ -25,6 +25,8 @@ Sprite::~Sprite() {
 }
 
 void Sprite::Open(string file) {
+    // std::cout << "Sprite Opening" << std::endl;
+
     if(this->texture != nullptr) {
         SDL_DestroyTexture(this->texture);
         this->texture = nullptr;
@@ -47,7 +49,7 @@ void Sprite::Open(string file) {
     associated.box.h = this->height;
 }
 
-void Sprite::SetClip(int x, int y, int w, int h) {
+void Sprite::SetClip(int x, int y, int w, int h) {  // origin
     this->clipRect.x = x;
     this->clipRect.y = y;
     this->clipRect.w = w;
@@ -57,12 +59,13 @@ void Sprite::SetClip(int x, int y, int w, int h) {
 void Sprite::Render() {
     if(this->texture == nullptr) return;
 
-    SDL_Rect dstRect;      // Q: how this works?
+    SDL_Rect dstRect;      // ? how this works?
     dstRect.x = this->associated.box.x;
     dstRect.y = this->associated.box.y;
     dstRect.w = this->associated.box.w;
     dstRect.h = this->associated.box.h;
 
+    // cout << (Game::GetInstance().GetRenderer() == nullptr) << endl;
     int _error = SDL_RenderCopy(Game::GetInstance().GetRenderer(), this->texture, &this->clipRect, &dstRect);
     if(_error) {
         cout << "Failed to render: " << SDL_GetError() << endl;

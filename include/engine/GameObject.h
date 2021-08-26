@@ -9,14 +9,14 @@
 using std::vector;
 using std::string;
 using std::unique_ptr;
+using std::shared_ptr;
 
 class Component;
 
 class GameObject {
     private:
-        vector<unique_ptr<Component>> components;
+        vector<shared_ptr<Component>> components;
         bool isDead;
-
     public:
         Rect box;
 
@@ -27,9 +27,9 @@ class GameObject {
         void Render();
         bool IsDead();
         void RequestDelete();
-        void AddComponent(unique_ptr<Component> cpt);
-        void RemoveComponent(unique_ptr<Component> cpt);
-        unique_ptr<Component> GetComponent(string type);
+        void AddComponent(shared_ptr<Component> cpt);
+        void RemoveComponent(shared_ptr<Component> cpt);
+        shared_ptr<Component> GetComponent(string type);
 };
 
 #endif

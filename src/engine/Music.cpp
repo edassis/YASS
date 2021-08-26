@@ -8,8 +8,9 @@ using std::cout;
 using std::endl;
 
 Music::Music() {
-    this->music = nullptr;
+    music = nullptr;
 }
+
 
 Music::Music(string file) {
     this->Open(file);
@@ -17,10 +18,10 @@ Music::Music(string file) {
 }
 
 Music::~Music() {
-    if(this->music == nullptr) return;  // Por que o desconstruct está sendo chamado?
+    cout << "desconstrutor da música" << endl;
+    // if(this->music == nullptr) return;  // Por que o desconstruct está sendo chamado?
 
-    this->Stop();   
-    Mix_FreeMusic(this->music);     // ? (BUG) Deve interromper o fadeout instantaneamente?
+    Mix_FreeMusic(this->music); // * Blocks until fadeout finishes
 }
 
 void Music::Play(int times) {

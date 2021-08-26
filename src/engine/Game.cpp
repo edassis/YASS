@@ -73,30 +73,26 @@ Game::~Game() {
 }
 
 // Game main loop
-// void Game::Run() {
-//     while(!state->QuitRequested()) {
-//         state->Update();
-//         state->Render();
-//         SDL_RenderPresent(renderer);
+void Game::Run() {
+    while(!state->QuitRequested()) {
+        state->Update();
+        state->Render();
+        SDL_RenderPresent(renderer);
 
-//         SDL_Delay(FRAME_DURATION);
-//     }
-// }
+        SDL_Delay(FRAME_DURATION);
+    }
+}
 
 SDL_Renderer* Game::GetRenderer() {
     return renderer;
 }
 
-// State& Game::GetState() {
-//     return *state;
-// }
+State& Game::GetState() {
+    return *state;
+}
+
 
 Game& Game::GetInstance() {
-    // if(instance != nullptr) return *instance;
-
-    // instance = unique_ptr<Game> (new Game());
-
-    // return *instance;
     static Game instance;
     return instance;
 }

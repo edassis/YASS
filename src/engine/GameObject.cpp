@@ -16,6 +16,8 @@ void GameObject::Update(float dt) {
 void GameObject::Render() {
     for(auto &cpt : components) {
         cpt->Render();
+        // std::cout << "GameObject render: ";
+        // std::cout << cpt->Is("Sprite") << std::endl;
     }
 }
 
@@ -27,17 +29,16 @@ void GameObject::RequestDelete() {
     isDead = true;
 }
 
-void GameObject::AddComponent(unique_ptr<Component> cpt) {
-    components.push_back(std::move(cpt));
+void GameObject::AddComponent(shared_ptr<Component> cpt) {
+    components.emplace_back(cpt);
 }
 
-void GameObject::RemoveComponent(unique_ptr<Component> cpt) {
-    // Q: what would happen if components change during the loop (impossible right?)?
+void GameObject::RemoveComponent(shared_ptr<Component> cpt) {
+    // ? What would happen if the components change during the loop (impossible right?)?
     for(auto it = components.begin(); it != components.end(); ) {
         if(*it == cpt) {
-            // delete *it;
             it = components.erase(it);
-            break;  // each component should have just 1 pointer.
+            break;  // * Each component should have just 1 pointer.
         }
         else {
             it++;
@@ -45,12 +46,12 @@ void GameObject::RemoveComponent(unique_ptr<Component> cpt) {
     }
 }
 
-unique_ptr<Component> GameObject::GetComponent(string type) {
+shared_ptr<Component> GameObject::GetComponent(string type) {
     for(auto &cpt : components) {
         if(cpt->Is(type)) {
-            return std::move(cpt);
+            return cpt;
         }
     }
 
-    return unique_ptr<Component>{};
+    return shared_ptr<Component>{};
 }

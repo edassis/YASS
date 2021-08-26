@@ -11,7 +11,7 @@ using std::unique_ptr;
 
 class State {
     private:
-        // unique_ptr<Sprite> bg;
+        unique_ptr<Sprite> bg;
         Music music;
         vector<unique_ptr<GameObject>> objectArray;
         bool quitRequested;

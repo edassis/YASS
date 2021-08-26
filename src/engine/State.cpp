@@ -13,8 +13,9 @@ using std::endl;
 State::State() : music() {
     this->quitRequested = false;
 
-    GameObject go;
-    // this->bg = unique_ptr<Sprite> (new Sprite(go));
+    GameObject *go = new GameObject();
+    this->bg = unique_ptr<Sprite>(new Sprite(*go));
+	// this->bg = new Sprite(*go);
     // Music m;
     // this->music = m;
 }
@@ -27,7 +28,9 @@ bool State::QuitRequested() {
 
 void State::LoadAssets() {
     // Pré-carrega os assets.
-    // this->bg.Open("assets/img/ocean.jpg");
+    this->bg->Open("assets/img/ocean.jpg");
+	AddObject(512, 300);
+
     // this->music.Open("assets/audio/boom.wav");
     // if(this->music.IsOpen()) {
     //     this->music.Play();
@@ -54,8 +57,8 @@ void State::Update(float dt) {
 
 void State::Render() {
     // Renderização do estado do jogo (entidades, cenários, HUD, etc.).
-    // this->bg->Render();
 
+    this->bg->Render();
     for(auto it = objectArray.begin(); it != objectArray.end(); it++) {
         (*it)->Render();
     }
@@ -116,17 +119,13 @@ void State::Input() {
 
 void State::AddObject(int mouseX, int mouseY) {
     // Primeiro inimigo
-    GameObject go;
-    Sprite spt(go);
+	GameObject *go = new GameObject();
+    Sprite *spt = new Sprite(*go, "assets/img/penguinface.png");
+	
+	// TODO: centralizar imagem
+    go->box.x = mouseX;
+    go->box.y = mouseY;
 
-    spt.Open("assets/img/penguinface.png");
-
-    // TODO: centralizar imagem
-    go.box.x = mouseX;
-    go.box.y = mouseY;
-
-    Sound s(go);
-    s.Open("assets/audio/boom.wav");
-
-    objectArray.emplace_back(unique_ptr<GameObject>(&go));
+	go->AddComponent(std::shared_ptr<Component>(spt));
+    objectArray.emplace_back(go);
 }
