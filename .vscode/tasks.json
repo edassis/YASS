@@ -8,6 +8,10 @@
             "command": "make",
             "args": [],
             "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         },
         {
             "label": "Build && Exec",
@@ -17,11 +21,7 @@
             "args": [
                 "exec"
             ],
-            "problemMatcher": [],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
+            "problemMatcher": []
         }
     ]
 }

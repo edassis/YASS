@@ -10,17 +10,16 @@
 using std::cout;
 using std::endl;
 
-State::State() {
+State::State() : music() {
     this->quitRequested = false;
 
     GameObject go;
-    Sprite *spt = new Sprite(go);
-    this->bg = spt;
-    Music m;
-    this->music = m;
+    // this->bg = unique_ptr<Sprite> (new Sprite(go));
+    // Music m;
+    // this->music = m;
 }
 
-State::~State() {} // Q: preciso explicitamente esvaziar objectArray?
+State::~State() {} // ? Preciso explicitamente esvaziar objectArray?
 
 bool State::QuitRequested() {
     return this->quitRequested;
@@ -55,7 +54,7 @@ void State::Update(float dt) {
 
 void State::Render() {
     // Renderização do estado do jogo (entidades, cenários, HUD, etc.).
-    this->bg-><Render();
+    // this->bg->Render();
 
     for(auto it = objectArray.begin(); it != objectArray.end(); it++) {
         (*it)->Render();

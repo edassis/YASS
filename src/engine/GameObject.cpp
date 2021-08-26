@@ -5,22 +5,17 @@ GameObject::GameObject() {
     isDead = false;
 }
 
-GameObject::~GameObject() {
-    for(auto p : components) {
-        delete p; // we can change for unique_ptr
-    }
-    components.clear();
-}
+GameObject::~GameObject() {} 
 
 void GameObject::Update(float dt) {
-    for(auto each : components) {
-        each->Update(dt);
+    for(auto &cpt : components) {
+        cpt->Update(dt);
     }
 }
 
 void GameObject::Render() {
-    for(auto each : components) {
-        each->Render();
+    for(auto &cpt : components) {
+        cpt->Render();
     }
 }
 
@@ -32,11 +27,11 @@ void GameObject::RequestDelete() {
     isDead = true;
 }
 
-void GameObject::AddComponent(Component *cpt) {
-    components.push_back(cpt);
+void GameObject::AddComponent(unique_ptr<Component> cpt) {
+    components.push_back(std::move(cpt));
 }
 
-void GameObject::RemoveComponent(Component *cpt) {
+void GameObject::RemoveComponent(unique_ptr<Component> cpt) {
     // Q: what would happen if components change during the loop (impossible right?)?
     for(auto it = components.begin(); it != components.end(); ) {
         if(*it == cpt) {
@@ -50,12 +45,12 @@ void GameObject::RemoveComponent(Component *cpt) {
     }
 }
 
-Component* GameObject::GetComponent(string type) {
-    for(auto each : components) {
-        if(each->Is(type)) {
-            return each;
+unique_ptr<Component> GameObject::GetComponent(string type) {
+    for(auto &cpt : components) {
+        if(cpt->Is(type)) {
+            return std::move(cpt);
         }
     }
 
-    return nullptr;
+    return unique_ptr<Component>{};
 }

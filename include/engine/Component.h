@@ -10,7 +10,6 @@ class GameObject;
 class Component {
     protected:
         GameObject &associated;
-
     public:
         Component(GameObject &associated) : associated(associated) {};
         virtual ~Component() {};

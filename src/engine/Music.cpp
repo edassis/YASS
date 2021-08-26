@@ -20,7 +20,7 @@ Music::~Music() {
     if(this->music == nullptr) return;  // Por que o desconstruct está sendo chamado?
 
     this->Stop();   
-    Mix_FreeMusic(this->music);     // BUG? deve intenrromper o fadeout instantaneamente
+    Mix_FreeMusic(this->music);     // ? (BUG) Deve interromper o fadeout instantaneamente?
 }
 
 void Music::Play(int times) {

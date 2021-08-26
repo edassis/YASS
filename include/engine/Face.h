@@ -14,7 +14,7 @@ class Face : public Component {
         /* Component */
         void Update(float dt);
         void Render();
-        // bool Is(string type);
+        bool Is(string type);
 };
 
 #endif

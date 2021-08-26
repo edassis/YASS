@@ -12,7 +12,7 @@ void Face::Damage(int damage) {
     if(hitpoints <= 0) {
         associated.RequestDelete();
 
-        Sound *cpt = (Sound *) associated.GetComponent("Sound");
+        Sound *cpt = (Sound *) associated.GetComponent("Sound").get();
         if(cpt != nullptr) {
             cpt->Play();
         }
@@ -22,3 +22,5 @@ void Face::Damage(int damage) {
 void Face::Update(float dt) {}
 
 void Face::Render() {}
+
+bool Face::Is(string type) { return "Face" == type; }

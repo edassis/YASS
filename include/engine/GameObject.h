@@ -4,15 +4,17 @@
 #include "engine/Mat.h"
 #include <iostream>
 #include <vector>
+#include <memory>
 
 using std::vector;
 using std::string;
+using std::unique_ptr;
 
 class Component;
 
 class GameObject {
     private:
-        vector<Component*> components;
+        vector<unique_ptr<Component>> components;
         bool isDead;
 
     public:
@@ -25,9 +27,9 @@ class GameObject {
         void Render();
         bool IsDead();
         void RequestDelete();
-        void AddComponent(Component* cpt);
-        void RemoveComponent(Component* cpt);
-        Component* GetComponent(string type);
+        void AddComponent(unique_ptr<Component> cpt);
+        void RemoveComponent(unique_ptr<Component> cpt);
+        unique_ptr<Component> GetComponent(string type);
 };
 
 #endif

@@ -41,3 +41,5 @@ void Sound::Open(string file) {
 void Sound::Update(float dt) {}
 
 void Sound::Render() {}
+
+bool Sound::Is(string type) { return "Sound" == type; }

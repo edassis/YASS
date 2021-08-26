@@ -8,7 +8,7 @@
 using std::cout;
 using std::endl;
 
-Game *Game::instance = nullptr;
+// unique_ptr<Game> Game::instance = unique_ptr<Game> {};
 
 Game::Game(string title, int width, int height) {
     int _error = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER);
@@ -56,12 +56,13 @@ Game::Game(string title, int width, int height) {
 
     this->window = window;
     this->renderer = renderer;
-    this->state = new State();
+    this->state = unique_ptr<State> (new State());
+    // this->state = new State();
 }
 
 Game::~Game() {
-    SDL_DestroyRenderer(this->renderer);
-    SDL_DestroyWindow(this->window);
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
 
     SDL_CloseAudio();
     Mix_Quit();
@@ -72,28 +73,30 @@ Game::~Game() {
 }
 
 // Game main loop
-void Game::Run() {
-    while(!this->state->QuitRequested()) {
-        this->state->Update();
-        this->state->Render();
-        SDL_RenderPresent(this->renderer);
+// void Game::Run() {
+//     while(!state->QuitRequested()) {
+//         state->Update();
+//         state->Render();
+//         SDL_RenderPresent(renderer);
 
-        SDL_Delay(FRAME_DURATION);
-    }
-}
+//         SDL_Delay(FRAME_DURATION);
+//     }
+// }
 
 SDL_Renderer* Game::GetRenderer() {
-    return this->renderer;
+    return renderer;
 }
 
-State& Game::GetState() {
-    return *this->state;
-}
+// State& Game::GetState() {
+//     return *state;
+// }
 
 Game& Game::GetInstance() {
-    if(Game::instance != nullptr) return *Game::instance;
+    // if(instance != nullptr) return *instance;
 
-    Game::instance = new Game();
+    // instance = unique_ptr<Game> (new Game());
 
-    return *Game::instance;
+    // return *instance;
+    static Game instance;
+    return instance;
 }
