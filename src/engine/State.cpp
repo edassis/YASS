@@ -1,11 +1,11 @@
 #include "engine/State.h"
+
 #define INCLUDE_SDL
 #include "engine/SDL_include.h"
-#include "engine/Face.h"
 #include "engine/Mat.h"
 #include "engine/GameObject.h"
+#include "engine/Face.h"
 #include "engine/Sound.h"
-#include "engine/Mat.h"
 #include <iostream>
 
 using std::cout;
