@@ -83,8 +83,8 @@ class Vec2 {
         static float Dot(const Vec2& v1, const Vec2& v2);
 };
 
-float deg2rad(const float deg);
-float rad2deg(const float rad);
+float Deg2Rad(const float deg);
+float Rad2Deg(const float rad);
 
 } // end Mat;
 

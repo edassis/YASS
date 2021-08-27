@@ -14,13 +14,11 @@ void Face::Damage(int damage) {
 
     if(hitpoints <= 0) {
         associated.RequestDelete();
+    }
 
-        Sound *cpt = (Sound *) associated.GetComponent("Sound").get();
-        if(cpt != nullptr) {
-            cout << "tem som" << endl;
-            cout << cpt->IsOpen() << endl;
-            cpt->Play();
-        }
+    Sound *cpt = (Sound *) associated.GetComponent("Sound").get();
+    if(cpt != nullptr) {
+        cpt->Play();
     }
 }
 

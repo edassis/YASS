@@ -77,12 +77,8 @@ float Vec2::Angle() {
 }
 
 float Vec2::AngleToPoint(const Vec2& v) {
-    Vec2 temp = Vec2(v.x - x, v.y - y).Normalized();    // line
-
-    float dot = Dot(temp, Vec2(1, 0)); 
-    float det = Det(temp, Vec2(1, 0)); 
-    
-    return atan2(det, dot); 
+    Vec2 temp = Vec2(v.x - x, v.y - y);    // line
+    return temp.Angle(); 
 }
 
 float Vec2::DistanceTo(const Vec2& v) {
@@ -91,11 +87,11 @@ float Vec2::DistanceTo(const Vec2& v) {
 }
 
 float Vec2::Dot(const Vec2& v) {
-    return x*v.x + y*v.y;
+    return Dot(*this, v);
 }
 
 bool Vec2::IsNormalized() {
-    return (abs(x) <= 1.01 && abs(y) <= 1.01);    // ? How to properly handle fp imprecision? 
+    return (abs(x) <= 1.01 && abs(y) <= 1.001);    // ? How to properly handle fp imprecision? 
 }
 
 float Vec2::Length() {
@@ -121,10 +117,10 @@ float Vec2::Dot(const Vec2& v1, const Vec2& v2) {
 }
 
 // ---Functions
-float mat::deg2rad(const float deg) {
+float mat::Deg2Rad(const float deg) {
     return mat::PI*deg/180;
 }
 
-float mat::rad2deg(const float rad) {
+float mat::Rad2Deg(const float rad) {
     return 180*rad/mat::PI;
 }
