@@ -18,6 +18,9 @@ Sound::~Sound() {
 
 void Sound::Play(int times) {
     channel = Mix_PlayChannel(-1, chunk, times-1);
+    if(channel == -1) {
+        cout << "Error trying to play a sound: " << Mix_GetError() << endl;
+    }
 }
 
 void Sound::Stop() {
@@ -34,6 +37,10 @@ void Sound::Open(string file) {
     }
 
     chunk = nchunk;
+}
+
+bool Sound::IsOpen() {
+    return chunk != nullptr;
 }
 
 void Sound::Update(float dt) {}

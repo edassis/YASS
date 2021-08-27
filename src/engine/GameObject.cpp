@@ -16,8 +16,6 @@ void GameObject::Update(float dt) {
 void GameObject::Render() {
     for(auto &cpt : components) {
         cpt->Render();
-        // std::cout << "GameObject render: ";
-        // std::cout << cpt->Is("Sprite") << std::endl;
     }
 }
 

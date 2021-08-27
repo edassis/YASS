@@ -11,6 +11,8 @@ using std::string;
 using std::unique_ptr;
 using std::shared_ptr;
 
+using mat::Rect;
+
 class Component;
 
 class GameObject {

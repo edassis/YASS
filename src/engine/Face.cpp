@@ -1,6 +1,9 @@
 #include "engine/Face.h"
 #include "engine/GameObject.h"
 #include "engine/Sound.h"
+#include <iostream>
+
+using namespace std;
 
 Face::Face(GameObject &associated) : Component(associated) {
     hitpoints = 30;
@@ -14,6 +17,8 @@ void Face::Damage(int damage) {
 
         Sound *cpt = (Sound *) associated.GetComponent("Sound").get();
         if(cpt != nullptr) {
+            cout << "tem som" << endl;
+            cout << cpt->IsOpen() << endl;
             cpt->Play();
         }
     }

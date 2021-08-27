@@ -2,7 +2,8 @@
 #include "engine/GameObject.h"
 #include <iostream>
 #include <memory>
-#include "unistd.h"
+#include <cstdlib>
+#include <ctime>
 
 using std::cout;
 using std::endl;
@@ -11,25 +12,15 @@ using std::endl;
 #define VDUMP(x) std::cout << #x << " " << x << std::endl
 
 int main(int argc, char **argv) {
+    srand(time(NULL));
+
     Game &myGame = Game::GetInstance();
 
     myGame.GetState().LoadAssets();
 
     myGame.Run();
-
-
-    // // Is test:
-    // std::unique_ptr<GameObject> go(new GameObject());
-    // Sprite spt(*go);
-    
-    // cout << (spt.Is("Sprite") ? "true" : "false") << endl;
-
-    // getchar();
     
     return 0;
 }
 
-// TODO: 
-// * Use unique_ptrs instead of pure pointers in `GameObject`;
-// * Implement auxiliar math functions;
-// * Adjust `State` functions;
+// TODO: Fix sound not working.

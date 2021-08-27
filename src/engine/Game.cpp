@@ -1,14 +1,11 @@
-#include "engine/Game.h"
-
 #define INCLUDE_SDL
 #define INCLUDE_SDL_IMAGE
 #define INCLUDE_SDL_MIXER
 #include "engine/SDL_include.h"
+#include "engine/Game.h"
 
 using std::cout;
 using std::endl;
-
-// unique_ptr<Game> Game::instance = unique_ptr<Game> {};
 
 Game::Game(string title, int width, int height) {
     int _error = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER);
@@ -57,7 +54,6 @@ Game::Game(string title, int width, int height) {
     this->window = window;
     this->renderer = renderer;
     this->state = unique_ptr<State> (new State());
-    // this->state = new State();
 }
 
 Game::~Game() {
