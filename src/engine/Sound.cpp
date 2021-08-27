@@ -10,6 +10,7 @@ Sound::Sound(GameObject &associated, string file) : Component(associated), chunk
 }
 
 Sound::~Sound() {
+    cout << "Sound: destructor" << endl;
     if(chunk == nullptr) return;
 
     Stop();
@@ -35,7 +36,6 @@ void Sound::Open(string file) {
         cout << "Failed to open sound file (" << file << "): " << Mix_GetError() << endl;
         return;
     }
-
     chunk = nchunk;
 }
 

@@ -19,15 +19,15 @@ class Rect {
         /**
          * Returns the rectangle's central point. 
          */
-        Vec2 center();
+        Vec2 Center();
         /**
          * Check if @p v is inside of the rectangle.
          */
-        bool contains(const Vec2& v);
+        bool Contains(const Vec2& v);
         /** 
          * Distance of two rectangles' central point.
          */
-        static float distance_from_centers(Rect& r1, Rect& r2);
+        static float DistanceFromCenters(Rect& r1, Rect& r2);
 };
 
 class Vec2 {
@@ -48,41 +48,43 @@ class Vec2 {
         /**
          * Returns the angle between this vector and positive X axis (1, 0).
          */
-        float angle();
+        float Angle();
         /**
          * Returns the angle formed by the line connecting the two points and X axis.
          */
-        float angle_to_point(const Vec2& v);
+        float AngleToPoint(const Vec2& v);
         /**
          * Distance to another point.
          */
-        float distance_to(const Vec2& v);
+        float DistanceTo(const Vec2& v);
         /**
          * Dot product of two vectors (produto interno).
          */
-        float dot(const Vec2& v);
+        float Dot(const Vec2& v);
         /**
          * Checks if vector is normalized. Considers epsilon = 0.01
          */ 
-        bool is_normalized();
+        bool IsNormalized();
         /** 
          * Magnitude of the vector.
          */
-        float length();
+        float Length();
         /**
          * Normalize the vector.
          */
-        Vec2 normalized();
+        Vec2 Normalized();
         /**
          * Rotates the vector by the amount specified (radians).
          */
-        Vec2 rotated(const float rad);
+        Vec2 Rotated(const float rad);
+        
+        static float Det(const Vec2& v1, const Vec2& v2);
+        
+        static float Dot(const Vec2& v1, const Vec2& v2);
 };
 
 float deg2rad(const float deg);
 float rad2deg(const float rad);
-float det(const Vec2& v1, const Vec2& v2);
-float dot(const Vec2& v1, const Vec2& v2);
 
 } // end Mat;
 

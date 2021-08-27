@@ -84,7 +84,7 @@ void State::Input() {
 				// Esse código, assim como a classe Face, é provisório. Futuramente, para
 				// chamar funções de GameObjects, use objectArray[i]->função() direto.
 
-				if(go->box.contains( {(float)mouseX, (float)mouseY} )) {
+				if(go->box.Contains( {(float)mouseX, (float)mouseY} )) {
 					Face* face = (Face*) go->GetComponent("Face").get();
 					if (face != nullptr) {
 						// Aplica dano
@@ -102,7 +102,7 @@ void State::Input() {
 			}
 			// Se não, crie um objeto
 			else {
-				Vec2 objPos = Vec2(200, 0).rotated(-PI + PI*(rand() % 1001)/500.0) + Vec2(mouseX, mouseY);
+				Vec2 objPos = Vec2(200, 0).Rotated(-PI + PI*(rand() % 1001)/500.0) + Vec2(mouseX, mouseY);
 				AddObject((int)objPos.x, (int)objPos.y);
 				AddObject(mouseX, mouseY);
 			}
