@@ -9,11 +9,11 @@
 using std::cout;
 using std::endl;
 
-Sprite::Sprite(GameObject &associated) : Component(associated) {
+Sprite::Sprite(GameObject& associated) : Component(associated) {
     this->texture = nullptr;
 }   
 
-Sprite::Sprite(GameObject &associated, string file) : Component(associated) {
+Sprite::Sprite(GameObject& associated, string file) : Component(associated) {
     this->texture = nullptr;
     this->Open(file);
 }

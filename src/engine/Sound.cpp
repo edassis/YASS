@@ -3,14 +3,13 @@
 using std::cout;
 using std::endl;
 
-Sound::Sound(GameObject &associated) : Component(associated), chunk(nullptr) {}
+Sound::Sound(GameObject& associated) : Component(associated), chunk(nullptr) {}
 
-Sound::Sound(GameObject &associated, string file) : Component(associated), chunk(nullptr) {
+Sound::Sound(GameObject& associated, string file) : Component(associated), chunk(nullptr) {
     Open(file);
 }
 
 Sound::~Sound() {
-    cout << "Sound: destructor" << endl;
     if(chunk == nullptr) return;
 
     Stop();
@@ -31,7 +30,7 @@ void Sound::Stop() {
 }
 
 void Sound::Open(string file) {
-    Mix_Chunk *nchunk = Mix_LoadWAV(file.c_str());
+    Mix_Chunk* nchunk = Mix_LoadWAV(file.c_str());
     if(nchunk == nullptr) {
         cout << "Failed to open sound file (" << file << "): " << Mix_GetError() << endl;
         return;

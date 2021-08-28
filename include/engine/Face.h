@@ -12,9 +12,9 @@ class Face : public Component {
         void Damage(int damage);
         
         /* Component */
-        void Update(float dt);
-        void Render();
-        bool Is(string type);
+        void Update(float dt) override;
+        void Render() override;
+        bool Is(string type) override;
 };
 
 #endif

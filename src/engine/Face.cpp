@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Face::Face(GameObject &associated) : Component(associated) {
+Face::Face(GameObject& associated) : Component(associated) {
     hitpoints = 30;
 }
 
@@ -16,7 +16,7 @@ void Face::Damage(int damage) {
         associated.RequestDelete();
     }
 
-    Sound *cpt = (Sound *) associated.GetComponent("Sound").get();
+    Sound* cpt = (Sound *) associated.GetComponent("Sound").get();
     if(cpt != nullptr) {
         cpt->Play();
     }

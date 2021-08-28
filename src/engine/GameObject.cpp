@@ -8,13 +8,13 @@ GameObject::GameObject() {
 GameObject::~GameObject() {} 
 
 void GameObject::Update(float dt) {
-    for(auto &cpt : components) {
+    for(auto& cpt : components) {
         cpt->Update(dt);
     }
 }
 
 void GameObject::Render() {
-    for(auto &cpt : components) {
+    for(auto& cpt : components) {
         cpt->Render();
     }
 }
@@ -45,7 +45,7 @@ void GameObject::RemoveComponent(shared_ptr<Component> cpt) {
 }
 
 shared_ptr<Component> GameObject::GetComponent(string type) {
-    for(auto &cpt : components) {
+    for(auto& cpt : components) {
         if(cpt->Is(type)) {
             return cpt;
         }

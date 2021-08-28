@@ -11,10 +11,10 @@ using std::endl;
 #define VNAME(x) #x
 #define VDUMP(x) std::cout << #x << " " << x << std::endl
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
     srand(time(NULL));
 
-    Game &myGame = Game::GetInstance();
+    Game& myGame = Game::GetInstance();
 
     myGame.GetState().LoadAssets();
 

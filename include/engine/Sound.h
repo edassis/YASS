@@ -11,11 +11,11 @@ using std::string;
 
 class Sound : public Component {
     private:
-        Mix_Chunk *chunk;
+        Mix_Chunk* chunk;
         int channel;
     public:
-        Sound(GameObject &associated);
-        Sound(GameObject &associated, string file);
+        Sound(GameObject& associated);
+        Sound(GameObject& associated, string file);
         ~Sound();
 
         void Play(int times = 1);
@@ -24,9 +24,9 @@ class Sound : public Component {
         bool IsOpen();
 
         /* Component */
-        void Update(float dt);
-        void Render();
-        bool Is(string type);
+        void Update(float dt) override;
+        void Render() override;
+        bool Is(string type) override;
 };
 
 #endif

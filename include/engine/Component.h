@@ -9,9 +9,9 @@ class GameObject;
 
 class Component {
     protected:
-        GameObject &associated;
+        GameObject& associated;
     public:
-        Component(GameObject &associated) : associated(associated) {};
+        Component(GameObject& associated) : associated(associated) {};
         virtual ~Component() {};
         
         virtual void Update(float dt) =0;

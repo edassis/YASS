@@ -15,8 +15,8 @@ class Sprite : public Component {
         int height;
         SDL_Rect clipRect;
     public:
-        Sprite(GameObject &associated);
-        Sprite(GameObject &associated, string file);
+        Sprite(GameObject& associated);
+        Sprite(GameObject& associated, string file);
         ~Sprite();
 
         void Open(string file);
@@ -26,9 +26,9 @@ class Sprite : public Component {
         bool IsOpen();
 
         /* Component */
-        void Update(float dt);
-        void Render();
-        bool Is(string type);
+        void Update(float dt) override;
+        void Render() override;
+        bool Is(string type) override;
 };
 
 #endif

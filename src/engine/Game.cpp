@@ -39,13 +39,13 @@ Game::Game(string title, int width, int height) {
         throw 1;
     }
 
-    SDL_Window *window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, 0);
+    SDL_Window* window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, 0);
     if(window == nullptr) {
         cout << "Failed to create window: " << SDL_GetError() << endl;
         throw 1;
     }
 
-    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     if(renderer == nullptr) {
         cout << "Failed to create render: " << SDL_GetError() << endl;
         throw 1;
