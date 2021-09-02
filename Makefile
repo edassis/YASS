@@ -11,7 +11,7 @@ LIBS = -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lm
 INC_PATHS = -I$(INC_PATH) $(addprefix -I,$(SDL_INC_PATH))
 
 FLAGS = -std=c++11 -Wall -pedantic -Wextra -Wno-unused-parameter -Werror=init-self
-DFLAGS = -ggdb -O0 -DDEBUG
+DFLAGS = -ggdb -Og -DDEBUG
 RFLAGS = -O3 -mtune=native
 
 INC_PATH = include
@@ -31,7 +31,7 @@ ifeq ($(OS),Windows_NT)
 RMDIR = rd /s /q
 RM = del /q
 
-SDL_PATHS = C:/dev/SDL2-mingw64/x86_64-w64-mingw32
+# SDL_PATHS = C:/dev/SDL2-mingw64/x86_64-w64-mingw32
 
 SDL_INC_PATH = $(addsuffix /include,$(SDL_PATHS))
 LINK_PATH = $(addprefix -L,$(addsuffix /lib, $(SDL_PATHS)))
