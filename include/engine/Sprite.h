@@ -10,9 +10,9 @@ using std::string;
 
 class Sprite : public Component {
     private:
-        SDL_Texture* texture;
         int width;
         int height;
+        SDL_Texture* texture;
         SDL_Rect clipRect;
     public:
         Sprite(GameObject& associated);

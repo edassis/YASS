@@ -36,6 +36,7 @@ RM = del /q
 SDL_INC_PATH = $(addsuffix /include,$(SDL_PATHS))
 LINK_PATH = $(addprefix -L,$(addsuffix /lib, $(SDL_PATHS)))
 RFLAGS += -Wl,-subsystem,windows # Will not open a console window
+DFLAGS += -static-libgcc -static-libstdc++
 LIBS := -lmingw32 -lSDL2main $(LIBS) 
 
 EXEC := $(EXEC).exe
