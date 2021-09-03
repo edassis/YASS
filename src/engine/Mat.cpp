@@ -64,8 +64,8 @@ Vec2& Vec2::operator-(const Vec2& v) {
 }
 
 Vec2& Vec2::operator*(const int num) {
-    this->x *= num;
-    this->y *= num;
+    this->x *= (float)num;
+    this->y *= (float)num;
     return *this;
 }
 

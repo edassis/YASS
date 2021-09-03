@@ -18,9 +18,7 @@ Music::Music(string file) {
 }
 
 Music::~Music() {
-    cout << "desconstrutor da música" << endl;
-    // if(this->music == nullptr) return;  // Por que o desconstruct está sendo chamado?
-
+    // ? Preciso checar se `this->music` é nullptr?
     Mix_FreeMusic(this->music); // * Blocks until fadeout finishes
 }
 

@@ -17,6 +17,12 @@ State::State() : music() {
     this->quitRequested = false;
 
     GameObject* go = new GameObject();
+	Sprite* spt = new Sprite(*go);
+
+    // Ensures that memory will be freed
+	go->AddComponent(std::shared_ptr<Component>(spt));
+	objectArray.emplace_back(go);
+	
     this->bg = unique_ptr<Sprite>(new Sprite(*go));
 }
 
@@ -112,14 +118,14 @@ void State::Input() {
 
 void State::AddObject(int mouseX, int mouseY) {
     // Primeiro inimigo
-	GameObject *go = new GameObject();
+	GameObject* go = new GameObject();
     Sprite* spt = new Sprite(*go, "assets/img/penguinface.png");
 	Face* fc = new Face(*go);
 	Sound* s = new Sound(*go, "assets/audio/boom.wav");
 
 	// * Centralize image on the cursor
-	go->box.x = mouseX - spt->GetWidth()/2;
-    go->box.y = mouseY - spt->GetHeight()/2;
+	go->box.x = float(mouseX - spt->GetWidth()/2);
+    go->box.y = float(mouseY - spt->GetHeight()/2);
 
 	go->AddComponent(std::shared_ptr<Component>(spt));
 	go->AddComponent(std::shared_ptr<Component>(fc));

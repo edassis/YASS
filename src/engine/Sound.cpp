@@ -3,9 +3,13 @@
 using std::cout;
 using std::endl;
 
-Sound::Sound(GameObject& associated) : Component(associated), chunk(nullptr) {}
+Sound::Sound(GameObject& associated) : Component(associated) {
+    chunk = nullptr;
+    channel = -1;
+}
 
-Sound::Sound(GameObject& associated, string file) : Component(associated), chunk(nullptr) {
+Sound::Sound(GameObject& associated, string file) : Component(associated) {
+    chunk = nullptr;
     Open(file);
 }
 

@@ -11,6 +11,8 @@ using std::endl;
 
 Sprite::Sprite(GameObject& associated) : Component(associated) {
     this->texture = nullptr;
+    this->width = -1;
+    this->height = -1;
 }   
 
 Sprite::Sprite(GameObject& associated, string file) : Component(associated) {
@@ -43,8 +45,8 @@ void Sprite::Open(string file) {
     }
     this->SetClip(0, 0, this->width, this->height);
 
-    associated.box.w = this->width;
-    associated.box.h = this->height;
+    associated.box.w = (float)this->width;
+    associated.box.h = (float)this->height;
 }
 
 void Sprite::SetClip(int x, int y, int w, int h) {  // origin
@@ -58,10 +60,10 @@ void Sprite::Render() {
     if(this->texture == nullptr) return;
 
     SDL_Rect dstRect;      // ? how this works?
-    dstRect.x = this->associated.box.x;
-    dstRect.y = this->associated.box.y;
-    dstRect.w = this->associated.box.w;
-    dstRect.h = this->associated.box.h;
+    dstRect.x = (int)round(this->associated.box.x);
+    dstRect.y = (int)round(this->associated.box.y);
+    dstRect.w = (int)round(this->associated.box.w);
+    dstRect.h = (int)round(this->associated.box.h);
 
     int _error = SDL_RenderCopy(Game::GetInstance().GetRenderer(), this->texture, &this->clipRect, &dstRect);
     if(_error) {

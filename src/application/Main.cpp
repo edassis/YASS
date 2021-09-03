@@ -12,7 +12,7 @@ using std::endl;
 #define VDUMP(x) std::cout << #x << " " << x << std::endl
 
 int main(int argc, char** argv) {
-    srand(time(NULL));
+    srand( (unsigned)time(NULL) );
 
     Game& myGame = Game::GetInstance();
 

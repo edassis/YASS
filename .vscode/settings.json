@@ -44,7 +44,9 @@
         "streambuf": "cpp",
         "cinttypes": "cpp",
         "typeinfo": "cpp",
-        "ctime": "cpp"
+        "ctime": "cpp",
+        "__string": "cpp",
+        "functional": "cpp"
     },
 
     // TERMINAL

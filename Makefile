@@ -10,7 +10,7 @@ LIBS = -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lm
 
 INC_PATHS = -I$(INC_PATH) $(addprefix -I,$(SDL_INC_PATH))
 
-FLAGS = -std=c++11 -Wall -pedantic -Wextra -Wno-unused-parameter -Werror=init-self
+FLAGS = -std=c++11 -Wall -Wextra -Wpedantic -Wno-unused-parameter -Werror=init-self -Wconversion -Wfloat-equal
 DFLAGS = -ggdb -Og -DDEBUG
 RFLAGS = -O3 -mtune=native
 
@@ -31,12 +31,11 @@ ifeq ($(OS),Windows_NT)
 RMDIR = rd /s /q
 RM = del /q
 
-# SDL_PATHS = C:/dev/SDL2-mingw64/x86_64-w64-mingw32
+SDL_PATHS = C:/dev/SDL2-mingw64/x86_64-w64-mingw32
 
 SDL_INC_PATH = $(addsuffix /include,$(SDL_PATHS))
 LINK_PATH = $(addprefix -L,$(addsuffix /lib, $(SDL_PATHS)))
 RFLAGS += -Wl,-subsystem,windows # Will not open a console window
-DFLAGS += -static-libgcc -static-libstdc++
 LIBS := -lmingw32 -lSDL2main $(LIBS) 
 
 EXEC := $(EXEC).exe
@@ -45,14 +44,18 @@ else
 
 UNAME_S := $(shell uname -s)
 
+ifeq ($(UNAME_S), Linux)
+DFLAGS += -fsanitize=address -fno-omit-frame-pointer
+endif
+
 ifeq ($(UNAME_S), Darwin)
 LIBS = -lm -framework SDL2 -framework SDL2_image -framework SDL2_mixer -framework SDL2_ttf
-
 endif
+
 endif
 
 .PRECIOUS: $(DEP_FILES)
-.PHONY: release debug clean folders help
+.PHONY: all release debug clean folders help
 
 all: debug
 

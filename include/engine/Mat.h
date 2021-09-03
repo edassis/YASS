@@ -3,7 +3,7 @@
 
 namespace mat {
 
-const float PI = 3.141593;
+const float PI = 3.141593f;
 
 class Vec2;
 
