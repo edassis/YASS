@@ -2,6 +2,7 @@
 #define __TILEMAP_H__
 
 #include "engine/Component.h"
+#include <memory>
 #include <vector>
 
 class TileSet;
@@ -9,9 +10,12 @@ class TileSet;
 class TileMap : public Component {
     private:
         std::vector<int> tileMatrix;
-        TileSet* tileSet;
+        std::unique_ptr<TileSet> tileSet;
+        // Tiles per line
         int mapWidth;
+        // Tiles per column
         int mapHeight;
+        // Tiles per layer
         int mapDepth;
 
     public:
@@ -19,7 +23,7 @@ class TileMap : public Component {
         ~TileMap();
 
         void Load(std::string file);
-        void SetTileSet(std::string file);
+        void SetTileSet(std::unique_ptr<TileSet> tileSet);
         int& At(int x, int y, int z = 0);
         void RenderLayer(int layer, int cameraX = 0, int cameraY = 0); 
 

@@ -10,7 +10,7 @@ LIBS = -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lm
 
 INC_PATHS = -I$(INC_PATH) $(addprefix -I,$(SDL_INC_PATH))
 
-FLAGS = -std=c++11 -Wall -Wextra -Wpedantic -Wno-unused-parameter -Werror=init-self -Wconversion -Wfloat-equal
+FLAGS = -std=c++11 -Wall -Wextra -pedantic -Wno-unused-parameter -Werror=init-self -Wconversion -Wfloat-equal
 DFLAGS = -ggdb -Og -DDEBUG
 RFLAGS = -O3 -mtune=native
 

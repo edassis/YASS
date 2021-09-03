@@ -91,7 +91,7 @@ float Vec2::Dot(const Vec2& v) {
 }
 
 bool Vec2::IsNormalized() {
-    return (abs(x) <= 1.01 && abs(y) <= 1.001);    // ? How to properly handle fp imprecision? 
+    return (abs(x) <= 1.001 && abs(y) <= 1.001);    // ? How to properly handle fp imprecision? 
 }
 
 float Vec2::Length() {

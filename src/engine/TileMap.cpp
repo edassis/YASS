@@ -1,15 +1,16 @@
 #include "engine/TileMap.h"
+#include "engine/TileSet.h"
+#include "engine/GameObject.h"
 #include <iostream>
 #include <fstream>
 #include <regex>
 
-TileMap::TileMap(GameObject& associated, std::string file, TileSet* tileSet) : Component(associated) {
+TileMap::TileMap(GameObject& associated, std::string file, TileSet* tileSet) : Component(associated), tileSet(tileSet) {
     if(tileSet == nullptr) { // ? What should happen?
         std::cout << "Warning in TileMap(): tileSet variable is nullptr" << std::endl;
     }
 
     mapWidth = mapHeight = mapDepth = 0;
-    this->tileSet = tileSet;
 
     Load(file);
 }
@@ -42,21 +43,55 @@ void TileMap::Load(std::string file) {
     mapDepth = std::stoi(rti->str());
 
     while(std::getline(myFile, token)) {
-        for (rti = iterator_type(token.begin(), token.end(), rgx, 0); rti!=rend; ++rti) {
+        for (rti = iterator_type(token.begin(), token.end(), rgx, 0); rti!=rend; rti++) {
             int tile = std::stoi(rti->str());
             tile--; // * Indexes starts at -1
             tileMatrix.push_back(tile);
         }
     }
+    
+    // ? Needed:
+    associated.box.w = mapWidth;
+    associated.box.h = mapHeight;
 }
 
-void TileMap::SetTileSet(std::string file) {}
+// https://herbsutter.com/2013/06/05/gotw-91-solution-smart-pointer-parameters/
+void TileMap::SetTileSet(std::unique_ptr<TileSet> tileSet) {
+    this->tileSet = std::move(tileSet);
+}
 
-int& TileMap::At(int x, int y, int z) {}
+int& TileMap::At(int x, int y, int z) {
+    if(x >= mapWidth && y >= mapHeight && z >= mapDepth) {
+        std::cout << "Error! TileMap::At() invalid parameters." << std::endl;
+        x = y = z = 0;  // * Takes first tile in case coordinates are invalid.
+    }
 
-void TileMap::RenderLayer(int layer, int cameraX, int cameraY) {}
+    int idx = (x) + (y*mapWidth) + (z*mapWidth*mapHeight);
 
-void TileMap::Render() {}
+    return tileMatrix[idx];
+}
+
+// ? How camera works?
+// ? Camera should be a Rect? Whith width and height.
+void TileMap::RenderLayer(int layer, int cameraX, int cameraY) {
+    for(int y = 0; y < mapHeight; y++) {
+        for(int x = 0; x < mapWidth; x++) {
+            float dstX = float(x*tileSet->GetTileWidth()+cameraX);
+            float dstY = float(y*tileSet->GetTileHeight()+cameraY);
+            
+            int tile = At(x, y, layer);
+            if(tile >= 0) { // If -1 is empty tile
+                tileSet->RenderTile(unsigned(tile), dstX, dstY);
+            }
+        }
+    }
+}
+
+void TileMap::Render() {
+    for(int layer = 0; layer < mapDepth; layer++) {
+        RenderLayer(layer, int(associated.box.x), int(associated.box.y));
+    }
+}
 
 void TileMap::Update(float dt) {}
 

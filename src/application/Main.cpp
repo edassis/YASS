@@ -16,19 +16,11 @@ using std::endl;
 int main(int argc, char** argv) {
     srand( (unsigned)time(NULL) );
 
-    // Game& myGame = Game::GetInstance();
+    Game& myGame = Game::GetInstance();
 
     // myGame.GetState().LoadAssets();
 
-    // myGame.Run();
+    myGame.Run();
 
-    GameObject* go = new GameObject();
-    TileSet* ts = new TileSet(64, 64, "assets/img/tileset.png");
-    TileMap tm(*go, "assets/map/tileMap.txt", ts);
-
-    tm.Print();
-
-    std::cin.get();
-    
     return 0;
 }

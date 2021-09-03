@@ -6,6 +6,8 @@
 #include "engine/GameObject.h"
 #include "engine/Face.h"
 #include "engine/Sound.h"
+#include "engine/TileMap.h"
+#include "engine/TileSet.h"
 #include <iostream>
 
 using std::cout;
@@ -17,15 +19,18 @@ State::State() : music() {
     this->quitRequested = false;
 
     GameObject* go = new GameObject();
-	Sprite* spt = new Sprite(*go);
-    // Ensures that memory will be freed
-	go->AddComponent(std::shared_ptr<Component>(spt));
+
+	TileSet* ts = new TileSet(64, 64, "assets/img/tileset.png");
+	// TileMap* tm = new TileMap(*go, "assets/map/tileMap.txt", ts);
+
+	go->AddComponent(std::make_shared<TileMap>(*go, "assets/map/tileMap.txt", ts));
+
 	objectArray.emplace_back(go);
 	
-    this->bg = unique_ptr<Sprite>(new Sprite(*go));
+	this->bg = unique_ptr<Sprite>(new Sprite(*go));
 }
 
-State::~State() {} // ? Preciso explicitamente esvaziar objectArray?
+State::~State() {} 
 
 bool State::QuitRequested() {
     return this->quitRequested;
@@ -35,10 +40,10 @@ void State::LoadAssets() {
     // Pré-carrega os assets.
     this->bg->Open("assets/img/ocean.jpg");
 
-    // this->music.Open("assets/audio/boom.wav");
-    // if(this->music.IsOpen()) {
-    //     this->music.Play();
-    // }
+    this->music.Open("assets/audio/stageState.ogg");
+    if(this->music.IsOpen()) {
+        this->music.Play();
+    }
 }
 
 void State::Update(float dt) {

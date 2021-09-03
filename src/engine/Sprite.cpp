@@ -65,10 +65,10 @@ void Sprite::Render(float x, float y, float w, float h) {   // * Specific of Spr
     if(this->texture == nullptr) return;
 
     SDL_Rect dstRect;
-    dstRect.x = (int)round(this->associated.box.x);
-    dstRect.y = (int)round(this->associated.box.y);
-    dstRect.w = (int)round(this->associated.box.w);
-    dstRect.h = (int)round(this->associated.box.h);
+    dstRect.x = (int)round(x);
+    dstRect.y = (int)round(y);
+    dstRect.w = (int)round(w);
+    dstRect.h = (int)round(h);
 
     int _error = SDL_RenderCopy(Game::GetInstance().GetRenderer(), this->texture, &this->clipRect, &dstRect);
     if(_error) {

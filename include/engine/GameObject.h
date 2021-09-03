@@ -30,7 +30,7 @@ class GameObject {
         bool IsDead();
         void RequestDelete();
         void AddComponent(shared_ptr<Component> cpt);
-        void RemoveComponent(shared_ptr<Component> cpt);
+        void RemoveComponent(Component& cpt);
         shared_ptr<Component> GetComponent(string type);
 };
 

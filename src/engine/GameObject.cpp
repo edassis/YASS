@@ -31,10 +31,10 @@ void GameObject::AddComponent(shared_ptr<Component> cpt) {
     components.emplace_back(cpt);
 }
 
-void GameObject::RemoveComponent(shared_ptr<Component> cpt) {
+void GameObject::RemoveComponent(Component& cpt) {
     // ? What would happen if the components change during the loop (impossible right?)?
     for(auto it = components.begin(); it != components.end(); ) {
-        if(*it == cpt) {
+        if(it->get() == &cpt) {
             it = components.erase(it);
             break;  // * Each component should have just 1 pointer.
         }

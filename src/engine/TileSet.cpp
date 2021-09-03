@@ -1,15 +1,15 @@
 #include "engine/TileSet.h"
 #include "engine/GameObject.h"
 
-TileSet::TileSet(int tileWidth, int tileHeight, std::string file) {
-    GameObject* go = new GameObject();
-    tileset = std::unique_ptr<Sprite>(new Sprite(*go));
+TileSet::TileSet(int tileWidth, int tileHeight, std::string file) /* : go(new GameObject()), sprite(new Sprite(*go)) */ {
+    GameObject* go = new GameObject(); // ? Leak!
+    sprite = std::unique_ptr<Sprite>(new Sprite(*go, file));
 
     this->tileWitdth = tileWidth;
     this->tileHeight = tileHeight;
 
-    this->rows = tileset->GetHeight() / this->tileHeight;   // * Last tiles can have different sizes (reminder).
-    this->columns = tileset->GetWidth() / this->tileWitdth;
+    this->rows = sprite->GetHeight() / this->tileHeight;   // * Last tiles can have different sizes (reminder).
+    this->columns = sprite->GetWidth() / this->tileWitdth;
 }
 
 TileSet::~TileSet() {}
@@ -17,17 +17,18 @@ TileSet::~TileSet() {}
 void TileSet::RenderTile(unsigned index, float x, float y) {
     bool isIndexValid = /* index >= 0 && */ index < unsigned(rows*columns);
     if(!isIndexValid) {
-        std::cout << "Error! Call of RenderTile() on invalid index." << std::endl; 
+        std::cout << "Error! Call of RenderTile() on invalid index (" << index << ")." << std::endl; 
+        // std::cout << rows << ' ' << columns << std::endl;
         return;
     }
 
-    int qtdLine = index / columns;
-    int qtdCol = index - qtdLine;
-    int srcX = qtdCol * tileWitdth;
-    int srcY = qtdLine *  tileHeight;
+    int line = index / columns;
+    int col = index - (line*columns);
+    int srcX = col * tileWitdth;
+    int srcY = line *  tileHeight;
 
-    tileset->SetClip(srcX, srcY, tileWitdth, tileHeight);
-    tileset->Render(float(x), float(y), float(tileWitdth), float(tileHeight));
+    sprite->SetClip(srcX, srcY, tileWitdth, tileHeight);
+    sprite->Render(x, y, float(tileWitdth), float(tileHeight));
 }
 
 int TileSet::GetTileWidth() {

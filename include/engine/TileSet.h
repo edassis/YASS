@@ -7,7 +7,8 @@
 
 class TileSet {
     private:
-        std::unique_ptr<Sprite> tileset;
+        // std::unique_ptr<GameObject> go;    
+        std::unique_ptr<Sprite> sprite;
         int rows;
         int columns;
         int tileWitdth;

@@ -53,7 +53,7 @@ Game::Game(string title, int width, int height) {
 
     this->window = window;
     this->renderer = renderer;
-    this->state = unique_ptr<State> (new State());
+    // this->state = unique_ptr<State> (new State());  // * Infinite loop
 }
 
 Game::~Game() {
@@ -70,9 +70,9 @@ Game::~Game() {
 
 // Game main loop
 void Game::Run() {
-    while(!state->QuitRequested()) {
-        state->Update();
-        state->Render();
+    while(!GetState().QuitRequested()) {
+        GetState().Update();
+        GetState().Render();
         SDL_RenderPresent(renderer);
 
         SDL_Delay(FRAME_DURATION);
@@ -84,7 +84,8 @@ SDL_Renderer* Game::GetRenderer() {
 }
 
 State& Game::GetState() {
-    return *state;
+    static State state;
+    return state;
 }
 
 

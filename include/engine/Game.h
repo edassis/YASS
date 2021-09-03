@@ -18,7 +18,7 @@ class Game {
     private:
         SDL_Window* window;
         SDL_Renderer* renderer;
-        unique_ptr<State> state;
+        // unique_ptr<State> state;
 
         Game(string title = "Eduardo Ferreira de Assis - 17/0102289", int width = 1024, int height = 600);
     public:
