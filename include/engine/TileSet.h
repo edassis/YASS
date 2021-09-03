@@ -12,6 +12,7 @@ class TileSet {
         int columns;
         int tileWitdth;
         int tileHeight;
+
     public:
         TileSet(int tileWitdth, int tileHeight, std::string file);
         ~TileSet();

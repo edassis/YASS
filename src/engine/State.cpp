@@ -18,7 +18,6 @@ State::State() : music() {
 
     GameObject* go = new GameObject();
 	Sprite* spt = new Sprite(*go);
-
     // Ensures that memory will be freed
 	go->AddComponent(std::shared_ptr<Component>(spt));
 	objectArray.emplace_back(go);

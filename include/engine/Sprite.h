@@ -25,6 +25,8 @@ class Sprite : public Component {
         int GetHeight();
         bool IsOpen();
 
+        void Render(float x, float y, float w, float h);
+
         /* Component */
         void Update(float dt) override;
         void Render() override;

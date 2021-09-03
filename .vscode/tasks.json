@@ -5,7 +5,7 @@
             "label": "Build",
             "type": "shell",
             "isBackground": false,
-            "command": "mingw32-make",
+            "command": "make",
             "args": [],
             "problemMatcher": [],
             "group": {
@@ -17,7 +17,7 @@
             "label": "Build && Exec",
             "type": "shell",
             "isBackground": false,
-            "command": "mingw32-make",
+            "command": "make",
             "args": [
                 "exec"
             ],

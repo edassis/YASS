@@ -5,14 +5,15 @@
 #include "engine/Game.h"
 #include "engine/GameObject.h"
 #include <iostream>
+#include <cmath>
 
 using std::cout;
 using std::endl;
 
 Sprite::Sprite(GameObject& associated) : Component(associated) {
     this->texture = nullptr;
-    this->width = -1;
-    this->height = -1;
+    this->width = 0;
+    this->height = 0;
 }   
 
 Sprite::Sprite(GameObject& associated, string file) : Component(associated) {
@@ -57,9 +58,13 @@ void Sprite::SetClip(int x, int y, int w, int h) {  // origin
 }
 
 void Sprite::Render() {
+    Render(associated.box.x, associated.box.y, associated.box.w, associated.box.h);
+}
+
+void Sprite::Render(float x, float y, float w, float h) {   // * Specific of Sprite class
     if(this->texture == nullptr) return;
 
-    SDL_Rect dstRect;      // ? how this works?
+    SDL_Rect dstRect;
     dstRect.x = (int)round(this->associated.box.x);
     dstRect.y = (int)round(this->associated.box.y);
     dstRect.w = (int)round(this->associated.box.w);
