@@ -21,7 +21,6 @@ State::State() : music() {
     GameObject* go = new GameObject();
 
 	TileSet* ts = new TileSet(64, 64, "assets/img/tileset.png");
-	// TileMap* tm = new TileMap(*go, "assets/map/tileMap.txt", ts);
 
 	go->AddComponent(std::make_shared<TileMap>(*go, "assets/map/tileMap.txt", ts));
 
@@ -38,7 +37,7 @@ bool State::QuitRequested() {
 
 void State::LoadAssets() {
     // Pré-carrega os assets.
-    this->bg->Open("assets/img/ocean.jpg");
+    // this->bg->Open("assets/img/ocean.jpg");
 
     this->music.Open("assets/audio/stageState.ogg");
     if(this->music.IsOpen()) {
@@ -124,8 +123,8 @@ void State::AddObject(int mouseX, int mouseY) {
     // Primeiro inimigo
 	GameObject* go = new GameObject();
     Sprite* spt = new Sprite(*go, "assets/img/penguinface.png");
-	Face* fc = new Face(*go);
 	Sound* s = new Sound(*go, "assets/audio/boom.wav");
+	Face* fc = new Face(*go);
 
 	// * Centralize image on the cursor
 	go->box.x = float(mouseX - spt->GetWidth()/2);

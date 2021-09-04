@@ -66,21 +66,21 @@ int& TileMap::At(int x, int y, int z) {
         x = y = z = 0;  // * Takes first tile in case coordinates are invalid.
     }
 
-    int idx = (x) + (y*mapWidth) + (z*mapWidth*mapHeight);
+    int idx = x + (y*mapWidth) + (z*mapWidth*mapHeight);
 
     return tileMatrix[idx];
 }
 
-// ? How camera works?
-// ? Camera should be a Rect? Whith width and height.
+// ? Camera should be a Rect? Should have width and height I think.
 void TileMap::RenderLayer(int layer, int cameraX, int cameraY) {
     for(int y = 0; y < mapHeight; y++) {
         for(int x = 0; x < mapWidth; x++) {
-            float dstX = float(x*tileSet->GetTileWidth()+cameraX);
-            float dstY = float(y*tileSet->GetTileHeight()+cameraY);
-            
+            float dstX = float(x*tileSet->GetTileWidth()-cameraX);
+            float dstY = float(y*tileSet->GetTileHeight()-cameraY);
+
             int tile = At(x, y, layer);
-            if(tile >= 0) { // If -1 is empty tile
+            
+            if(tile >= 0) { // -1 = empty tile
                 tileSet->RenderTile(unsigned(tile), dstX, dstY);
             }
         }

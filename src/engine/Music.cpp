@@ -2,6 +2,7 @@
 
 #define INCLUDE_SDL_MIXER
 #include "engine/SDL_include.h"
+#include "engine/Resources.h"
 #include <iostream>
 
 using std::cout;
@@ -11,16 +12,12 @@ Music::Music() {
     music = nullptr;
 }
 
-
 Music::Music(string file) {
     this->Open(file);
     this->Play();
 }
 
-Music::~Music() {
-    // ? Preciso checar se `this->music` é nullptr?
-    Mix_FreeMusic(this->music); // * Blocks until fadeout finishes
-}
+Music::~Music() {}
 
 void Music::Play(int times) {
     int _error = Mix_PlayMusic(this->music, times);
@@ -37,11 +34,7 @@ void Music::Stop(int msToStop) {
 }
 
 void Music::Open(string file) {
-    Mix_Music* newMusic = Mix_LoadMUS(file.c_str());
-    if(newMusic == nullptr) {
-        cout << "Failed to load file \"" << file << "\" :" << Mix_GetError() << endl;
-    }
-    this->music = newMusic;
+    this->music = Resources::GetInstance().GetMusic(file);
 }
 
 bool Music::IsOpen() {

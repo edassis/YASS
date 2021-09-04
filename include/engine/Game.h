@@ -18,18 +18,18 @@ class Game {
     private:
         SDL_Window* window;
         SDL_Renderer* renderer;
-        // unique_ptr<State> state;
 
         Game(string title = "Eduardo Ferreira de Assis - 17/0102289", int width = 1024, int height = 600);
+
     public:
+        ~Game();
         Game(const Game&) = delete;
         Game(const Game&&) = delete;
         void operator=(const Game&) = delete;
-        ~Game();
 
         void Run();
-        SDL_Renderer* GetRenderer();    // * SDL can fail and renderer be nullptr
-        State& GetState();
+        SDL_Renderer* GetRenderer();    // * SDL can fail making renderer be nullptr
+        static State& GetState();
         static Game& GetInstance();
 };
 

@@ -1,4 +1,5 @@
 #include "engine/Sound.h"
+#include "engine/Resources.h"
 
 using std::cout;
 using std::endl;
@@ -14,10 +15,7 @@ Sound::Sound(GameObject& associated, string file) : Component(associated) {
 }
 
 Sound::~Sound() {
-    if(chunk == nullptr) return;
-
     Stop();
-    Mix_FreeChunk(chunk);
 }
 
 void Sound::Play(int times) {
@@ -34,12 +32,7 @@ void Sound::Stop() {
 }
 
 void Sound::Open(string file) {
-    Mix_Chunk* nchunk = Mix_LoadWAV(file.c_str());
-    if(nchunk == nullptr) {
-        cout << "Failed to open sound file (" << file << "): " << Mix_GetError() << endl;
-        return;
-    }
-    chunk = nchunk;
+    chunk = Resources::GetInstance().GetSound(file);
 }
 
 bool Sound::IsOpen() {

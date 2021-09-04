@@ -3,6 +3,7 @@
 #define INCLUDE_SDL_IMAGE
 #include "engine/SDL_include.h"
 #include "engine/Game.h"
+#include "engine/Resources.h"
 #include "engine/GameObject.h"
 #include <iostream>
 #include <cmath>
@@ -21,23 +22,10 @@ Sprite::Sprite(GameObject& associated, string file) : Component(associated) {
     this->Open(file);
 }
 
-Sprite::~Sprite() {
-    if(this->texture != nullptr) {
-        SDL_DestroyTexture(this->texture);
-    }
-}
+Sprite::~Sprite() {}
 
 void Sprite::Open(string file) {
-    if(this->texture != nullptr) {
-        SDL_DestroyTexture(this->texture);
-        this->texture = nullptr;
-    }
-
-    this->texture = IMG_LoadTexture(Game::GetInstance().GetRenderer(), file.c_str());
-    if(this->texture == nullptr) {
-        cout << "Failed to load texture: " << IMG_GetError() << endl;
-        return;
-    }
+    this->texture = Resources::GetInstance().GetImage(file); 
 
     int _error = SDL_QueryTexture(this->texture, nullptr, nullptr, &this->width, &this->height);
     if(_error) {
