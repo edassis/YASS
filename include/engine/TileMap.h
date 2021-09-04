@@ -9,7 +9,9 @@ class TileSet;
 
 class TileMap : public Component {
     private:
+        // Tiles content
         std::vector<int> tileMatrix;
+        // Tiles spritesheet
         std::unique_ptr<TileSet> tileSet;
         // Tiles per line
         int mapWidth;

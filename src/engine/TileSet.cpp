@@ -1,10 +1,7 @@
 #include "engine/TileSet.h"
 #include "engine/GameObject.h"
 
-TileSet::TileSet(int tileWidth, int tileHeight, std::string file) /* : go(new GameObject()), sprite(new Sprite(*go)) */ {
-    GameObject* go = new GameObject(); // ? Leak!
-    sprite = std::unique_ptr<Sprite>(new Sprite(*go, file));
-
+TileSet::TileSet(int tileWidth, int tileHeight, std::string file) : go(new GameObject()), sprite(new Sprite(*go, file)) {
     this->tileWitdth = tileWidth;
     this->tileHeight = tileHeight;
 

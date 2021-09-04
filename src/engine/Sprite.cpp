@@ -29,7 +29,7 @@ void Sprite::Open(string file) {
 
     int _error = SDL_QueryTexture(this->texture, nullptr, nullptr, &this->width, &this->height);
     if(_error) {
-        cout << "Failed to query texture: " << SDL_GetError() << endl;
+        cout << "Error! Sprite::Open() failed to query texture: " << SDL_GetError() << endl;
         return;
     }
     this->SetClip(0, 0, this->width, this->height);
