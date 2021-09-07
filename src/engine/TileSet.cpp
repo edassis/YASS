@@ -14,7 +14,7 @@ TileSet::~TileSet() {}
 void TileSet::RenderTile(unsigned index, float x, float y) {
     bool isIndexValid = /* index >= 0 && */ index < unsigned(rows*columns);
     if(!isIndexValid) {
-        std::cout << "Error! Call of RenderTile() on invalid index (" << index << ")." << std::endl; 
+        std::cout << "Error! Call of TileSet::RenderTile() on invalid index (" << index << ")." << std::endl; 
         // std::cout << rows << ' ' << columns << std::endl;
         return;
     }

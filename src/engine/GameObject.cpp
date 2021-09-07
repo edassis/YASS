@@ -28,7 +28,7 @@ void GameObject::RequestDelete() {
 }
 
 void GameObject::AddComponent(shared_ptr<Component> cpt) {
-    components.emplace_back(cpt);
+    components.push_back(std::move(cpt));
 }
 
 void GameObject::RemoveComponent(Component& cpt) {
