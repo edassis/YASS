@@ -51,8 +51,8 @@ void TileMap::Load(std::string file) {
     }
     
     // ? Needed:
-    associated.box.w = mapWidth * tileSet->GetTileWidth();
-    associated.box.h = mapHeight * tileSet->GetTileHeight();
+    associated.box.w = float(mapWidth * tileSet->GetTileWidth());
+    associated.box.h = float(mapHeight * tileSet->GetTileHeight());
 }
 
 // https://herbsutter.com/2013/06/05/gotw-91-solution-smart-pointer-parameters/

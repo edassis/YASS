@@ -1,12 +1,11 @@
 {
     "configurations": [
         {
-            "name": "MINGW64",
+            "name": "TDM-GCC-32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/include",
-                "C:/msys64/mingw64/**",
-                "C:/msys64/mingw64/include"
+                "C:/dev/TDM-GCC-32/include/**",
+                "C:/dev/SDL2-mingw64/i686-w64-mingw32/include/"
             ],
             "defines": [
                 "_DEBUG",
@@ -14,10 +13,10 @@
                 "_UNICODE"
             ],
             "windowsSdkVersion": "10.0.16299.0",
-            "compilerPath": "C:/dev/mingw64/bin/gcc.exe",
+            "compilerPath": "C:/dev/TDM-GCC-32/bin/gcc.exe",
             "cStandard": "c11",
-            "intelliSenseMode": "${default}",
-            "cppStandard": "c++11"
+            "cppStandard": "c++11",
+            "intelliSenseMode": "${default}"
         }
     ],
     "version": 4
