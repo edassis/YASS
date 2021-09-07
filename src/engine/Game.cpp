@@ -3,6 +3,7 @@
 #define INCLUDE_SDL_MIXER
 #include "engine/SDL_include.h"
 #include "engine/Game.h"
+#include "engine/InputManager.h"
 
 using std::cout;
 using std::endl;
@@ -71,6 +72,7 @@ Game::~Game() {
 // Game main loop
 void Game::Run() {
     while(!GetState().QuitRequested()) {
+        InputManager::GetInstance().Update();
         GetState().Update();
         GetState().Render();
         SDL_RenderPresent(renderer);

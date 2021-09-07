@@ -20,14 +20,14 @@ class InputManager {
 		// * State => Last performed action, Update => Time of the last action.
 		// * Layout: Left, Middle, Right, X1, X2
 		bool mousePressed[6];
-		int mouseUpdate[6];
+		uint32_t mouseUpdate[6];
 		
 		std::unordered_map<int, bool> keyPressed;
-		std::unordered_map<int, int> keyUpdate;
+		std::unordered_map<int, uint32_t> keyUpdate;
 
 		bool quitRequested;
 
-		int updateCounter;
+		uint32_t updateCounter;
 
 		int mouseX, mouseY;
 

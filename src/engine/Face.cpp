@@ -1,6 +1,7 @@
 #include "engine/Face.h"
 #include "engine/GameObject.h"
 #include "engine/Sound.h"
+#include "engine/InputManager.h"
 #include <iostream>
 
 using namespace std;
@@ -22,7 +23,15 @@ void Face::Damage(int damage) {
     }
 }
 
-void Face::Update(float dt) {}
+void Face::Update(float dt) {
+    int mouseX = InputManager::GetInstance().GetMouseX();
+    int mouseY = InputManager::GetInstance().GetMouseY();
+
+    auto isClick = InputManager::GetInstance().KeyPress(KEYS::LEFT_MOUSE_BUTTON);
+    if (isClick && associated.box.Contains({ float(mouseX), float(mouseY) })) {
+        Damage(std::rand() % 10 + 10);
+    }
+}
 
 void Face::Render() {}
 

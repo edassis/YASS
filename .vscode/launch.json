@@ -35,7 +35,7 @@
             "environment": [],
             "externalConsole": true,
             "MIMode": "gdb",
-            "miDebuggerPath": "C:/dev/mingw64/bin/gdb.exe",
+            "miDebuggerPath": "C:/dev/TDM-GCC-32/bin/gdb32.exe",
             "setupCommands": [
                 {
                     "description": "Habilitar a reformatação automática para gdb",

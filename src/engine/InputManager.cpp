@@ -2,6 +2,7 @@
 #include "engine/SDL_include.h"
 #include "engine/InputManager.h"
 #include <iostream>
+#include <cstring>
 
 InputManager::InputManager() {
 	memset(mousePressed, 0, sizeof(mousePressed));
@@ -21,7 +22,7 @@ void InputManager::Update() {
 
 	quitRequested = false;
 
-	updateCounter++; // ! Overflow! 
+	updateCounter = (updateCounter+1) % UINT32_MAX;
 
 	SDL_Event event;
 	while (SDL_PollEvent(&event)) {
