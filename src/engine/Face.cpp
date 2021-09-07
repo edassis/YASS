@@ -4,8 +4,6 @@
 #include "engine/InputManager.h"
 #include <iostream>
 
-using namespace std;
-
 Face::Face(GameObject& associated) : Component(associated) {
     hitpoints = 30;
 }
@@ -35,4 +33,4 @@ void Face::Update(float dt) {
 
 void Face::Render() {}
 
-bool Face::Is(string type) { return "Face" == type; }
+bool Face::Is(std::string type) { return "Face" == type; }

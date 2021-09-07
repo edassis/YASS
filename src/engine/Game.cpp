@@ -5,7 +5,7 @@
 #include "engine/Game.h"
 #include "engine/InputManager.h"
 
-Game::Game(string title, int width, int height) {
+Game::Game(std::string title, int width, int height) {
     int _error = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER);
     if(_error) {
         // Encerrar programa com mensagem de erro

@@ -7,7 +7,7 @@
 
 TileMap::TileMap(GameObject& associated, std::string file, TileSet* tileSet) : Component(associated), tileSet(tileSet) {
     if(tileSet == nullptr) { // ? What should happen?
-        std::cout << "Warning in TileMap(): tileSet variable is nullptr" << std::endl;
+        std::cout << "Warning! TileMap::TileMap(): tileSet variable is nullptr" << std::endl;
     }
 
     mapWidth = mapHeight = mapDepth = 0;

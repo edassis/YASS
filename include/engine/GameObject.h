@@ -6,21 +6,14 @@
 #include <vector>
 #include <memory>
 
-using std::vector;
-using std::string;
-using std::unique_ptr;
-using std::shared_ptr;
-
-using mat::Rect;
-
 class Component;
 
 class GameObject {
     private:
-        vector<shared_ptr<Component>> components;
+        std::vector<std::shared_ptr<Component>> components;
         bool isDead;
     public:
-        Rect box;
+        mat::Rect box;
 
         GameObject();
         ~GameObject();
@@ -29,9 +22,9 @@ class GameObject {
         void Render();
         bool IsDead();
         void RequestDelete();
-        void AddComponent(shared_ptr<Component> cpt);
+        void AddComponent(std::shared_ptr<Component> cpt);
         void RemoveComponent(Component& cpt);
-        shared_ptr<Component> GetComponent(string type);
+        std::shared_ptr<Component> GetComponent(std::string type);
 };
 
 #endif

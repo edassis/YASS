@@ -1,7 +1,6 @@
 #include "engine/Mat.h"
 #include <cmath>
 
-using namespace std;
 using namespace mat;
 
 // ---Rect
@@ -73,7 +72,7 @@ float Vec2::Angle() {
     float dot = Dot(this->Normalized(), Vec2(1, 0)); 
     float det = Det(this->Normalized(), Vec2(1, 0)); 
 
-    return atan2(det, dot); 
+    return (float)atan2(det, dot); 
 }
 
 float Vec2::AngleToPoint(const Vec2& v) {
@@ -91,11 +90,11 @@ float Vec2::Dot(const Vec2& v) {
 }
 
 bool Vec2::IsNormalized() {
-    return (abs(x) <= 1.001 && abs(y) <= 1.001);    // ? How to properly handle fp imprecision? 
+    return (std::abs(x) <= 1.001 && std::abs(y) <= 1.001);    // ? How to properly handle fp imprecision? 
 }
 
 float Vec2::Length() {
-    return sqrt(x*x + y*y);
+    return (float)sqrt(x*x + y*y);
 }
 
 Vec2 Vec2::Normalized() {
@@ -103,8 +102,8 @@ Vec2 Vec2::Normalized() {
 }
 
 Vec2 Vec2::Rotated(const float rad) {
-    float x1 = x*cos(rad) - y*sin(rad);
-    float y1 = y*cos(rad) + x*sin(rad);
+    float x1 = float(x*cos(rad) - y*sin(rad));
+    float y1 = float(y*cos(rad) + x*sin(rad));
     return Vec2(x1, y1);
 }
 

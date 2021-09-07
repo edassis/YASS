@@ -6,14 +6,11 @@
 #include <vector>
 #include <memory>
 
-using std::vector;
-using std::unique_ptr;
-
 class State {
     private:
-        unique_ptr<Sprite> bg;
+        std::unique_ptr<Sprite> bg;
         Music music;
-        vector<unique_ptr<GameObject>> objectArray;
+        std::vector<std::unique_ptr<GameObject>> objectArray;
         bool quitRequested;
     public:
         State();

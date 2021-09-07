@@ -5,19 +5,17 @@
 #include "engine/SDL_include.h"
 #include <iostream>
 
-using std::string;
-
 class Music {
     private:
         Mix_Music* music;
     public:
         Music();
-        Music(string file);
+        Music(std::string file);
         ~Music();
 
         void Play(int times = -1);
         void Stop(int msToStop = 1500);
-        void Open(string file);
+        void Open(std::string file);
         bool IsOpen();
 };
 

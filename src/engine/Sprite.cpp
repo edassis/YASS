@@ -8,28 +8,25 @@
 #include <iostream>
 #include <cmath>
 
-using std::cout;
-using std::endl;
-
 Sprite::Sprite(GameObject& associated) : Component(associated) {
     this->texture = nullptr;
     this->width = 0;
     this->height = 0;
 }   
 
-Sprite::Sprite(GameObject& associated, string file) : Component(associated) {
+Sprite::Sprite(GameObject& associated, std::string file) : Component(associated) {
     this->texture = nullptr;
     this->Open(file);
 }
 
 Sprite::~Sprite() {}
 
-void Sprite::Open(string file) {
+void Sprite::Open(std::string file) {
     this->texture = Resources::GetInstance().GetImage(file); 
 
     int _error = SDL_QueryTexture(this->texture, nullptr, nullptr, &this->width, &this->height);
     if(_error) {
-        cout << "Error! Sprite::Open() failed to query texture: " << SDL_GetError() << endl;
+        std::cout << "Error! Sprite::Open() failed to query texture: " << SDL_GetError() << std::endl;
         return;
     }
     this->SetClip(0, 0, this->width, this->height);
@@ -60,7 +57,7 @@ void Sprite::Render(float x, float y, float w, float h) {   // * Specific of Spr
 
     int _error = SDL_RenderCopy(Game::GetInstance().GetRenderer(), this->texture, &this->clipRect, &dstRect);
     if(_error) {
-        cout << "Failed to render: " << SDL_GetError() << endl;
+        std::cout << "Error! Sprite::Render() failed to render: " << SDL_GetError() << std::endl;
     }
 }
 
@@ -78,4 +75,4 @@ bool Sprite::IsOpen() {
 
 void Sprite::Update(float dt) {}
 
-bool Sprite::Is(string type) { return "Sprite" == type; }
+bool Sprite::Is(std::string type) { return "Sprite" == type; }

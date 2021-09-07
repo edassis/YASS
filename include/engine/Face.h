@@ -14,7 +14,7 @@ class Face : public Component {
         /* Component */
         void Update(float dt) override;
         void Render() override;
-        bool Is(string type) override;
+        bool Is(std::string type) override;
 };
 
 #endif

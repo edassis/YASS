@@ -6,8 +6,6 @@
 #include "engine/Component.h"
 #include <iostream>
 
-using std::string;
-
 class Sprite : public Component {
     private:
         int width;
@@ -16,10 +14,10 @@ class Sprite : public Component {
         SDL_Rect clipRect;
     public:
         Sprite(GameObject& associated);
-        Sprite(GameObject& associated, string file);
+        Sprite(GameObject& associated, std::string file);
         ~Sprite();
 
-        void Open(string file);
+        void Open(std::string file);
         void SetClip(int x, int y, int w, int h);
         int GetWidth();
         int GetHeight();
@@ -30,7 +28,7 @@ class Sprite : public Component {
         /* Component */
         void Update(float dt) override;
         void Render() override;
-        bool Is(string type) override;
+        bool Is(std::string type) override;
 };
 
 #endif

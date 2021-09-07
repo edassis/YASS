@@ -9,11 +9,8 @@
 #define NUM_CHANNELS 32
 #define FRAME_DURATION 33   // ms
 
-using std::string;
-using std::unique_ptr;
-
-class SDL_Window;
-class SDL_Renderer;
+struct SDL_Window;
+struct SDL_Renderer;
 
 class Game {
     private:
@@ -24,7 +21,7 @@ class Game {
         uint32_t frameStart;    // Last frame in ms.
         float dt;             // Delta in s.
         
-        Game(string title = "Eduardo Ferreira de Assis - 17/0102289", int width = 1024, int height = 600);
+        Game(std::string title = "Eduardo Ferreira de Assis - 17/0102289", int width = 1024, int height = 600);
         
         void CalculateDeltaTime();
         

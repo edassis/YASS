@@ -7,9 +7,6 @@
 #include "engine/TileMap.h"
 #include "engine/TileSet.h"
 
-using std::cout;
-using std::endl;
-
 #define VNAME(x) #x
 #define VDUMP(x) std::cout << #x << " " << x << std::endl
 

@@ -27,7 +27,7 @@ void GameObject::RequestDelete() {
     isDead = true;
 }
 
-void GameObject::AddComponent(shared_ptr<Component> cpt) {
+void GameObject::AddComponent(std::shared_ptr<Component> cpt) {
     components.push_back(std::move(cpt));
 }
 
@@ -44,12 +44,12 @@ void GameObject::RemoveComponent(Component& cpt) {
     }
 }
 
-shared_ptr<Component> GameObject::GetComponent(string type) {
+std::shared_ptr<Component> GameObject::GetComponent(std::string type) {
     for(auto& cpt : components) {
         if(cpt->Is(type)) {
             return cpt;
         }
     }
 
-    return shared_ptr<Component>{};
+    return std::shared_ptr<Component>{};
 }

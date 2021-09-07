@@ -11,11 +11,6 @@
 #include "engine/InputManager.h"
 #include <iostream>
 
-using std::cout;
-using std::endl;
-
-using namespace mat;
-
 State::State() : music() {
     this->quitRequested = false;
 
@@ -27,7 +22,7 @@ State::State() : music() {
 
 	objectArray.emplace_back(go);
 	
-	this->bg = unique_ptr<Sprite>(new Sprite(*go));
+	this->bg = std::unique_ptr<Sprite>(new Sprite(*go));
 }
 
 State::~State() {} 

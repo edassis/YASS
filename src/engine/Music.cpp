@@ -5,14 +5,11 @@
 #include "engine/Resources.h"
 #include <iostream>
 
-using std::cout;
-using std::endl;
-
 Music::Music() {
     music = nullptr;
 }
 
-Music::Music(string file) {
+Music::Music(std::string file) {
     this->Open(file);
     this->Play();
 }
@@ -22,18 +19,18 @@ Music::~Music() {}
 void Music::Play(int times) {
     int _error = Mix_PlayMusic(this->music, times);
     if(_error) {
-        cout << "Failed to play music:" << Mix_GetError() << endl;
+        std::cout << "Error! Music::Play() failed to play a music:" << Mix_GetError() << std::endl;
     }
 }
 
 void Music::Stop(int msToStop) {
     int _success = Mix_FadeOutMusic(msToStop);
     if(!_success) {
-        cout << "Failed to stop music:" << Mix_GetError() << endl;
+        std::cout << "Error! Music::Stop() failed to stop the music:" << Mix_GetError() << std::endl;
     }
 }
 
-void Music::Open(string file) {
+void Music::Open(std::string file) {
     this->music = Resources::GetInstance().GetMusic(file);
 }
 
