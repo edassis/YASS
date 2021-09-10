@@ -16,7 +16,7 @@ file(GLOB src_files "${src_dir}/application/*.cpp" "${src_dir}/engine/*.cpp")
 include_directories("include/")
 include_directories("C:/dev/SDL2-mingw64/i686-w64-mingw32/include")
 
-# SDL2
+# SDL2 https://github.com/aminosbh/sdl2-cmake-modules
 ## Appends custom cmake modules
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/sdl2)
 
