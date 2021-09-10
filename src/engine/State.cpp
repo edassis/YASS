@@ -33,7 +33,7 @@ bool State::QuitRequested() {
 
 void State::LoadAssets() {
     // Pré-carrega os assets.
-    // this->bg->Open("assets/img/ocean.jpg");
+    this->bg->Open("assets/img/ocean.jpg");
 
     this->music.Open("assets/audio/stageState.ogg");
     if(this->music.IsOpen()) {
