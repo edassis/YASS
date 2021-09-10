@@ -91,4 +91,5 @@
         // "MSVSCODE": "1",
         "CHERE_INVOKING": "1",
     },
+    "cmake.configureOnOpen": false,
 }

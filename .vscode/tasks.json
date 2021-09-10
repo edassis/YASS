@@ -7,21 +7,14 @@
             "isBackground": false,
             "command": "make",
             "args": [],
+            "options": {
+                "cwd": "${workspaceFolder}/build",
+            },
             "problemMatcher": [],
             "group": {
                 "kind": "build",
                 "isDefault": true
             }
         },
-        {
-            "label": "Build && Exec",
-            "type": "shell",
-            "isBackground": false,
-            "command": "make",
-            "args": [
-                "exec"
-            ],
-            "problemMatcher": []
-        }
     ]
 }
