@@ -15,8 +15,8 @@ file(GLOB src_files "${src_dir}/application/*.cpp" "${src_dir}/engine/*.cpp")
 # message(src_files="${src_files}")
 
 if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang|GNU" )
-    # target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wunreachable-code -pedantic -Wfloat-equal -ggdb -Og -DDEBUG)
-    set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra -Wunreachable-code -pedantic -Wfloat-equal -ggdb -Og -DDEBUG -mconsole")
+# target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wunreachable-code -pedantic -Wfloat-equal -ggdb -Og -DDEBUG)
+    set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra -Wunreachable-code -pedantic -Wfloat-equal -ggdb -Og -DDEBUG")
 endif()
 # if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang" )
 #     target_compile_options( vector-test PRIVATE -Wweak-vtables -Wexit-time-destructors -Wglobal-constructors -Wmissing-noreturn )
@@ -24,6 +24,10 @@ endif()
 # if ( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
 #     target_compile_options( vector-test PRIVATE /W3 /w44265 /w44061 /w44062 )
 # endif()
+
+if (MINGW) 
+    list(APPEND CMAKE_CXX_FLAGS_DEBUG "-mconsole")
+endif()
 
 # includes
 include_directories("include/")
