@@ -1,7 +1,5 @@
 @echo off
 
-cmake -G "Unix Makefiles" -B build -DCMAKE_BUILD_TYPE=Debug
+cmake -G "Unix Makefiles" -B build -DCMAKE_BUILD_TYPE=Debug -Wno-dev
 
-cd build
-
-make
+make -C build

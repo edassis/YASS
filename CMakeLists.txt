@@ -6,6 +6,8 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_CXX_EXTENSIONS False)
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}")   # binary destination
+
 set(src_dir "${PROJECT_SOURCE_DIR}/src")
 file(GLOB src_files "${src_dir}/application/*.cpp" "${src_dir}/engine/*.cpp")
 
@@ -41,4 +43,4 @@ find_package(SDL2_mixer REQUIRED)
 # Executable
 add_executable(${PROJECT_NAME} ${src_files})
 
-target_link_libraries(${PROJECT_NAME} PUBLIC Mingw32 SDL2::Main SDL2::TTF SDL2::Image SDL2::Mixer)
+target_link_libraries(${PROJECT_NAME} PUBLIC SDL2::Main SDL2::TTF SDL2::Image SDL2::Mixer)
