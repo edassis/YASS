@@ -5,6 +5,7 @@ dep/
 *.exe
 *.out
 JOGO
+SDL_engine
 
 test_cmake/
 
