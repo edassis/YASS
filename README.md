@@ -5,7 +5,7 @@ Provides some abstraction over SDL2 API through classes and patterns that are co
 Use `--recurse-submodules` when cloning the repository to initialize and update the submodules automatacally:
 
 ```bash
-$ git clone --recurse-submodules https://github.com/edassis/SDL_engine
+git clone --recurse-submodules https://github.com/edassis/SDL_engine
 ```
 
 > This project is part of the TAC discipline offered by UnB.
@@ -14,12 +14,12 @@ $ git clone --recurse-submodules https://github.com/edassis/SDL_engine
 
 - Creates GNU Makefile for the project:
 ```bash
-$ cmake -G "Unix Makefiles" -B build -DCMAKE_BUILD_TYPE=Debug -Wno-dev
+cmake -G "Unix Makefiles" -B build -DCMAKE_BUILD_TYPE=Debug -Wno-dev
 ```
 
 - Generates the executable:
 ```bash
-$ make -C build
+make -C build
 ```
 
 ## Dependencies
