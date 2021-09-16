@@ -26,7 +26,7 @@ endif()
 # endif()
 
 if (MINGW) 
-    list(APPEND CMAKE_CXX_FLAGS_DEBUG "-mconsole")
+    list(APPEND CMAKE_CXX_FLAGS_DEBUG " -mconsole")
 endif()
 
 # includes
