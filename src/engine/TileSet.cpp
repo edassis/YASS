@@ -20,7 +20,7 @@ void TileSet::RenderTile(unsigned index, float x, float y) {
     }
 
     int line = index / columns;
-    int col = index - (line*columns);
+    int col = index % columns;
     int srcX = col * tileWitdth;
     int srcY = line *  tileHeight;
 
