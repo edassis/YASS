@@ -43,7 +43,12 @@ void Sprite::SetClip(int x, int y, int w, int h) {  // origin
 }
 
 void Sprite::Render() {
-    Render(associated.box.x, associated.box.y, associated.box.w, associated.box.h);
+    const auto& cameraPos = Game::GetState().GetCamera().pos;
+
+    float renderX = associated.box.x - cameraPos.x;
+    float renderY = associated.box.y - cameraPos.y;
+
+    Render(renderX, renderY, associated.box.w, associated.box.h);
 }
 
 void Sprite::Render(float x, float y, float w, float h) {   // * Specific of Sprite class

@@ -56,7 +56,19 @@ Vec2& Vec2::operator+(const Vec2& v) {
     return *this;
 }
 
+Vec2& Vec2::operator+=(const Vec2& v) {
+    this->x += v.x;
+    this->y += v.y;
+    return *this;
+}
+
 Vec2& Vec2::operator-(const Vec2& v) {
+    this->x -= v.x;
+    this->y -= v.y;
+    return *this;
+}
+
+Vec2& Vec2::operator-=(const Vec2& v) {
     this->x -= v.x;
     this->y -= v.y;
     return *this;

@@ -62,9 +62,12 @@ void InputManager::Update() {
 bool InputManager::KeyPress(KEYS key) {
 	auto isKey = keyPressed.find(int(key)) != keyPressed.end();
 
-	if ( (isKey && keyPressed.at(int(key)) && keyUpdate.at(int(key)) == updateCounter) ||
-			(mousePressed[int(key)] && mouseUpdate[int(key)] == updateCounter) )  {
-		return true;
+	switch(key) {
+		case KEYS::LEFT_MOUSE_BUTTON:
+			if (mousePressed[int(key)] && mouseUpdate[int(key)] == updateCounter) return true;
+			break;
+		default: // Keyboard input
+			if (isKey && keyPressed.at(int(key)) && keyUpdate.at(int(key)) == updateCounter) return true;
 	}
 
 	return false;
@@ -73,9 +76,12 @@ bool InputManager::KeyPress(KEYS key) {
 bool InputManager::KeyRelease(KEYS key) {
 	auto isKey = keyPressed.find(int(key)) != keyPressed.end();
 
-	if ( (isKey && !keyPressed.at(int(key)) && keyUpdate.at(int(key))) == updateCounter ||
-			(!mousePressed[int(key)] && mouseUpdate[int(key)] == updateCounter) ) {
-		return true;
+	switch(key) {
+		case KEYS::LEFT_MOUSE_BUTTON:
+			if (!mousePressed[int(key)] && mouseUpdate[int(key)] == updateCounter) return true;
+			break;
+		default: // Keyboard input
+			if (isKey && !keyPressed.at(int(key)) && keyUpdate.at(int(key)) == updateCounter) return true;
 	}
 
 	return false;
@@ -84,10 +90,14 @@ bool InputManager::KeyRelease(KEYS key) {
 bool InputManager::IsKeyDown(KEYS key) {
 	auto isKey = keyPressed.find(int(key)) != keyPressed.end();
 
-	if ( (isKey && keyPressed.at(int(key))) || mousePressed[int(key)] ) {
-		return true;
+	switch(key) {
+		case KEYS::LEFT_MOUSE_BUTTON:
+			if (mousePressed[int(key)]) return true;
+			break;
+		default: // Keyboard input
+			if (isKey && keyPressed.at(int(key))) return true;
 	}
-	
+
 	return false;
 }
 

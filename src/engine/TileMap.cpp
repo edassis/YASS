@@ -1,4 +1,5 @@
 #include "engine/TileMap.h"
+#include "engine/Game.h"
 #include "engine/TileSet.h"
 #include "engine/GameObject.h"
 #include <iostream>
@@ -88,8 +89,10 @@ void TileMap::RenderLayer(int layer, int cameraX, int cameraY) {
 }
 
 void TileMap::Render() {
+    const auto& cameraPos = Game::GetState().GetCamera().pos;
+    
     for(int layer = 0; layer < mapDepth; layer++) {
-        RenderLayer(layer, int(associated.box.x), int(associated.box.y));
+        RenderLayer(layer, int(cameraPos.x), int(cameraPos.y));
     }
 }
 

@@ -3,6 +3,7 @@
 #define INCLUDE_SDL
 #include "engine/SDL_include.h"
 #include "engine/Mat.h"
+#include "engine/Game.h"
 #include "engine/GameObject.h"
 #include "engine/Face.h"
 #include "engine/Sound.h"
@@ -11,7 +12,7 @@
 #include "engine/InputManager.h"
 #include <iostream>
 
-State::State() : music() {
+State::State() : music(), currentCamera(new Camera()) {
     this->quitRequested = false;
 
     GameObject* go = new GameObject();
@@ -20,9 +21,9 @@ State::State() : music() {
 
 	go->AddComponent(std::make_shared<TileMap>(*go, "assets/map/tileMap.txt", ts));
 
-	objectArray.emplace_back(go);
-	
 	this->bg = std::unique_ptr<Sprite>(new Sprite(*go));
+
+	objectArray.emplace_back(go);
 }
 
 State::~State() {} 
@@ -63,6 +64,8 @@ void State::Update(float dt) {
             i++;
         }
     }
+    
+    currentCamera->Update(dt);
 }
 
 
@@ -81,12 +84,25 @@ void State::AddObject(int mouseX, int mouseY) {
 	Sound* s = new Sound(*go, "assets/audio/boom.wav");
 	Face* fc = new Face(*go);
 
+    // * Consider camera movimentation
+    const auto& cameraPos = Game::GetState().GetCamera().pos;
+
+    mat::Vec2 pos((float)mouseX, (float)mouseY); 
+    pos += cameraPos;
+
 	// * Centralize image on the cursor
-	go->box.x = float(mouseX - spt->GetWidth()/2);
-    go->box.y = float(mouseY - spt->GetHeight()/2);
+    pos.x -= float(spt->GetWidth()/2);
+    pos.y -= float(spt->GetHeight()/2);
+
+	go->box.x = pos.x;
+    go->box.y = pos.y;
 
 	go->AddComponent(std::shared_ptr<Component>(spt));
 	go->AddComponent(std::shared_ptr<Component>(fc));
 	go->AddComponent(std::shared_ptr<Component>(s));
     objectArray.emplace_back(go);
+}
+
+Camera& State::GetCamera() {
+    return *currentCamera;
 }

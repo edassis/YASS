@@ -28,7 +28,7 @@
             "name": "Depurar SDL",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/SDL_engine.exe",
+            "program": "${workspaceFolder}/SDL_engine.exe",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

@@ -8,6 +8,8 @@
 
 #define NUM_CHANNELS 32
 #define FRAME_DURATION 33   // ms
+#define SCREEN_WIDTH 1024
+#define SCREEN_HEIGHT 600
 
 struct SDL_Window;
 struct SDL_Renderer;
@@ -21,7 +23,7 @@ class Game {
         uint32_t frameStart;    // Last frame in ms.
         float dt;             // Delta in s.
         
-        Game(std::string title = "Eduardo Ferreira de Assis - 17/0102289", int width = 1024, int height = 600);
+        Game(std::string title = "Eduardo Ferreira de Assis - 17/0102289", int width = SCREEN_WIDTH, int height = SCREEN_HEIGHT);
         
         void CalculateDeltaTime();
         

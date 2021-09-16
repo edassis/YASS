@@ -1,4 +1,5 @@
 #include "engine/Face.h"
+#include "engine/Game.h"
 #include "engine/GameObject.h"
 #include "engine/Sound.h"
 #include "engine/InputManager.h"
@@ -22,11 +23,15 @@ void Face::Damage(int damage) {
 }
 
 void Face::Update(float dt) {
-    int mouseX = InputManager::GetInstance().GetMouseX();
-    int mouseY = InputManager::GetInstance().GetMouseY();
+    const auto& cameraPos = Game::GetState().GetCamera().pos;
+    float mouseX = (float) InputManager::GetInstance().GetMouseX();
+    float mouseY = (float) InputManager::GetInstance().GetMouseY();
+
+    float posX = mouseX + cameraPos.x;
+    float posY = mouseY + cameraPos.y;
 
     auto isClick = InputManager::GetInstance().KeyPress(KEYS::LEFT_MOUSE_BUTTON);
-    if (isClick && associated.box.Contains({ float(mouseX), float(mouseY) })) {
+    if (isClick && associated.box.Contains( {posX, posY} )) {
         Damage(std::rand() % 10 + 10);
     }
 }
