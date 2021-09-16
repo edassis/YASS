@@ -2,4 +2,4 @@
 
 cmake -G "Unix Makefiles" -B build -DCMAKE_BUILD_TYPE=Debug -Wno-dev
 
-make -C build -j5
+make -C build -j13
