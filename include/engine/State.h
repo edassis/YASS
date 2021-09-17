@@ -9,7 +9,7 @@
 
 class State {
     private:
-        std::unique_ptr<Sprite> bg;
+        std::shared_ptr<Sprite> bg;
         Music music;
         std::shared_ptr<Camera> currentCamera;
         std::vector<std::unique_ptr<GameObject>> objectArray;

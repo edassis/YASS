@@ -10,20 +10,25 @@
 #include "engine/TileMap.h"
 #include "engine/TileSet.h"
 #include "engine/InputManager.h"
+#include "engine/CameraFollower.h"
 #include <iostream>
 
 State::State() : music(), currentCamera(new Camera()) {
     this->quitRequested = false;
 
-    GameObject* go = new GameObject();
+    GameObject* goBG = new GameObject();
+    std::shared_ptr<Sprite> spriteBG(new Sprite(*goBG));
+    goBG->AddComponent(std::make_shared<CameraFollower>(*goBG));    // * CameraFollower must update "go" position before Sprite's Render().
+    goBG->AddComponent(spriteBG);
+	this->bg = spriteBG;
 
+	objectArray.emplace_back(goBG);
+
+    GameObject* goTileMap = new GameObject();
 	TileSet* ts = new TileSet(64, 64, "assets/img/tileset.png");
-
-	go->AddComponent(std::make_shared<TileMap>(*go, "assets/map/tileMap.txt", ts));
-
-	this->bg = std::unique_ptr<Sprite>(new Sprite(*go));
-
-	objectArray.emplace_back(go);
+	goTileMap->AddComponent(std::make_shared<TileMap>(*goTileMap, "assets/map/tileMap.txt", ts));
+ 
+    objectArray.emplace_back(goTileMap);
 }
 
 State::~State() {} 
