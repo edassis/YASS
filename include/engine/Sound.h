@@ -19,6 +19,7 @@ class Sound : public Component {
         void Stop();
         void Open(std::string file);
         bool IsOpen();
+        bool IsPlaying();
 
         /* Component */
         void Update(float dt) override;

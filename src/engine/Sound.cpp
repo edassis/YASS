@@ -36,6 +36,12 @@ bool Sound::IsOpen() {
     return chunk != nullptr;
 }
 
+bool Sound::IsPlaying() {
+    if (channel < 0) return false;
+    
+    return bool(Mix_Playing(channel));
+}
+
 void Sound::Update(float dt) {}
 
 void Sound::Render() {}

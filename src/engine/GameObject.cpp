@@ -8,13 +8,15 @@ GameObject::GameObject() {
 GameObject::~GameObject() {} 
 
 void GameObject::Update(float dt) {
-    for(auto& cpt : components) {
+    for(auto it = components.begin(); it != components.end(); it++) {
+        auto cpt = *it;
         cpt->Update(dt);
     }
 }
 
 void GameObject::Render() {
-    for(auto& cpt : components) {
+    for(auto it = components.begin(); it != components.end(); it++) {
+        auto cpt = *it;
         cpt->Render();
     }
 }

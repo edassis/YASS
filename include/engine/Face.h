@@ -6,6 +6,7 @@
 class Face : public Component {
     private:
         int hitpoints;
+        bool dead;
     public:
         Face(GameObject& associated);
         

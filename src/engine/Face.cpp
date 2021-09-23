@@ -7,18 +7,25 @@
 
 Face::Face(GameObject& associated) : Component(associated) {
     hitpoints = 30;
+    dead = false;
 }
 
 void Face::Damage(int damage) {
-    hitpoints -= damage;
+    if (dead) return;
 
-    if(hitpoints <= 0) {
-        associated.RequestDelete();
-    }
+    hitpoints -= damage <= hitpoints ? damage : hitpoints;
 
-    Sound* cpt = (Sound *) associated.GetComponent("Sound").get();
-    if(cpt != nullptr) {
-        cpt->Play();
+    if(hitpoints == 0) {
+        dead = true;
+
+        auto* pt_sprite = dynamic_cast<Sprite*>(associated.GetComponent("Sprite").get());
+        associated.RemoveComponent(*pt_sprite);
+
+        auto* pt_cpt = dynamic_cast<Sound*>(associated.GetComponent("Sound").get());
+        // Sound* cpt = (Sound *) associated.GetComponent("Sound").get();
+        if(pt_cpt != nullptr) {
+            pt_cpt->Play();
+        }
     }
 }
 
@@ -33,6 +40,13 @@ void Face::Update(float dt) {
     auto isClick = InputManager::GetInstance().KeyPress(KEYS::LEFT_MOUSE_BUTTON);
     if (isClick && associated.box.Contains( {posX, posY} )) {
         Damage(std::rand() % 10 + 10);
+    }
+
+    if (dead) { // * Assures that Sound::Play() was called.
+        auto* sound = dynamic_cast<Sound*>(associated.GetComponent("Sound").get());
+        if(sound && !sound->IsPlaying()) {
+            associated.RequestDelete();
+        }
     }
 }
 
