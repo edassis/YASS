@@ -48,7 +48,7 @@ void Sprite::Render() {
     float renderX = associated.box.x - cameraPos.x;
     float renderY = associated.box.y - cameraPos.y;
 
-    Render(renderX, renderY, associated.box.w, associated.box.h);
+    Render(renderX, renderY, clipRect.w, clipRect.h);
 }
 
 void Sprite::Render(float x, float y, float w, float h) {   // * Specific of Sprite class
@@ -60,7 +60,7 @@ void Sprite::Render(float x, float y, float w, float h) {   // * Specific of Spr
     dstRect.w = (int)round(w);
     dstRect.h = (int)round(h);
 
-    int _error = SDL_RenderCopy(Game::GetInstance().GetRenderer(), this->texture, &this->clipRect, &dstRect);
+    int _error = SDL_RenderCopy(Game::GetInstance().GetRenderer(), texture, &clipRect, &dstRect);
     if(_error) {
         std::cout << "Error! Sprite::Render() failed to render: " << SDL_GetError() << std::endl;
     }
