@@ -64,6 +64,7 @@ bool InputManager::KeyPress(KEYS key) {
 
 	switch(key) {
 		case KEYS::LEFT_MOUSE_BUTTON:
+		case KEYS::RIGHT_MOUSE_BUTTON:
 			if (mousePressed[int(key)] && mouseUpdate[int(key)] == updateCounter) return true;
 			break;
 		default: // Keyboard input
@@ -78,6 +79,7 @@ bool InputManager::KeyRelease(KEYS key) {
 
 	switch(key) {
 		case KEYS::LEFT_MOUSE_BUTTON:
+		case KEYS::RIGHT_MOUSE_BUTTON:
 			if (!mousePressed[int(key)] && mouseUpdate[int(key)] == updateCounter) return true;
 			break;
 		default: // Keyboard input
@@ -92,6 +94,7 @@ bool InputManager::IsKeyDown(KEYS key) {
 
 	switch(key) {
 		case KEYS::LEFT_MOUSE_BUTTON:
+		case KEYS::RIGHT_MOUSE_BUTTON:
 			if (mousePressed[int(key)]) return true;
 			break;
 		default: // Keyboard input

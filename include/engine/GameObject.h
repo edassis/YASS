@@ -26,9 +26,9 @@ class GameObject {
         void Render();
         bool IsDead();
         void RequestDelete();
-        void AddComponent(std::shared_ptr<Component> cpt);
+        std::weak_ptr<Component> AddComponent(Component& cpt);
         void RemoveComponent(Component& cpt);
-        std::shared_ptr<Component> GetComponent(std::string type);
+        std::weak_ptr<Component> GetComponent(std::string type);
 };
 
 #endif

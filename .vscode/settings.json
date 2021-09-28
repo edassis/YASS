@@ -92,4 +92,5 @@
         "CHERE_INVOKING": "1",
     },
     "cmake.configureOnOpen": false,
+    "C_Cpp.errorSquiggles": "Disabled",
 }

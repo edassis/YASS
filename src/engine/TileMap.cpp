@@ -94,7 +94,7 @@ void TileMap::RenderLayer(int layer, int cameraX, int cameraY) {
 }
 
 void TileMap::Render() {
-    const auto& cameraPos = Game::GetState().GetCamera().pos;
+    const auto& cameraPos = Game::GetState().GetCamera().GetPos();
     
     for(int layer = 0; layer < mapDepth; layer++) {
         RenderLayer(layer, int(cameraPos.x) >> layer, int(cameraPos.y) >> layer);   // * Simple parallax effect.

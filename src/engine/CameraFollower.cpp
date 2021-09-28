@@ -9,7 +9,7 @@ CameraFollower::~CameraFollower() {}
 void CameraFollower::Update(float dt) {}
 
 void CameraFollower::Render() {
-    const auto& cameraPos = Game::GetState().GetCamera().pos;
+    const auto& cameraPos = Game::GetState().GetCamera().GetPos();
 
     associated.box.x = cameraPos.x;
     associated.box.y = cameraPos.y;

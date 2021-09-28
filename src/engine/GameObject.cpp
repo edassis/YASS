@@ -37,17 +37,19 @@ void GameObject::RequestDelete() {
     isDead = true;
 }
 
-void GameObject::AddComponent(std::shared_ptr<Component> cpt) {
-    if(cpt == nullptr) {
-        std::cout << "Warning! GameObject::AddComponent() has nullptr as parameter" << std::endl;
-        return;
-    }
+std::weak_ptr<Component> GameObject::AddComponent(Component& cpt) {
+    // if(cpt == nullptr) {
+    //     std::cout << "Warning! GameObject::AddComponent() has nullptr as parameter" << std::endl;
+    //     return;
+    // }
 
     if(started) {
-        cpt->Start();
+        cpt.Start();
     }
 
-    components.push_back(std::move(cpt));
+    auto ptCpt = std::shared_ptr<Component>(&cpt);
+    components.push_back(ptCpt);
+    return std::weak_ptr<Component>(ptCpt);
 }
 
 void GameObject::RemoveComponent(Component& cpt) {
@@ -63,12 +65,12 @@ void GameObject::RemoveComponent(Component& cpt) {
     }
 }
 
-std::shared_ptr<Component> GameObject::GetComponent(std::string type) {
+std::weak_ptr<Component> GameObject::GetComponent(std::string type) {
     for(auto& cpt : components) {
         if(cpt->Is(type)) {
             return cpt;
         }
     }
 
-    return std::shared_ptr<Component>{};
+    return std::weak_ptr<Component>{};
 }

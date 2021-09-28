@@ -5,33 +5,40 @@
 #include "engine/Mat.h"
 #include "engine/Game.h"
 #include "engine/GameObject.h"
-#include "engine/Face.h"
+// #include "engine/Face.h"
 #include "engine/Sound.h"
 #include "engine/TileMap.h"
 #include "engine/TileSet.h"
 #include "engine/InputManager.h"
 #include "engine/CameraFollower.h"
+#include "engine/Alien.h"
 #include <iostream>
 
 State::State() : music(), currentCamera(new Camera()) {
     quitRequested = false;
     started = false;
 
-    GameObject* goBG = new GameObject();
-
-    goBG->AddComponent(std::make_shared<CameraFollower>(*goBG));    // * CameraFollower must update "go" position before Sprite's Render().
+    GameObject* BGGameObj = new GameObject();
     
-    std::shared_ptr<Sprite> spriteBG(new Sprite(*goBG));
-    goBG->AddComponent(spriteBG);
-	this->bg = spriteBG;
+    CameraFollower* BGGameFol = new CameraFollower(*BGGameObj);
+    BGGameObj->AddComponent(*BGGameFol);
+    Sprite* BGSprite = new Sprite(*BGGameObj);
+    auto ptBGSprite = BGGameObj->AddComponent(*BGSprite).lock();
+    this->bg = std::dynamic_pointer_cast<Sprite>(ptBGSprite);
+    AddObject(*BGGameObj);
 
-	objectArray.emplace_back(goBG);
+    GameObject* TMGameObj = new GameObject();
+	TileSet* TMTileSet = new TileSet(64, 64, "assets/img/tileset.png");
+    TileMap* TM = new TileMap(*TMGameObj, "assets/map/tileMap.txt", TMTileSet);
+    TMGameObj->AddComponent(*TM);
+    AddObject(*TMGameObj);
 
-    GameObject* goTileMap = new GameObject();
-	TileSet* ts = new TileSet(64, 64, "assets/img/tileset.png");
-	goTileMap->AddComponent(std::make_shared<TileMap>(*goTileMap, "assets/map/tileMap.txt", ts));
- 
-    objectArray.emplace_back(goTileMap);
+    auto* alienGO = new GameObject();
+    alienGO->box.x = 500;
+    alienGO->box.y = 320;
+    auto* alien = new Alien(*alienGO, 3);
+    alienGO->AddComponent(*alien);
+    AddObject(*alienGO);
 }
 
 State::~State() {}
@@ -51,7 +58,7 @@ bool State::QuitRequested() {
 
 void State::LoadAssets() {
     // Pré-carrega os assets.
-    this->bg->Open("assets/img/ocean.jpg");
+    this->bg.lock()->Open("assets/img/ocean.jpg");
 
     this->music.Open("assets/audio/stageState.ogg");
     if(this->music.IsOpen()) {
@@ -68,7 +75,7 @@ void State::Update(float dt) {
         int mouseX = InputManager::GetInstance().GetMouseX();
         int mouseY = InputManager::GetInstance().GetMouseY();
         
-        AddEnemy(mouseX, mouseY);
+        // AddEnemy(mouseX, mouseY);
     }
 
     for(uint32_t i = 0; i < objectArray.size(); ) {
@@ -88,8 +95,9 @@ void State::Update(float dt) {
 
 void State::Render() {
     // Renderização do estado do jogo (entidades, cenários, HUD, etc.).
-    if(bg) {
-        bg->Render();
+    auto ptBG = bg.lock();
+    if(ptBG) {
+        ptBG->Render();
     }
 
     for(auto it = objectArray.begin(); it != objectArray.end(); it++) {
@@ -97,26 +105,26 @@ void State::Render() {
     }
 }
 
-std::weak_ptr<GameObject> State::AddObject(GameObject* go) {
-    if(go == nullptr) {
-        std::cout << "Warning! State::AddObject() has nullptr as parameter" << std::endl;
-        return std::weak_ptr<GameObject>();
-    }
+std::weak_ptr<GameObject> State::AddObject(GameObject& go) {
+    // if(go == nullptr) {
+    //     std::cout << "Warning! State::AddObject() has nullptr as parameter" << std::endl;
+    //     return std::weak_ptr<GameObject>();
+    // }
 
     if(started) {
-        go->Start();
+        go.Start();
     }
 
-    auto ptGO = std::shared_ptr<GameObject>(go);
+    auto ptGO = std::shared_ptr<GameObject>(&go);
     
     objectArray.push_back(ptGO);
 
     return std::weak_ptr<GameObject>(ptGO);
 }
 
-std::weak_ptr<GameObject> State::GetObjectPtr(GameObject* go) {
+std::weak_ptr<GameObject> State::GetObjectPtr(GameObject& go) {
     for(auto& each : objectArray) {
-        if(each.get() == go) {
+        if(each.get() == &go) {
             return std::weak_ptr<GameObject>(each);
         }
     }
@@ -124,15 +132,16 @@ std::weak_ptr<GameObject> State::GetObjectPtr(GameObject* go) {
     return std::weak_ptr<GameObject>();
 }
 
+// ! DEPRECATED
 void State::AddEnemy(int mouseX, int mouseY) {
     // First enemy
 	GameObject* go = new GameObject();
     Sprite* spt = new Sprite(*go, "assets/img/penguinface.png");
 	Sound* sound = new Sound(*go, "assets/audio/boom.wav");
-	Face* face = new Face(*go);
+	// Face* face = new Face(*go);
 
     // * Consider camera movimentation
-    const auto& cameraPos = Game::GetState().GetCamera().pos;
+    const auto& cameraPos = Game::GetState().GetCamera().GetPos();
 
     mat::Vec2 pos((float)mouseX, (float)mouseY); 
     pos += cameraPos;
@@ -144,11 +153,13 @@ void State::AddEnemy(int mouseX, int mouseY) {
 	go->box.x = pos.x;
     go->box.y = pos.y;
 
-	go->AddComponent(std::shared_ptr<Component>(spt));
-	go->AddComponent(std::shared_ptr<Component>(face));
-	go->AddComponent(std::shared_ptr<Component>(sound));
+	go->AddComponent(dynamic_cast<Component&>(*spt));
+	// go->AddComponent(dynamic_cast<Component&>(*face));
+	go->AddComponent(dynamic_cast<Component&>(*sound));
+	// go->AddComponent(std::shared_ptr<Component>(face));
+	// go->AddComponent(std::shared_ptr<Component>(sound));
 
-    auto ptGO = AddObject(go);
+    auto ptGO = AddObject(*go);
     
     GetCamera().Follow(ptGO);
 }

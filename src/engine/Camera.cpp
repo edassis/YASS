@@ -52,3 +52,11 @@ void Camera::Update(float dt) {
         }
     }
 }
+
+mat::Vec2 Camera::GetPos() {
+    return pos;
+}
+
+mat::Vec2 Camera::GetSpeed() {
+    return speed;
+}

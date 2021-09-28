@@ -18,11 +18,10 @@ void Face::Damage(int damage) {
     if(hitpoints == 0) {
         dead = true;
 
-        auto* pt_sprite = dynamic_cast<Sprite*>(associated.GetComponent("Sprite").get());
+        auto* pt_sprite = dynamic_cast<Sprite*>(associated.GetComponent("Sprite").lock().get());
         associated.RemoveComponent(*pt_sprite);
 
-        auto* pt_cpt = dynamic_cast<Sound*>(associated.GetComponent("Sound").get());
-        // Sound* cpt = (Sound *) associated.GetComponent("Sound").get();
+        auto* pt_cpt = dynamic_cast<Sound*>(associated.GetComponent("Sound").lock().get());
         if(pt_cpt != nullptr) {
             pt_cpt->Play();
         }
@@ -43,7 +42,7 @@ void Face::Update(float dt) {
     }
 
     if (dead) { // * Assures that Sound::Play() was called.
-        auto* sound = dynamic_cast<Sound*>(associated.GetComponent("Sound").get());
+        auto* sound = dynamic_cast<Sound*>(associated.GetComponent("Sound").lock().get());
         if(sound && !sound->IsPlaying()) {
             associated.RequestDelete();
         }

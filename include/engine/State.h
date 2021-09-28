@@ -9,7 +9,7 @@
 
 class State {
     private:
-        std::shared_ptr<Sprite> bg;
+        std::weak_ptr<Sprite> bg;
         Music music;
         std::shared_ptr<Camera> currentCamera;
         std::vector<std::shared_ptr<GameObject>> objectArray;
@@ -30,8 +30,8 @@ class State {
         void Render();
         void Input();
 
-        std::weak_ptr<GameObject> AddObject(GameObject* go);
-        std::weak_ptr<GameObject> GetObjectPtr(GameObject* go);
+        std::weak_ptr<GameObject> AddObject(GameObject& go);
+        std::weak_ptr<GameObject> GetObjectPtr(GameObject& go);
 
         void AddEnemy(int mouseX, int mouseY);
         Camera& GetCamera();
