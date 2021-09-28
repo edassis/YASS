@@ -8,7 +8,7 @@
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/SDL_engine",
+            "program": "${workspaceFolder}/SDL_engine",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

@@ -11,8 +11,6 @@ int main(int argc, char** argv) {
 
     Game& myGame = Game::GetInstance();
 
-    myGame.GetState().LoadAssets();
-
     myGame.Run();
 
     return 0;

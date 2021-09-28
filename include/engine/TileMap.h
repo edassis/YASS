@@ -25,7 +25,7 @@ class TileMap : public Component {
         ~TileMap();
 
         void Load(std::string file);
-        void SetTileSet(std::unique_ptr<TileSet> tileSet);
+        void SetTileSet(TileSet* tileSet);
         int& At(int x, int y, int z = 0);
         void RenderLayer(int layer, int cameraX = 0, int cameraY = 0); 
 

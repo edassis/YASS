@@ -57,8 +57,13 @@ void TileMap::Load(std::string file) {
 }
 
 // https://herbsutter.com/2013/06/05/gotw-91-solution-smart-pointer-parameters/
-void TileMap::SetTileSet(std::unique_ptr<TileSet> tileSet) {
-    this->tileSet = std::move(tileSet);
+void TileMap::SetTileSet(TileSet* tileSet) {
+    if(tileSet == nullptr) {
+        std::cout << "Warning! TileMap::SetTileSet() received nullptr as argument" << std::endl;
+        return;
+    }
+
+    this->tileSet.reset(tileSet);
 }
 
 int& TileMap::At(int x, int y, int z) {

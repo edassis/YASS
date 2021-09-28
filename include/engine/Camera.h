@@ -9,16 +9,16 @@ class GameObject;
 
 class Camera {
     private:
-        std::shared_ptr<GameObject> focus; 
 
     public:
+        std::weak_ptr<GameObject> focus; 
         mat::Vec2 pos;
         mat::Vec2 speed;
 
         Camera();
         ~Camera();
 
-        void Follow(GameObject& newFocus);
+        void Follow(std::weak_ptr<GameObject> newFocus);
         void Unfollow();
         void Update(float dt);
 };

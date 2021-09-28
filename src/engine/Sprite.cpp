@@ -48,7 +48,7 @@ void Sprite::Render() {
     float renderX = associated.box.x - cameraPos.x;
     float renderY = associated.box.y - cameraPos.y;
 
-    Render(renderX, renderY, clipRect.w, clipRect.h);
+    Render(renderX, renderY, float(clipRect.w), float(clipRect.h));
 }
 
 void Sprite::Render(float x, float y, float w, float h) {   // * Specific of Sprite class

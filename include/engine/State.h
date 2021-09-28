@@ -12,11 +12,16 @@ class State {
         std::shared_ptr<Sprite> bg;
         Music music;
         std::shared_ptr<Camera> currentCamera;
-        std::vector<std::unique_ptr<GameObject>> objectArray;
+        std::vector<std::shared_ptr<GameObject>> objectArray;
+        
         bool quitRequested;
+        bool started;
+        
     public:
         State();
         ~State();
+
+        void Start();
 
         bool QuitRequested();
         void LoadAssets();
@@ -25,8 +30,10 @@ class State {
         void Render();
         void Input();
 
-        void AddObject(int mouseX, int mouseY);
-        
+        std::weak_ptr<GameObject> AddObject(GameObject* go);
+        std::weak_ptr<GameObject> GetObjectPtr(GameObject* go);
+
+        void AddEnemy(int mouseX, int mouseY);
         Camera& GetCamera();
 };
 

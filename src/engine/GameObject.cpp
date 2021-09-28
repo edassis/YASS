@@ -3,21 +3,29 @@
 
 GameObject::GameObject() {
     isDead = false;
+    started = false;
 }
 
 GameObject::~GameObject() {} 
 
+void GameObject::Start() {
+    for(uint32_t i = 0; i < components.size(); i++) {
+        components[i]->Start();
+    }
+    started = true;
+}
+
 void GameObject::Update(float dt) {
-    for(auto it = components.begin(); it != components.end(); it++) {
-        auto cpt = *it;
-        cpt->Update(dt);
+    for(uint32_t i = 0; i < components.size(); i++) {
+        auto component = components[i];
+        component->Update(dt);
     }
 }
 
 void GameObject::Render() {
-    for(auto it = components.begin(); it != components.end(); it++) {
-        auto cpt = *it;
-        cpt->Render();
+    for(uint32_t i = 0; i < components.size(); i++) {
+        auto component = components[i];
+        component->Render();
     }
 }
 
@@ -30,6 +38,15 @@ void GameObject::RequestDelete() {
 }
 
 void GameObject::AddComponent(std::shared_ptr<Component> cpt) {
+    if(cpt == nullptr) {
+        std::cout << "Warning! GameObject::AddComponent() has nullptr as parameter" << std::endl;
+        return;
+    }
+
+    if(started) {
+        cpt->Start();
+    }
+
     components.push_back(std::move(cpt));
 }
 

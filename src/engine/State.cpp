@@ -14,11 +14,14 @@
 #include <iostream>
 
 State::State() : music(), currentCamera(new Camera()) {
-    this->quitRequested = false;
+    quitRequested = false;
+    started = false;
 
     GameObject* goBG = new GameObject();
-    std::shared_ptr<Sprite> spriteBG(new Sprite(*goBG));
+
     goBG->AddComponent(std::make_shared<CameraFollower>(*goBG));    // * CameraFollower must update "go" position before Sprite's Render().
+    
+    std::shared_ptr<Sprite> spriteBG(new Sprite(*goBG));
     goBG->AddComponent(spriteBG);
 	this->bg = spriteBG;
 
@@ -31,7 +34,16 @@ State::State() : music(), currentCamera(new Camera()) {
     objectArray.emplace_back(goTileMap);
 }
 
-State::~State() {} 
+State::~State() {}
+
+void State::Start() {
+    LoadAssets();
+
+    for(uint32_t i = 0; i < objectArray.size(); i++) {
+        objectArray[i]->Start();
+    }
+    started = true;
+}
 
 bool State::QuitRequested() {
     return this->quitRequested;
@@ -56,7 +68,7 @@ void State::Update(float dt) {
         int mouseX = InputManager::GetInstance().GetMouseX();
         int mouseY = InputManager::GetInstance().GetMouseY();
         
-        AddObject(mouseX, mouseY);
+        AddEnemy(mouseX, mouseY);
     }
 
     for(uint32_t i = 0; i < objectArray.size(); ) {
@@ -71,23 +83,53 @@ void State::Update(float dt) {
     }
     
     currentCamera->Update(dt);
+    // std::cout << "GOs " << objectArray.size() << std::endl;
 }
-
 
 void State::Render() {
     // Renderização do estado do jogo (entidades, cenários, HUD, etc.).
-    this->bg->Render();
+    if(bg) {
+        bg->Render();
+    }
+
     for(auto it = objectArray.begin(); it != objectArray.end(); it++) {
         (*it)->Render();
     }
 }
 
-void State::AddObject(int mouseX, int mouseY) {
-    // Primeiro inimigo
+std::weak_ptr<GameObject> State::AddObject(GameObject* go) {
+    if(go == nullptr) {
+        std::cout << "Warning! State::AddObject() has nullptr as parameter" << std::endl;
+        return std::weak_ptr<GameObject>();
+    }
+
+    if(started) {
+        go->Start();
+    }
+
+    auto ptGO = std::shared_ptr<GameObject>(go);
+    
+    objectArray.push_back(ptGO);
+
+    return std::weak_ptr<GameObject>(ptGO);
+}
+
+std::weak_ptr<GameObject> State::GetObjectPtr(GameObject* go) {
+    for(auto& each : objectArray) {
+        if(each.get() == go) {
+            return std::weak_ptr<GameObject>(each);
+        }
+    }
+
+    return std::weak_ptr<GameObject>();
+}
+
+void State::AddEnemy(int mouseX, int mouseY) {
+    // First enemy
 	GameObject* go = new GameObject();
     Sprite* spt = new Sprite(*go, "assets/img/penguinface.png");
-	Sound* s = new Sound(*go, "assets/audio/boom.wav");
-	Face* fc = new Face(*go);
+	Sound* sound = new Sound(*go, "assets/audio/boom.wav");
+	Face* face = new Face(*go);
 
     // * Consider camera movimentation
     const auto& cameraPos = Game::GetState().GetCamera().pos;
@@ -103,9 +145,12 @@ void State::AddObject(int mouseX, int mouseY) {
     go->box.y = pos.y;
 
 	go->AddComponent(std::shared_ptr<Component>(spt));
-	go->AddComponent(std::shared_ptr<Component>(fc));
-	go->AddComponent(std::shared_ptr<Component>(s));
-    objectArray.emplace_back(go);
+	go->AddComponent(std::shared_ptr<Component>(face));
+	go->AddComponent(std::shared_ptr<Component>(sound));
+
+    auto ptGO = AddObject(go);
+    
+    GetCamera().Follow(ptGO);
 }
 
 Camera& State::GetCamera() {
