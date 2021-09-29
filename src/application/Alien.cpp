@@ -1,6 +1,6 @@
-#include "engine/Alien.h"
+#include "application/Alien.h"
+#include "application/Minion.h"
 #include "engine/GameObject.h"
-#include "engine/Minion.h"
 #include "engine/Sprite.h"
 #include "engine/InputManager.h"
 #include "engine/Game.h"
@@ -42,7 +42,7 @@ void Alien::Update(float dt) {
     auto& camera = Game::GetState().GetCamera();
     
     mat::Vec2 clickPos(inputManager.GetMouseX(), inputManager.GetMouseY());
-    clickPos -= camera.GetPos();
+    clickPos += camera.GetPos();
     clickPos -= mat::Vec2(associated.box.w/2, associated.box.h/2);  // * Offsets mouse click to the box's center.
 
     if (inputManager.KeyPress(KEYS::LEFT_MOUSE_BUTTON)) {  // Shoot
@@ -58,8 +58,8 @@ void Alien::Update(float dt) {
         switch (task.type) {
             case task.MOVE:
             {   // Creates scope for local variables.
-                const float maxSpeed = 20.0f;
-                const float acc = 5.0f;
+                const float maxSpeed = 12.0f;
+                const float acc = 4.0f;
                 // auto posI = associated.box.Center();
                 auto posI = mat::Vec2(associated.box.x, associated.box.y);
                 auto posdt = task.pos - posI;

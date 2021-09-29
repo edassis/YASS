@@ -21,17 +21,29 @@ Vec2 Rect::Center() const {
 }
 
 void Rect::Centralize(const Rect& r) {
+    if(std::abs(w) < 0.1f || std::abs(h) < 0.1f) {
+        std::cout << "Warning! Rect::Centralize() called with width/height = 0.0f." << std::endl;
+        return;
+    }
     auto center = r.Center();
     this->x = center.x - this->w/2;
     this->y = center.y - this->h/2;
 }
 
 void Rect::Centralize(const Vec2& v) {
+    if(std::abs(w) < 0.1f || std::abs(h) < 0.1f) {
+        std::cout << "Warning! Rect::Centralize() called with width/height = 0.0f." << std::endl;
+        return;
+    } 
     this->x = v.x - this->w/2;
     this->y = v.y - this->h/2;
 }
 
 bool Rect::Contains(const Vec2& v) const {
+    if(std::abs(w) < 0.1f || std::abs(h) < 0.1f) {
+        std::cout << "Warning! Rect::Contains() called with width/height = 0.0f." << std::endl;
+        return false;
+    }
     return (v.x > x && v.x < x+w) && (v.y > y && v.y < y+h); 
 }
 

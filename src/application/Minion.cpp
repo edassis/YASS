@@ -1,4 +1,4 @@
-#include "engine/Minion.h"
+#include "application/Minion.h"
 #include "engine/GameObject.h"
 #include "engine/Sprite.h"
 #include "engine/Mat.h"

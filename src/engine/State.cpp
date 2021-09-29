@@ -5,13 +5,14 @@
 #include "engine/Mat.h"
 #include "engine/Game.h"
 #include "engine/GameObject.h"
-// #include "engine/Face.h"
 #include "engine/Sound.h"
 #include "engine/TileMap.h"
 #include "engine/TileSet.h"
 #include "engine/InputManager.h"
 #include "engine/CameraFollower.h"
-#include "engine/Alien.h"
+
+#include "application/Alien.h"
+
 #include <iostream>
 
 State::State() : music(), currentCamera(new Camera()) {
