@@ -98,13 +98,15 @@ Vec2& Vec2::operator*=(const float& num) {
 }
 
 // Clockwise angle.
+// Interval -> [-PI, PI]
 float Vec2::Angle() const {
     // https://stackoverflow.com/questions/1311049/how-to-map-atan2-to-degrees-0-360
     // https://stackoverflow.com/questions/14066933/direct-way-of-computing-clockwise-angle-between-2-vectors
-    float dot = Dot(this->Normalized(), Vec2(1, 0)); 
-    float det = Det(this->Normalized(), Vec2(1, 0)); 
-    float result = (float)atan2(det, dot);
-    result = (float)fmod((result+2*PI), 2*PI);
+    // float dot = Dot(this->Normalized(), Vec2(1, 0)); 
+    // float det = Det(this->Normalized(), Vec2(1, 0)); 
+    // float result = (float)atan2(det, dot);
+    float result = (float)atan2(y, x);
+    // result = (float)fmod((result+2*PI), 2*PI);
     return result; 
 }
 
