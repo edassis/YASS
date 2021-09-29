@@ -11,7 +11,7 @@ class Rect {
     public:
         float x, y, w, h;
         
-        Rect(float = 0.0, float = 0.0, float = 0.0, float = 0.0);
+        Rect(float = 0.0f, float = 0.0f, float = 0.0f, float = 0.0f);
         ~Rect();  
 
         Rect operator+(const Vec2& v);
@@ -20,7 +20,8 @@ class Rect {
          * Returns the rectangle's central point. 
          */
         Vec2 Center() const;
-        void Centralize(const Rect& v);
+        void Centralize(const Rect& r);
+        void Centralize(const Vec2& v);
         /**
          * Check if @p v is inside of the rectangle.
          */
@@ -35,17 +36,17 @@ class Vec2 {
     public:
         float x, y;
         
-        Vec2(float = 0.0, float = 0.0);
+        Vec2(float = 0.0f, float = 0.0f);
         Vec2(const Vec2& v);
         ~Vec2();
 
         Vec2& operator=(const Vec2& v);
-        // bool operator==(const Vec2& v);
         Vec2 operator+(const Vec2& v);
         Vec2& operator+=(const Vec2& v);
         Vec2 operator-(const Vec2& v);
         Vec2& operator-=(const Vec2& v);
-        // Vec2& operator*(const Vec2& v);
+        bool operator==(const Vec2& v) = delete;
+        
         Vec2 operator*(const float& x);
         Vec2& operator*=(const float& x);
 
@@ -87,8 +88,8 @@ class Vec2 {
         static float Dot(const Vec2& v1, const Vec2& v2);
 };
 
-float Deg2Rad(const float deg);
-float Rad2Deg(const float rad);
+float Deg2Rad(const float& deg);
+float Rad2Deg(const float& rad);
 
 } // end Mat;
 

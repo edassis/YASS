@@ -19,12 +19,11 @@ State::State() : music(), currentCamera(new Camera()) {
     started = false;
 
     GameObject* BGGameObj = new GameObject();
-    
     CameraFollower* BGGameFol = new CameraFollower(*BGGameObj);
     BGGameObj->AddComponent(*BGGameFol);
     Sprite* BGSprite = new Sprite(*BGGameObj);
-    auto ptBGSprite = BGGameObj->AddComponent(*BGSprite).lock();
-    this->bg = std::dynamic_pointer_cast<Sprite>(ptBGSprite);
+    auto pBGSprite = BGGameObj->AddComponent(*BGSprite).lock();
+    this->bg = std::dynamic_pointer_cast<Sprite>(pBGSprite);
     AddObject(*BGGameObj);
 
     GameObject* TMGameObj = new GameObject();
@@ -34,9 +33,8 @@ State::State() : music(), currentCamera(new Camera()) {
     AddObject(*TMGameObj);
 
     auto* alienGO = new GameObject();
-    alienGO->box.x = 500;
-    alienGO->box.y = 320;
     auto* alien = new Alien(*alienGO, 3);
+    alienGO->box.Centralize(mat::Vec2(300.0f, 200.0f));
     alienGO->AddComponent(*alien);
     AddObject(*alienGO);
 }
@@ -58,7 +56,9 @@ bool State::QuitRequested() {
 
 void State::LoadAssets() {
     // Pré-carrega os assets.
-    this->bg.lock()->Open("assets/img/ocean.jpg");
+    if(auto pBG = bg.lock()) {
+        pBG->Open("assets/img/ocean.jpg");
+    }
 
     this->music.Open("assets/audio/stageState.ogg");
     if(this->music.IsOpen()) {
@@ -71,12 +71,12 @@ void State::Update(float dt) {
     quitRequested = InputManager::GetInstance().QuitRequested();
     quitRequested |= InputManager::GetInstance().KeyPress(KEYS::ESCAPE_KEY);
     
-    if (InputManager::GetInstance().KeyPress(KEYS::SPACE_KEY)) {
-        int mouseX = InputManager::GetInstance().GetMouseX();
-        int mouseY = InputManager::GetInstance().GetMouseY();
+    // if (InputManager::GetInstance().KeyPress(KEYS::SPACE_KEY)) {
+    //     int mouseX = InputManager::GetInstance().GetMouseX();
+    //     int mouseY = InputManager::GetInstance().GetMouseY();
         
-        // AddEnemy(mouseX, mouseY);
-    }
+    //     AddEnemy(mouseX, mouseY);
+    // }
 
     for(uint32_t i = 0; i < objectArray.size(); ) {
         objectArray[i]->Update(dt);

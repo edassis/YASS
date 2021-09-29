@@ -21,11 +21,12 @@ class Alien : public Component {
 
         int hp;
         mat::Vec2 speed;
+        int nMinion;
         std::queue<Action> taskQueue;
         std::vector<std::weak_ptr<GameObject>> minionArray;
 
     public:
-        Alien(GameObject& associated, int nMinions);
+        Alien(GameObject& associated, int nMinion);
         ~Alien();
 
         void Start();

@@ -7,12 +7,11 @@
 
 class Minion : public Component {
     private:
-        GameObject& alienCenter;
-        float arc;
+        std::weak_ptr<GameObject> alienCenter;
+        float arc;  // degrees
 
     public:
         Minion(GameObject& associated, std::weak_ptr<GameObject> alienCenter, float arcOffsetDeg = 0.0f);
-        ~Minion();
 
         void Update(float dt) override;
         void Render() override;

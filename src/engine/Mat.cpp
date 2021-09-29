@@ -1,7 +1,8 @@
 #include "engine/Mat.h"
 #include <cmath>
+#include <iostream>
 
-using namespace mat;
+namespace mat {
 
 // ---Rect
 Rect::Rect(float x, float y, float w, float h) : x(x), y(y), w(w), h(h) {}
@@ -23,6 +24,11 @@ void Rect::Centralize(const Rect& r) {
     auto center = r.Center();
     this->x = center.x - this->w/2;
     this->y = center.y - this->h/2;
+}
+
+void Rect::Centralize(const Vec2& v) {
+    this->x = v.x - this->w/2;
+    this->y = v.y - this->h/2;
 }
 
 bool Rect::Contains(const Vec2& v) const {
@@ -48,11 +54,6 @@ Vec2& Vec2::operator=(const Vec2& v) {
     this->y = v.y;
     return *this;
 }
-
-// * FP imprecision.
-// bool Vec2::operator==(const Vec2& v) {
-//     return (x == v.x) && (y == v.y);
-// }
 
 Vec2 Vec2::operator+(const Vec2& v) {
     return Vec2(x+v.x,y+v.y);
@@ -84,11 +85,15 @@ Vec2& Vec2::operator*=(const float& num) {
     return *this;
 }
 
+// Clockwise angle.
 float Vec2::Angle() const {
+    // https://stackoverflow.com/questions/1311049/how-to-map-atan2-to-degrees-0-360
+    // https://stackoverflow.com/questions/14066933/direct-way-of-computing-clockwise-angle-between-2-vectors
     float dot = Dot(this->Normalized(), Vec2(1, 0)); 
     float det = Det(this->Normalized(), Vec2(1, 0)); 
-
-    return (float)atan2(det, dot); 
+    float result = (float)atan2(det, dot);
+    result = (float)fmod((result+2*PI), 2*PI);
+    return result; 
 }
 
 float Vec2::AngleToPoint(const Vec2& v) const {
@@ -106,7 +111,8 @@ float Vec2::Dot(const Vec2& v) const {
 }
 
 bool Vec2::IsNormalized() const {
-    return (std::abs(x) <= 1.001 && std::abs(y) <= 1.001);    // ? How to properly handle fp imprecision? 
+    // return (std::abs(x) <= 1.001 && std::abs(y) <= 1.001);    // ? How to properly handle fp imprecision? 
+    return std::abs(this->Length() - 1.0f) < 0.01f;
 }
 
 float Vec2::Length() const {
@@ -133,9 +139,11 @@ float Vec2::Dot(const Vec2& v1, const Vec2& v2) {
 
 // ---Functions
 float Deg2Rad(const float& deg) {
-    return mat::PI*deg/180;
+    return PI*deg/180;
 }
 
 float Rad2Deg(const float& rad) {
-    return 180*rad/mat::PI;
+    return 180*rad/PI;
 }
+
+} // end of namespace mat

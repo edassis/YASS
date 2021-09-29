@@ -1,32 +1,40 @@
 #include "engine/Alien.h"
 #include "engine/GameObject.h"
-// #include "engine/Minion.h"
+#include "engine/Minion.h"
 #include "engine/Sprite.h"
 #include "engine/InputManager.h"
 #include "engine/Game.h"
 #include "engine/Mat.h"
 
-Alien::Alien(GameObject& associated, int nMinions) : Component(associated) {
-    hp = 30;
+Alien::Alien(GameObject& associated, int nMinion) : Component(associated) {
+    this->hp = 30;
+    this->nMinion = nMinion;
 
     auto* sprite = new Sprite(associated, "assets/img/alien.png");
-
     associated.AddComponent(*sprite);
-
-    // ?
-    // auto* pivotGO = new GameObject();
-    // pivotGO->box.x = 512;
-    // pivotGO->box.y = 300;
-    // for(int i = 0; i < nMinions; i++) {
-    //     auto* minion = new Minion(associated, pivotGO, (float)(-180 + std::rand() % 360));
-    //     associated.AddComponent(*minion);
-    // }
 }
 
 Alien::~Alien() {} // ? Do I really need to manually free minionArray?
 
 void Alien::Start() {
     // * Populate minionArray with "these objects" equally spaced.
+    auto wpAlien = Game::GetState().GetObjectPtr(associated);
+    if(wpAlien.lock() == nullptr) {
+        std::cout << "Warning! Alien::Start() not found Alien pointer." << std::endl;
+        return;
+    }
+
+    float arcStep = 360.0f / nMinion;
+    float arc = 0.0f;
+    for(int i = 0; i < nMinion; i++) {
+        auto* pMinionGO = new GameObject();
+        auto* pMinion = new Minion(*pMinionGO, wpAlien, arc);
+        associated.AddComponent(*pMinion);
+        auto wpMinionGO = Game::GetState().AddObject(*pMinionGO);
+        minionArray.push_back(wpMinionGO);
+
+        arc += arcStep;
+    }
 }
 
 void Alien::Update(float dt) {
