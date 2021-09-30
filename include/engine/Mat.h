@@ -14,7 +14,10 @@ class Rect {
         Rect(float = 0.0f, float = 0.0f, float = 0.0f, float = 0.0f);
         ~Rect();  
 
-        Rect operator+(const Vec2& v);
+        // Rect operator+(const Vec2& v);
+        Vec2 GetPos();
+        void SetPos(const Vec2& v);
+        void SetPos(const float& x, const float& y);
 
         /**
          * Returns the rectangle's central point. 

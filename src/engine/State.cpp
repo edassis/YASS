@@ -62,22 +62,15 @@ void State::LoadAssets() {
     }
 
     this->music.Open("assets/audio/stageState.ogg");
-    if(this->music.IsOpen()) {
-        this->music.Play();
-    }
+    // if(this->music.IsOpen()) {
+    //     this->music.Play();
+    // }
 }
 
 void State::Update(float dt) {
     // Atualização dos estados das entidades, testes de colisões e checagem relativa de encerramento do jogo.
     quitRequested = InputManager::GetInstance().QuitRequested();
     quitRequested |= InputManager::GetInstance().KeyPress(KEYS::ESCAPE_KEY);
-    
-    // if (InputManager::GetInstance().KeyPress(KEYS::SPACE_KEY)) {
-    //     int mouseX = InputManager::GetInstance().GetMouseX();
-    //     int mouseY = InputManager::GetInstance().GetMouseY();
-        
-    //     AddEnemy(mouseX, mouseY);
-    // }
 
     for(uint32_t i = 0; i < objectArray.size(); ) {
         objectArray[i]->Update(dt);
@@ -107,11 +100,6 @@ void State::Render() {
 }
 
 std::weak_ptr<GameObject> State::AddObject(GameObject& go) {
-    // if(go == nullptr) {
-    //     std::cout << "Warning! State::AddObject() has nullptr as parameter" << std::endl;
-    //     return std::weak_ptr<GameObject>();
-    // }
-
     if(started) {
         go.Start();
     }
@@ -133,7 +121,6 @@ std::weak_ptr<GameObject> State::GetObjectPtr(GameObject& go) {
     return std::weak_ptr<GameObject>();
 }
 
-// ! DEPRECATED
 void State::AddEnemy(int mouseX, int mouseY) {
     // First enemy
 	GameObject* go = new GameObject();

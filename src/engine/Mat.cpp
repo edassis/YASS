@@ -9,8 +9,18 @@ Rect::Rect(float x, float y, float w, float h) : x(x), y(y), w(w), h(h) {}
 
 Rect::~Rect() {}
 
-Rect Rect::operator+(const Vec2& v) {
-    return Rect(x+v.x, y-v.y, 0.0f, 0.0f);
+Vec2 Rect::GetPos() {
+    return Vec2(x, y);
+}
+
+void Rect::SetPos(const Vec2& v) {
+    x = v.x;
+    y = v.y;
+}
+
+void Rect::SetPos(const float& x, const float& y) {
+    this->x = x;
+    this->y = y;
 }
 
 Vec2 Rect::Center() const {

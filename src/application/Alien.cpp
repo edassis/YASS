@@ -29,7 +29,7 @@ void Alien::Start() {
     for(int i = 0; i < nMinion; i++) {
         auto* pMinionGO = new GameObject();
         auto* pMinion = new Minion(*pMinionGO, wpAlien, arc);
-        associated.AddComponent(*pMinion);
+        pMinionGO->AddComponent(*pMinion);
         auto wpMinionGO = Game::GetState().AddObject(*pMinionGO);
         minionArray.push_back(wpMinionGO);
 
@@ -85,9 +85,28 @@ void Alien::Update(float dt) {
                 break;
             } 
             case task.SHOOT:
-                // ! Temporary
+            {
+                uint64_t minionIdx = rand() % minionArray.size(); 
+                
+                bool warning = false;
+                if(auto spMinionGO = minionArray[minionIdx].lock()) {
+                    if(auto spComponent = spMinionGO->GetComponent("Minion").lock()) {
+                        auto spMinion = std::dynamic_pointer_cast<Minion>(spComponent);
+                        spMinion->Shoot(task.pos);
+                    } else {
+                        warning = true;
+                    }
+                } else {
+                    warning = true;
+                }
+
+                if (warning) {
+                    std::cout << "Warning! Alien::Update() failed to retrieve Minion pointer." << std::endl;
+                }
+                
                 taskQueue.pop();
                 break;
+            }
             default:
                 break;
         }
