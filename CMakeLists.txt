@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(SDL_engine VERSION 0.3 LANGUAGES CXX)
+project(SDL_engine VERSION 0.5 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -31,7 +31,7 @@ if (MINGW)
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -mconsole")
 endif()
 
-# set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=address")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=address -fno-omit-frame-pointer")
 
 # includes
 include_directories("include/")

@@ -22,7 +22,6 @@ void Camera::Follow(std::weak_ptr<GameObject> newFocus) {
 }
 
 void Camera::Unfollow() {
-    // pos = mat::Vec2();
     focus.reset();
 }
 
@@ -36,7 +35,7 @@ void Camera::Update(float dt) {
         pos = mat::Vec2( -(screenCenter.x - objCenter.x), -(screenCenter.y - objCenter.y) ); 
     }
     else {  // Camera on free mode
-        const float velocity = 120.0f;
+        const float velocity = 210.0f;
 
         if (InputManager::GetInstance().IsKeyDown(KEYS::UP_ARROW_KEY)) {
             pos.y -= velocity * dt;

@@ -38,11 +38,6 @@ void GameObject::RequestDelete() {
 }
 
 std::weak_ptr<Component> GameObject::AddComponent(Component& cpt) {
-    // if(cpt == nullptr) {
-    //     std::cout << "Warning! GameObject::AddComponent() has nullptr as parameter" << std::endl;
-    //     return;
-    // }
-
     if(started) {
         cpt.Start();
     }

@@ -57,9 +57,8 @@ bool Rect::Contains(const Vec2& v) const {
     return (v.x > x && v.x < x+w) && (v.y > y && v.y < y+h); 
 }
 
-float Rect::DistanceFromCenters(Rect& r1, Rect& r2) {
-    Vec2 diff = r1.Center() - r2.Center();
-    return diff.Length();
+float Rect::CentersDistance(const Rect& r) {
+    return mat::CentersDistance(*this, r);
 }
 
 // ---Vector
@@ -168,6 +167,15 @@ float Deg2Rad(const float& deg) {
 
 float Rad2Deg(const float& rad) {
     return 180*rad/PI;
+}
+
+float randf() {
+    return (float)rand()/(float)RAND_MAX;
+}
+
+float CentersDistance(const Rect& r1, const Rect& r2) {
+    Vec2 diff = r1.Center() - r2.Center();
+    return diff.Length();
 }
 
 } // end of namespace mat

@@ -29,10 +29,7 @@ class Rect {
          * Check if @p v is inside of the rectangle.
          */
         bool Contains(const Vec2& v) const;
-        /** 
-         * Distance of two rectangles' central point.
-         */
-        static float DistanceFromCenters(Rect& r1, Rect& r2);
+        float CentersDistance(const Rect& r); 
 };
 
 class Vec2 {
@@ -91,8 +88,15 @@ class Vec2 {
         static float Dot(const Vec2& v1, const Vec2& v2);
 };
 
+/** 
+ * Distance of two rectangles' central point.
+*/
+float CentersDistance(const Rect& r1, const Rect& r2);
+
 float Deg2Rad(const float& deg);
 float Rad2Deg(const float& rad);
+
+float randf();
 
 } // end Mat;
 

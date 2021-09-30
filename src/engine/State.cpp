@@ -62,9 +62,9 @@ void State::LoadAssets() {
     }
 
     this->music.Open("assets/audio/stageState.ogg");
-    // if(this->music.IsOpen()) {
-    //     this->music.Play();
-    // }
+    if(this->music.IsOpen()) {
+        this->music.Play();
+    }
 }
 
 void State::Update(float dt) {
@@ -119,37 +119,6 @@ std::weak_ptr<GameObject> State::GetObjectPtr(GameObject& go) {
     }
 
     return std::weak_ptr<GameObject>();
-}
-
-void State::AddEnemy(int mouseX, int mouseY) {
-    // First enemy
-	GameObject* go = new GameObject();
-    Sprite* spt = new Sprite(*go, "assets/img/penguinface.png");
-	Sound* sound = new Sound(*go, "assets/audio/boom.wav");
-	// Face* face = new Face(*go);
-
-    // * Consider camera movimentation
-    const auto& cameraPos = Game::GetState().GetCamera().GetPos();
-
-    mat::Vec2 pos((float)mouseX, (float)mouseY); 
-    pos += cameraPos;
-
-	// * Centralize image on the cursor
-    pos.x -= float(spt->GetWidth()/2);
-    pos.y -= float(spt->GetHeight()/2);
-
-	go->box.x = pos.x;
-    go->box.y = pos.y;
-
-	go->AddComponent(dynamic_cast<Component&>(*spt));
-	// go->AddComponent(dynamic_cast<Component&>(*face));
-	go->AddComponent(dynamic_cast<Component&>(*sound));
-	// go->AddComponent(std::shared_ptr<Component>(face));
-	// go->AddComponent(std::shared_ptr<Component>(sound));
-
-    auto ptGO = AddObject(*go);
-    
-    GetCamera().Follow(ptGO);
 }
 
 Camera& State::GetCamera() {

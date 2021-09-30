@@ -8,7 +8,7 @@
 
 int main(int argc, char** argv) {
     srand( (unsigned)time(NULL) );
-
+    
     Game& myGame = Game::GetInstance();
 
     myGame.Run();
