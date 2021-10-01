@@ -32,7 +32,6 @@ if (MINGW)
 endif()
 
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=address -fno-omit-frame-pointer")
-
 # includes
 include_directories("include/")
 include_directories("C:/dev/SDL2-mingw64/i686-w64-mingw32/include")

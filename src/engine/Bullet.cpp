@@ -12,8 +12,8 @@ Bullet::Bullet(GameObject& associated, float angle, float speed, int damage, flo
     associated.AddComponent(*pSprite);
     
     // * Update angle.
-    if (auto wpSprite = std::dynamic_pointer_cast<Sprite>(associated.GetComponent("Sprite").lock()) ) {
-        wpSprite->SetAngle(mat::Rad2Deg(angle));
+    if (auto spSprite = std::dynamic_pointer_cast<Sprite>(associated.GetComponent("Sprite").lock()) ) {
+        spSprite->SetAngle(mat::Rad2Deg(angle));
     } else {
         std::cout << "Warning! Bullet::Update() couldn't find the Sprite's pointer." << std::endl;
     }

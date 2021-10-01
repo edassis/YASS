@@ -89,9 +89,9 @@ void State::Update(float dt) {
 
 void State::Render() {
     // Renderização do estado do jogo (entidades, cenários, HUD, etc.).
-    auto ptBG = bg.lock();
-    if(ptBG) {
-        ptBG->Render();
+    auto spBG = bg.lock();
+    if(spBG) {
+        spBG->Render();
     }
 
     for(auto it = objectArray.begin(); it != objectArray.end(); it++) {
@@ -104,11 +104,11 @@ std::weak_ptr<GameObject> State::AddObject(GameObject& go) {
         go.Start();
     }
 
-    auto ptGO = std::shared_ptr<GameObject>(&go);
+    auto spGO = std::shared_ptr<GameObject>(&go);
     
-    objectArray.push_back(ptGO);
+    objectArray.push_back(spGO);
 
-    return std::weak_ptr<GameObject>(ptGO);
+    return std::weak_ptr<GameObject>(spGO);
 }
 
 std::weak_ptr<GameObject> State::GetObjectPtr(GameObject& go) {

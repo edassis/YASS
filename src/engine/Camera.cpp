@@ -9,14 +9,14 @@ Camera::Camera() {}
 Camera::~Camera() {}
 
 void Camera::Follow(std::weak_ptr<GameObject> newFocus) {
-    auto ptNewFocus = newFocus.lock();
+    auto spNewFocus = newFocus.lock();
     
-    if (ptNewFocus == nullptr) {
+    if (spNewFocus == nullptr) {
         std::cout << "Warning! Camera::Follow() has nullptr in newFocus." << std::endl;
         return;
     }
 
-    pos = mat::Vec2(ptNewFocus->box.x, ptNewFocus->box.y);
+    pos = mat::Vec2(spNewFocus->box.x, spNewFocus->box.y);
     
     focus = std::move(newFocus);
 }
@@ -28,8 +28,8 @@ void Camera::Unfollow() {
 void Camera::Update(float dt) {
     mat::Rect screenArea(0.0f, 0.0f, (float)SCREEN_WIDTH, (float)SCREEN_HEIGHT);
 
-    if (auto ptFocus = focus.lock()) {    // Camera attached to some GameObject
-        auto objCenter = ptFocus->box.Center();
+    if (auto spFocus = focus.lock()) {    // Camera attached to some GameObject
+        auto objCenter = spFocus->box.Center();
         auto screenCenter = screenArea.Center();
 
         pos = mat::Vec2( -(screenCenter.x - objCenter.x), -(screenCenter.y - objCenter.y) ); 

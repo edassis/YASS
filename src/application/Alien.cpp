@@ -10,8 +10,8 @@ Alien::Alien(GameObject& associated, int nMinion) : Component(associated) {
     this->hp = 30;
     this->nMinion = nMinion;
 
-    auto* sprite = new Sprite(associated, "assets/img/alien.png");
-    associated.AddComponent(*sprite);
+    auto* rpSprite = new Sprite(associated, "assets/img/alien.png");
+    associated.AddComponent(*rpSprite);
 }
 
 Alien::~Alien() {}
@@ -27,10 +27,10 @@ void Alien::Start() {
     float arcStep = 360.0f / float(nMinion);
     float arc = 0.0f;
     for(int i = 0; i < nMinion; i++) {
-        auto* pMinionGO = new GameObject();
-        auto* pMinion = new Minion(*pMinionGO, wpAlien, arc);
-        pMinionGO->AddComponent(*pMinion);
-        auto wpMinionGO = Game::GetState().AddObject(*pMinionGO);
+        auto* rpMinionGO = new GameObject();
+        auto* rpMinion = new Minion(*rpMinionGO, wpAlien, arc);
+        rpMinionGO->AddComponent(*rpMinion);
+        auto wpMinionGO = Game::GetState().AddObject(*rpMinionGO);
         minionArray.push_back(wpMinionGO);
 
         arc += arcStep;
@@ -124,9 +124,9 @@ void Alien::Update(float dt) {
 
     // * Rotate Alien's Sprite
     double angle = -25.0 * dt;
-    if( auto wpSprite = std::dynamic_pointer_cast<Sprite>(associated.GetComponent("Sprite").lock()) ) {
-        angle += wpSprite->GetAngle();
-        wpSprite->SetAngle(angle);
+    if( auto spSprite = std::dynamic_pointer_cast<Sprite>(associated.GetComponent("Sprite").lock()) ) {
+        angle += spSprite->GetAngle();
+        spSprite->SetAngle(angle);
     } else {
         std::cout << "Warning! Alien::Update() couldn't find the Sprite's pointer." << std::endl;
     }
