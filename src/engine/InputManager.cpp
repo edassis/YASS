@@ -22,7 +22,11 @@ void InputManager::Update() {
 
 	quitRequested = false;
 
-	updateCounter = (updateCounter+1) % UINT32_MAX;
+	updateCounter = 1 + updateCounter % UINT32_MAX;
+	if(updateCounter == 1) {
+		keyUpdate.clear();
+		memset(mouseUpdate, 0, sizeof(mouseUpdate));
+	}
 
 	SDL_Event event;
 	while (SDL_PollEvent(&event)) {

@@ -21,7 +21,7 @@ void Minion::Update(float dt) {
     const auto PIVOT_DIST = mat::Vec2(200.0f, 0.0f);   // Distance from pivot of rotation.
     
     if(auto spPivot = alienCenter.lock()) {
-        arcDeg += std::fmod(ROTATIONAL_VEL * dt, 360.0f);
+        arcDeg = std::fmod(arcDeg + ROTATIONAL_VEL * dt, 360.0f);
         auto pos = PIVOT_DIST.Rotated(mat::Deg2Rad(arcDeg));
         pos += spPivot->box.Center();
 
