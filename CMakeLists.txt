@@ -40,13 +40,13 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=address -fno-omit-frame-pointer")
 endif()
 
+if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+    set(SDL2_PATH "C:/dev/SDL2-mingw64/i686-w64-mingw32")
+endif()
+
 # SDL2 https://github.com/aminosbh/sdl2-cmake-modules
 ## Appends custom cmake modules
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/sdl2)
-
-# if(NOT APPLE)
-    set(SDL2_PATH "C:/dev/SDL2-mingw64/i686-w64-mingw32")
-# endif()
 
 find_package(SDL2 REQUIRED)
 find_package(SDL2_ttf REQUIRED)
@@ -55,5 +55,6 @@ find_package(SDL2_mixer REQUIRED)
 
 # Executable
 add_executable(${PROJECT_NAME} ${src_files})
-target_include_directories(${PROJECT_NAME} PRIVATE "${header_dir}" "/opt/homebrew/include/SDL2")
+#target_include_directories(${PROJECT_NAME} PRIVATE "${header_dir}" "/opt/homebrew/include/SDL2" "${SDL2_PATH}/include")
+target_include_directories(${PROJECT_NAME} PRIVATE "${header_dir}" "${SDL2_INCLUDE_DIRS}")
 target_link_libraries(${PROJECT_NAME} PUBLIC SDL2::Main SDL2::TTF SDL2::Image SDL2::Mixer)
