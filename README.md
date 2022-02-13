@@ -24,7 +24,7 @@ make -C build
 
 ## Dependencies
 - SDL2, SDL2_image, SDL2_mixer, SDL2_ttf;
-- Cmake (3.10 or above);
+- Cmake (3.16.3 or above);
 - GNU make;
 - GCC compiler (4.8.1 or above);
 - [SDL2 Cmake modules][sdl2_cmake].

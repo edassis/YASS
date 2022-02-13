@@ -5,10 +5,10 @@
             "label": "Build",
             "type": "shell",
             "isBackground": false,
-            "command": "make",
-            "args": ["-j13"],
+            "command": "cmake",
+            "args": ["--build", "build"],
             "options": {
-                "cwd": "${workspaceFolder}/build",
+                "cwd": "${workspaceFolder}",
             },
             "problemMatcher": [],
             "group": {

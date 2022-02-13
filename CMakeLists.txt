@@ -1,10 +1,12 @@
-cmake_minimum_required(VERSION 3.20)
+include(CMakePrintHelpers)
 
+cmake_minimum_required(VERSION 3.16.3)
 project(SDL_engine VERSION 0.5 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_CXX_EXTENSIONS False)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # set(CMAKE_MAKE_PROGRAM "Unix Makefile")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}")   # binary destination
@@ -56,5 +58,9 @@ find_package(SDL2_mixer REQUIRED)
 # Executable
 add_executable(${PROJECT_NAME} ${src_files})
 #target_include_directories(${PROJECT_NAME} PRIVATE "${header_dir}" "/opt/homebrew/include/SDL2" "${SDL2_PATH}/include")
-target_include_directories(${PROJECT_NAME} PRIVATE "${header_dir}" "${SDL2_INCLUDE_DIRS}")
+target_include_directories(${PROJECT_NAME} PRIVATE "${SDL2_INCLUDE_DIRS}")
+target_include_directories(${PROJECT_NAME} PRIVATE "${header_dir}")
 target_link_libraries(${PROJECT_NAME} PUBLIC SDL2::Main SDL2::TTF SDL2::Image SDL2::Mixer)
+
+# cmake_print_variables(INCLUDE_DIRECTORIES)
+cmake_print_properties(TARGETS ${PROJECT_NAME} PROPERTIES INCLUDE_DIRECTORIES)
