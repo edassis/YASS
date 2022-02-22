@@ -45,8 +45,8 @@ void Sprite::Open(std::string file) {
         return;
     }
     
+    // Define sprite's width as his frame width.
     width = width/frameCount;
-    height = height/frameCount;
     
     this->SetClip(0, 0, GetWidth(), GetHeight());
 
@@ -84,7 +84,7 @@ bool Sprite::IsOpen() {
 void Sprite::Update(float dt) {
     timeElapsed += dt;
     
-    if(timeElapsed > frameCurrent*frameTime) {
+    if(timeElapsed > float(frameCurrent)*frameTime) {
         SetFrame((frameCurrent+1)%frameCount);
     }
 }
@@ -106,22 +106,19 @@ void Sprite::SetClip(int x, int y, int w, int h) {  // Origin
 }
 
 void Sprite::SetScale(mat::Vec2& scale) {
-    // scale.x = (scale.x < 0.01f) ? 1.0f : scale.x;
-    // scale.y = (scale.y < 0.01f) ? 1.0f : scale.y;
-    this->scale = scale;
-
-    // * Update parent GameObject's width/height keeping him centralized in the same position.
-    auto centerPoint = associated.box.Center();
-    UpdateBoxSize();
-    associated.box.Centralize(centerPoint);
+    SetScale(scale.x, scale.y);
 }
 
 void Sprite::SetScale(float x, float y) {
     // x = (x < 0.01f) ? 1.0f : x;
     // y = (y < 0.01f) ? 1.0f : y;
-
     this->scale.x = x;
     this->scale.y = y;
+    
+    // * Update parent GameObject's width/height keeping him centralized in the same position.
+    auto centerPoint = associated.box.Center();
+    UpdateBoxSize();
+    associated.box.Centralize(centerPoint);
 }
 
 void Sprite::SetAngle(const double& deg) {

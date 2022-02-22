@@ -2,17 +2,18 @@
 #include "engine/GameObject.h"
 #include "engine/Sprite.h"
 
-Bullet::Bullet(GameObject& associated, float angle, float speed, int damage, float maxDistance, std::string spritePath) : Component(associated) {
+Bullet::Bullet(GameObject& associated, float angle, float speed, int damage, float maxDistance, std::string spritePath, int frameCount, float frameTime) : Component(associated) {
     this->damage = damage;
     this->speed.x = speed;
     this->speed = this->speed.Rotated(angle);
     this->distanceLeft = maxDistance;
 
-    auto* pSprite = new Sprite(associated, spritePath);
+    auto* pSprite = new Sprite(associated, spritePath, frameCount, frameTime);
     associated.AddComponent(*pSprite);
     
     // * Update angle.
     if (auto spSprite = std::dynamic_pointer_cast<Sprite>(associated.GetComponent("Sprite").lock()) ) {
+        spSprite->SetScale(2.0f, 2.0f);
         spSprite->SetAngle(mat::Rad2Deg(angle));
     } else {
         std::cout << "Warning! Bullet::Update() couldn't find the Sprite's pointer." << std::endl;

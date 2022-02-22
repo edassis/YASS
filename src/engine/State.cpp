@@ -61,7 +61,7 @@ void State::LoadAssets() {
         pBG->Open("assets/img/ocean.jpg");
     }
 
-    this->music.Open("assets/audio/stageState.ogg");
+    // this->music.Open("assets/audio/stageState.ogg");
     if(this->music.IsOpen()) {
         this->music.Play();
     }

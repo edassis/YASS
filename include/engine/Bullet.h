@@ -14,12 +14,12 @@ class Bullet : public Component {
         int damage;
     
     public:
-        Bullet(GameObject& associated, float angle, float speed, int damage, float maxDistance, std::string spritePath);
+        Bullet(GameObject& associated, float angle, float speed, int damage, float maxDistance, std::string spritePath, int frameCount = 1, float frameTime = 0.0f);
 
         int GetDamage();
         void Update(float dt) override;
         void Render() override;
-        bool Is(std::string type);
+        bool Is(std::string type) override;
 };
 
 #endif

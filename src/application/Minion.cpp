@@ -45,14 +45,14 @@ void Minion::Render() {}
 bool Minion::Is(std::string type) { return type == "Minion"; }
 
 void Minion::Shoot(mat::Vec2 target) {
+    const auto BULLET_DAMAGE = 10;
     const auto BULLET_SPEED = 350.0f;
-    const auto BULLET_DAMAGE = 10.0f;
     const auto BULLET_MAX_DIST = 3000.0f;
 
     auto angle = associated.box.Center().AngleToPoint(target);
 
     auto* rpBulletGO = new GameObject();
-    auto* rpBullet = new Bullet(*rpBulletGO, angle, BULLET_SPEED, BULLET_DAMAGE, BULLET_MAX_DIST, "assets/img/minionbullet1.png");
+    auto* rpBullet = new Bullet(*rpBulletGO, angle, BULLET_SPEED, BULLET_DAMAGE, BULLET_MAX_DIST, "assets/img/minionbullet2.png", 3, 0.1f);
 
     rpBulletGO->box.Centralize(associated.box);
 
