@@ -11,15 +11,23 @@ class Sprite : public Component {
     private:
         int width;
         int height;
+        
+        int frameCurrent;
+        int frameCount;
+        float frameTime;
+        float timeElapsed;
+
         mat::Vec2 scale;
         double angleDeg;    // degrees
 
         SDL_Texture* texture;
         SDL_Rect clipRect;
 
+        void UpdateBoxSize();       
+
     public:
         Sprite(GameObject& associated);
-        Sprite(GameObject& associated, std::string file);
+        Sprite(GameObject& associated, std::string file, int frameCount = 1, float frameTime = 1);
         ~Sprite();
 
         void Open(std::string file);
@@ -33,6 +41,10 @@ class Sprite : public Component {
         void SetScale(float x, float y);
         void SetAngle(const double& deg);
         void SetClip(int x, int y, int w, int h);
+        void SetFrame(int frame);
+        void SetFrameCount(int frameCount);
+        void SetFrameTime(float frameTime);
+        
         bool IsOpen();
 
         void Render(float x, float y, float w, float h);

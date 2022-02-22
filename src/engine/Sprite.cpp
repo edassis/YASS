@@ -1,4 +1,5 @@
 #include "engine/Sprite.h"
+#include <limits>
 
 #define INCLUDE_SDL
 #define INCLUDE_SDL_IMAGE
@@ -10,16 +11,26 @@
 #include <cmath>
 
 Sprite::Sprite(GameObject& associated) : Component(associated) {
+    this->frameCount = 1;
+    this->frameTime = std::numeric_limits<decltype(this->frameTime)>::max();
+    this->frameCurrent = 0;
+    this->timeElapsed = 0.0f;
+
     this->texture = nullptr;
+    
     this->width = 0;
     this->height = 0;
     this->scale = mat::Vec2(1.0f, 1.0f);
-    this->angleDeg = 0.0;
+    this->angleDeg = 0.0f;
 }   
 
-Sprite::Sprite(GameObject& associated, std::string file) : Component(associated) {
+Sprite::Sprite(GameObject& associated, std::string file, int frameCount, float frameTime) : Component(associated), frameCount(frameCount), frameTime(frameTime) {
+    this->frameCurrent = 0;
+    this->timeElapsed = 0.0f;
+
     this->scale = mat::Vec2(1.0f, 1.0f);
-    this->angleDeg = 0.0;
+    this->angleDeg = 0.0f;
+
     this->Open(file);
 }
 
@@ -33,11 +44,13 @@ void Sprite::Open(std::string file) {
         std::cout << "Error! Sprite::Open() failed to query texture: " << SDL_GetError() << std::endl;
         return;
     }
-    this->SetClip(0, 0, this->width, this->height);
+    
+    width = width/frameCount;
+    height = height/frameCount;
+    
+    this->SetClip(0, 0, GetWidth(), GetHeight());
 
-    // * Have to consider the scale.
-    associated.box.w = (float)GetWidth();
-    associated.box.h = (float)GetHeight();
+    UpdateBoxSize();
 }
 
 void Sprite::Render() {
@@ -68,9 +81,21 @@ bool Sprite::IsOpen() {
     return (this->texture != nullptr) ? true : false;
 }
 
-void Sprite::Update(float dt) {}
+void Sprite::Update(float dt) {
+    timeElapsed += dt;
+    
+    if(timeElapsed > frameCurrent*frameTime) {
+        SetFrame((frameCurrent+1)%frameCount);
+    }
+}
 
 bool Sprite::Is(std::string type) { return "Sprite" == type; }
+
+void Sprite::UpdateBoxSize() {
+    // Collision box may respect frame size.
+    this->associated.box.w = float(GetWidth());
+    this->associated.box.h = float(GetHeight());
+}
 
 // Sets/Gets --------
 void Sprite::SetClip(int x, int y, int w, int h) {  // Origin
@@ -80,34 +105,61 @@ void Sprite::SetClip(int x, int y, int w, int h) {  // Origin
     this->clipRect.h = h;
 }
 
-
 void Sprite::SetScale(mat::Vec2& scale) {
-    scale.x = (scale.x < 0.01f) ? 1.0f : scale.x;
-    scale.y = (scale.y < 0.01f) ? 1.0f : scale.y;
-
-    // * Update parent GameObject's witdh/height keeping him centralized in the same position.
-    auto centerPoint = associated.box.Center();
-    associated.box.w = float(GetWidth());
-    associated.box.h = float(GetHeight());
-    associated.box.Centralize(centerPoint);
-
+    // scale.x = (scale.x < 0.01f) ? 1.0f : scale.x;
+    // scale.y = (scale.y < 0.01f) ? 1.0f : scale.y;
     this->scale = scale;
+
+    // * Update parent GameObject's width/height keeping him centralized in the same position.
+    auto centerPoint = associated.box.Center();
+    UpdateBoxSize();
+    associated.box.Centralize(centerPoint);
 }
 
 void Sprite::SetScale(float x, float y) {
-    x = (x < 0.01f) ? 1.0f : x;
-    y = (y < 0.01f) ? 1.0f : y;
+    // x = (x < 0.01f) ? 1.0f : x;
+    // y = (y < 0.01f) ? 1.0f : y;
 
     this->scale.x = x;
     this->scale.y = y;
 }
 
+void Sprite::SetAngle(const double& deg) {
+    angleDeg = deg;
+}
+
+void Sprite::SetFrame(int frame) {
+    if(frame < 0 || frame >= frameCount) {
+        std::cout << "Error! Sprite::SetFrame() called with out of bonds frame value." <<  std::endl;
+    }
+    this->frameCurrent = frame;
+
+    auto frame_posx = frameCurrent*clipRect.w;
+
+    SetClip(frame_posx, clipRect.y, clipRect.w, clipRect.h);
+}
+
+void Sprite::SetFrameCount(int frameCount) {
+    if(frameCount < 0) {
+        std::cout << "Error! Sprite::SetFrameCount() called with negative frameCount." <<  std::endl;
+    }
+ 
+    this->frameCount = frameCount;
+    SetFrame(0);
+    // Collision box must be adjusted 
+    UpdateBoxSize();
+}
+
+void Sprite::SetFrameTime(float frameTime) {
+    this->frameTime = frameTime;
+}
+
 int Sprite::GetWidth() {
-    return int((float)this->width * this->scale.x);
+    return (int)round(this->width * GetScale().x);
 }
 
 int Sprite::GetHeight() {
-    return int((float)this->height * this->scale.y);
+    return (int)round(this->height * GetScale().y);
 }
 
 mat::Vec2 Sprite::GetScale() {
@@ -116,8 +168,4 @@ mat::Vec2 Sprite::GetScale() {
 
 double Sprite::GetAngle() {
     return angleDeg;
-}
-
-void Sprite::SetAngle(const double& deg) {
-    angleDeg = deg;
 }
