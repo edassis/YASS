@@ -5,8 +5,8 @@
             "label": "Build",
             "type": "shell",
             "isBackground": false,
-            "command": "cmake",
-            "args": ["--build", "build"],
+            "command": "./run.sh",
+            "args": [],
             "options": {
                 "cwd": "${workspaceFolder}",
             },

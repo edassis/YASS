@@ -6,6 +6,10 @@
 #include <unordered_map>
 
 enum class KEYS {
+	A_KEY = SDLK_a,
+	D_KEY = SDLK_d,
+	W_KEY = SDLK_w,
+	S_KEY = SDLK_s,
 	LEFT_ARROW_KEY = SDLK_LEFT,
 	RIGHT_ARROW_KEY = SDLK_RIGHT,
 	UP_ARROW_KEY = SDLK_UP,

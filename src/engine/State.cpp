@@ -33,11 +33,11 @@ State::State() : music(), currentCamera(new Camera()) {
     TMGameObj->AddComponent(*TM);
     AddObject(*TMGameObj);
 
-    auto* alienGO = new GameObject();
-    auto* alien = new Alien(*alienGO, 3);
-    alienGO->box.Centralize(mat::Vec2(300.0f, 200.0f));
-    alienGO->AddComponent(*alien);
-    AddObject(*alienGO);
+    // auto* alienGO = new GameObject();
+    // auto* alien = new Alien(*alienGO, 3);
+    // alienGO->box.Centralize(mat::Vec2(300.0f, 200.0f));
+    // alienGO->AddComponent(*alien);
+    // AddObject(*alienGO);
 }
 
 State::~State() {}

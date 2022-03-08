@@ -3,6 +3,7 @@
 
 #include "engine/Component.h"
 #include "engine/Mat.h"
+#include <memory>
 
 class PenguinBody : public Component {
     private:
@@ -17,10 +18,10 @@ class PenguinBody : public Component {
         ~PenguinBody();
         
         // Component
-        void Start();
-        void Update(float dt);
-        void Render();
-        bool Is(std::string type);
+        void Start() override;
+        void Update(float dt) override;
+        void Render() override;
+        bool Is(std::string type) override;
 
         PenguinBody* player;
 };

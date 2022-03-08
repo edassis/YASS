@@ -18,9 +18,9 @@ class PenguinCannon : public Component {
         
         void Shoot();
        
-        void Update(float dt);
-        void Render();
-        bool Is(std::string type);
+        void Update(float dt) override;
+        void Render() override;
+        bool Is(std::string type) override;
 };
 
 #endif
