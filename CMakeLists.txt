@@ -8,7 +8,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_CXX_EXTENSIONS False)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# set(CMAKE_MAKE_PROGRAM "Unix Makefile")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}")   # binary destination
 
 set(src_dir "${PROJECT_SOURCE_DIR}/src")
@@ -51,10 +50,6 @@ endif()
 # SDL2 https://github.com/aminosbh/sdl2-cmake-modules
 ## Appends custom cmake modules
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/sdl2)
-
-# if(NOT APPLE)
-# set(SDL2_PATH "C:/dev/SDL2-mingw64/i686-w64-mingw32")
-# endif()
 
 find_package(SDL2 REQUIRED)
 find_package(SDL2_ttf REQUIRED)

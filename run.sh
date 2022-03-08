@@ -1,7 +1,15 @@
 #!/bin/sh
-cmake -G "Unix Makefiles" -B build -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=gcc-11 -DCMAKE_CXX_COMPILER=g++-11 -Wno-dev
-cmake --build build
+cc='gcc'
+cxx='g++'
 
-cmake -G "Unix Makefiles" -B build -DCMAKE_BUILD_TYPE=Debug -Wno-dev
+if [[ $OSTYPE == 'darwin'* ]]; then
+    cc='gcc-11'
+    cxx='g++-11'
+fi
 
-cmake --build build
+# Create build files
+cmake -G "Unix Makefiles" -B build -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=$cc -DCMAKE_CXX_COMPILER=$cxx -Wno-dev
+# cmake -G "Unix Makefiles" -B build -DCMAKE_BUILD_TYPE=Debug -Wno-dev
+
+# Build
+cmake --build build --clean-first
