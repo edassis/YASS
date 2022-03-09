@@ -33,7 +33,6 @@ void PenguinCannon::Shoot() {
     rpBulletGO->box.Centralize(startPos);
 
     rpBulletGO->AddComponent(*rpBullet);
-
     Game::GetState().AddObject(*rpBulletGO);
 }
 
@@ -53,13 +52,14 @@ void PenguinCannon::Update(float dt) {
     associated.box.Centralize(spBodyGO->box.Center());
     
     // Points cannon to mouse
-    angle = associated.box.Center().AngleToPoint(mousePos);
-    std::cout << "angle to mouse: " << angle << std::endl;
-    if(auto spSprite = std::dynamic_pointer_cast<Sprite>(associated.GetComponent("Sprite").lock())) {
-        spSprite->SetAngle(angle); 
+    angle = mat::Rad2Deg(associated.box.Center().AngleToPoint(mousePos));
+    if( auto spSprite = std::dynamic_pointer_cast<Sprite>(associated.GetComponent("Sprite").lock()) ) {
+        spSprite->SetAngle(angle);
+    } else {
+        std::cout << "Warning! PenguinCannon::Update() couldn't find the Sprite's pointer." << std::endl;
     }
 
-    if(inputManager.KeyPress(KEYS::LEFT_ARROW_KEY)) {
+    if(inputManager.KeyPress(KEYS::LEFT_MOUSE_BUTTON)) {
         Shoot();
     }
 }
