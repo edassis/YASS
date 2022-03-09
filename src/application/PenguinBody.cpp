@@ -10,7 +10,7 @@
 PenguinBody::PenguinBody(GameObject& associated) : Component(associated) {
     speed = {0.0f, 0.0f};
     angle = 0.0f;
-    linearSpeed = 0;
+    linearSpeed = 0;        // ? How should I use this?
     hp = 10;
     
     auto* rpSprite = new Sprite(associated, "assets/img/penguin.png");
@@ -71,8 +71,11 @@ void PenguinBody::Update(float dt) {
     speed.x = std::max(std::min(speed.x, maxSpeed), -maxSpeed);
     speed.y = std::max(std::min(speed.y, maxSpeed), -maxSpeed);
 
+    auto curPos = associated.box.GetPos();
+    associated.box.SetPos(curPos + speed);
+
     // Die
-    // Check in cannon either body is dead or not.
+    // Check if penguin's body died.
     if (hp <= 0) {
         associated.RequestDelete();
     }
@@ -80,4 +83,4 @@ void PenguinBody::Update(float dt) {
 
 void PenguinBody::Render() {}
 
-bool PenguinBody::Is(std::string type) { return "PenguinBody" == type; }
+bool PenguinBody::Is(std::string type) { return type == "PenguinBody"; }

@@ -12,6 +12,7 @@
 #include "engine/CameraFollower.h"
 
 #include "application/Alien.h"
+#include "application/PenguinBody.h"
 
 #include <iostream>
 
@@ -38,6 +39,12 @@ State::State() : music(), currentCamera(new Camera()) {
     // alienGO->box.Centralize(mat::Vec2(300.0f, 200.0f));
     // alienGO->AddComponent(*alien);
     // AddObject(*alienGO);
+
+    auto* penguinGO = new GameObject();
+    auto* penguin = new PenguinBody(*penguinGO);
+    penguinGO->box.Centralize(mat::Vec2(500.0f, 280.0f));
+    penguinGO->AddComponent(*penguin);
+    AddObject(*penguinGO);
 }
 
 State::~State() {}

@@ -14,16 +14,16 @@ class PenguinBody : public Component {
         int hp;
 
     public:
+        PenguinBody* player;
+        
         PenguinBody(GameObject& associated);
         ~PenguinBody();
-        
+
         // Component
         void Start() override;
         void Update(float dt) override;
         void Render() override;
         bool Is(std::string type) override;
-
-        PenguinBody* player;
 };
 
 #endif
