@@ -4,6 +4,7 @@
 namespace mat {
 
 const float PI = 3.141593f;
+const float EPS = 1e-6f;
 
 class Vec2;
 

@@ -54,6 +54,7 @@ void PenguinCannon::Update(float dt) {
     
     // Points cannon to mouse
     angle = associated.box.Center().AngleToPoint(mousePos);
+    std::cout << "angle to mouse: " << angle << std::endl;
     if(auto spSprite = std::dynamic_pointer_cast<Sprite>(associated.GetComponent("Sprite").lock())) {
         spSprite->SetAngle(angle); 
     }
