@@ -23,7 +23,7 @@ file(
 # message(${CMAKE_CXX_COMPILER_ID})
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang|GNU")
   # target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wunreachable-code -pedantic -Wfloat-equal -ggdb -Og -DDEBUG)
-  set(CMAKE_CXX_FLAGS_DEBUG "-Wno-dev -Wall -Wextra -Wunreachable-code -pedantic -Wfloat-equal -Wconversion -ggdb -O0 -DDEBUG")
+  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wno-dev -Wall -Wextra -Wunreachable-code -pedantic -Wfloat-equal -Wconversion -ggdb -O0 -DDEBUG")
   set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_THREAD_SAFE")
 endif()
 
@@ -64,4 +64,4 @@ target_include_directories(${PROJECT_NAME} PRIVATE "${header_dir}")
 target_link_libraries(${PROJECT_NAME} PUBLIC SDL2::Main SDL2::TTF SDL2::Image SDL2::Mixer)
 
 # cmake_print_variables(INCLUDE_DIRECTORIES)
-cmake_print_properties(TARGETS ${PROJECT_NAME} PROPERTIES INCLUDE_DIRECTORIES)
+# cmake_print_properties(TARGETS ${PROJECT_NAME} PROPERTIES INCLUDE_DIRECTORIES)

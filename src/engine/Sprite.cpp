@@ -82,10 +82,12 @@ bool Sprite::IsOpen() {
 }
 
 void Sprite::Update(float dt) {
+    // ? Should store total running time? (Is telling the current frame time).
     timeElapsed += dt;
     
-    if(timeElapsed > float(frameCurrent)*frameTime) {
+    if(frameTime < timeElapsed) {
         SetFrame((frameCurrent+1)%frameCount);
+        timeElapsed = 0.0f;
     }
 }
 
@@ -121,8 +123,8 @@ void Sprite::SetScale(float x, float y) {
     associated.box.Centralize(centerPoint);
 }
 
-void Sprite::SetAngle(const double& deg) {
-    angleDeg = deg;
+void Sprite::SetAngle(const float& rad) {
+    angleDeg = mat::Rad2Deg(rad);
 }
 
 void Sprite::SetFrame(int frame) {
@@ -163,6 +165,6 @@ mat::Vec2 Sprite::GetScale() {
     return scale;
 }
 
-double Sprite::GetAngle() {
-    return angleDeg;
+float Sprite::GetAngle() {
+    return mat::Deg2Rad(angleDeg);
 }

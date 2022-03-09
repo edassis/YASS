@@ -41,20 +41,20 @@ void PenguinBody::Update(float dt) {
     auto& inputManager = InputManager::GetInstance();
     
     const float maxSpeed = 14.0f;
-    float friction = 0.8f;
+    const float friction = 1.0f;
     const float acc = 4.0f;
-    const float angleStep = 90.0f;
+    const float angleStep = mat::Deg2Rad(90.0f);
 
     auto incSpeed = 0.0f;
     auto incAngle = 0.0f;
 
     if(inputManager.IsKeyDown(KEYS::A_KEY)) {
         // rotate left
-        incAngle += angleStep * dt;
+        incAngle -= angleStep * dt;
     }
     if(inputManager.IsKeyDown(KEYS::D_KEY)) {
         // rotate right
-        incAngle -= angleStep * dt;
+        incAngle += angleStep * dt;
     }
 
     if(inputManager.IsKeyDown(KEYS::W_KEY)) {
@@ -65,11 +65,12 @@ void PenguinBody::Update(float dt) {
         // decrease speed
         incSpeed -= acc * dt;
     }
-
-    angle = std::fmod(angle + incAngle, 360.0f);
-    angle += angle + mat::EPS < 0.0f ? 360.0f : 0.0f;
     
-    if(std::fabs(incAngle) - mat::EPS > 0.0f) {
+    angle += incAngle;
+    angle += angle + mat::EPS < 0.0f ? 2*mat::PI : 0.0f;
+    angle = std::fmod(angle, 2*mat::PI);
+
+    if(std::fabs(incAngle) - mat::EPS > 0.0f) { // Check if angle changed.
         if( auto spSprite = std::dynamic_pointer_cast<Sprite>(associated.GetComponent("Sprite").lock()) ) {
             spSprite->SetAngle(angle);
         } else {
@@ -77,26 +78,26 @@ void PenguinBody::Update(float dt) {
         }
     }
     
-    mat::Vec2 speedVec(incSpeed, 0.0f);
-    speedVec = speedVec.Rotated(mat::Deg2Rad(angle));
+    mat::Vec2 speedIncVec(incSpeed, 0.0f);
+    speedIncVec = speedIncVec.Rotated(angle);
 
-    speed += speedVec;
+    speed += speedIncVec;
+
+    auto dest = associated.box.GetPos() + speed;
 
     // If not accelerating, should apply friction
     if(std::fabs(incSpeed) < mat::EPS) {
         // if friction greater than speed should use the remanescent speed value as friction
         mat::Vec2 frictionVec(std::min(friction, speed.Length())*dt); 
-        frictionVec = frictionVec.Rotated(speed.Angle());
+        frictionVec = frictionVec.Rotated(dest.Angle());
         speed -= frictionVec;
     } 
     
     speed.x = std::max(std::min(speed.x, maxSpeed), -maxSpeed);
     speed.y = std::max(std::min(speed.y, maxSpeed), -maxSpeed);
 
-    auto curPos = associated.box.GetPos();
-    associated.box.SetPos(curPos + speed);
+    associated.box.SetPos(dest);
 
-    // Die
     // Check if penguin's body died.
     if (hp <= 0) {
         associated.RequestDelete();

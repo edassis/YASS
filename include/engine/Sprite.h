@@ -18,7 +18,7 @@ class Sprite : public Component {
         float timeElapsed;
 
         mat::Vec2 scale;
-        double angleDeg;    // degrees
+        float angleDeg;    // degrees
 
         SDL_Texture* texture;
         SDL_Rect clipRect;
@@ -35,11 +35,11 @@ class Sprite : public Component {
         int GetWidth();
         int GetHeight();
         mat::Vec2 GetScale();
-        double GetAngle();
+        float GetAngle();
 
         void SetScale(mat::Vec2& v);
         void SetScale(float x, float y);
-        void SetAngle(const double& deg);
+        void SetAngle(const float& deg);
         void SetClip(int x, int y, int w, int h);
         void SetFrame(int frame);
         void SetFrameCount(int frameCount);

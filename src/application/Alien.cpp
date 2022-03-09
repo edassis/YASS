@@ -123,7 +123,7 @@ void Alien::Update(float dt) {
     }
 
     // * Rotate Alien's Sprite
-    double angle = -25.0 * dt;
+    auto angle = mat::Deg2Rad(-25.0f) * dt;
     if( auto spSprite = std::dynamic_pointer_cast<Sprite>(associated.GetComponent("Sprite").lock()) ) {
         angle += spSprite->GetAngle();
         spSprite->SetAngle(angle);

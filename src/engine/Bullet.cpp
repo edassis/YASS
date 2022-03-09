@@ -14,7 +14,7 @@ Bullet::Bullet(GameObject& associated, float angle, float speed, int damage, flo
     // * Update angle.
     if (auto spSprite = std::dynamic_pointer_cast<Sprite>(associated.GetComponent("Sprite").lock()) ) {
         spSprite->SetScale(2.0f, 2.0f);
-        spSprite->SetAngle(mat::Rad2Deg(angle));
+        spSprite->SetAngle(angle);
     } else {
         std::cout << "Warning! Bullet::Update() couldn't find the Sprite's pointer." << std::endl;
     }

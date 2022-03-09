@@ -30,7 +30,7 @@ void Minion::Update(float dt) {
         auto angle = spPivot->box.Center().AngleToPoint(associated.box.Center());
         
         if( auto spSprite = std::dynamic_pointer_cast<Sprite>(associated.GetComponent("Sprite").lock()) )  {
-            spSprite->SetAngle(mat::Rad2Deg(angle));  // * Considers normal vector poiting downwards.
+            spSprite->SetAngle(angle);  // * Considers normal vector poiting downwards.
         } else {
             std::cout << "Warning! Minion::Update() couldn't find the Sprite's pointer." << std::endl;
         }
