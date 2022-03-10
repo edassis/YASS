@@ -1,6 +1,7 @@
 #ifndef __MAT_H__
 #define __MAT_H__
 
+#include <cmath>
 namespace mat {
 
 const float PI = 3.141593f;
@@ -42,13 +43,15 @@ class Vec2 {
         ~Vec2();
 
         Vec2& operator=(const Vec2& v);
-        Vec2 operator+(const Vec2& v);
-        Vec2& operator+=(const Vec2& v);
-        Vec2 operator-(const Vec2& v);
-        Vec2& operator-=(const Vec2& v);
         bool operator==(const Vec2& v) = delete;
         
-        Vec2 operator*(const float& x);
+        Vec2 operator+(const Vec2& v) const;
+        Vec2& operator+=(const Vec2& v); 
+        
+        Vec2 operator-(const Vec2& v) const;
+        Vec2& operator-=(const Vec2& v);
+        
+        Vec2 operator*(const float& x) const;
         Vec2& operator*=(const float& x);
 
         /**
@@ -89,15 +92,35 @@ class Vec2 {
         static float Dot(const Vec2& v1, const Vec2& v2);
 };
 
+// ---Functions
+inline float Deg2Rad(const float& deg) {
+    return PI*deg/180;
+}
+
+inline float Rad2Deg(const float& rad) {
+    return 180*rad/PI;
+}
+
+inline float randf() {
+    return (float)rand()/(float)RAND_MAX;
+}
+
 /** 
  * Distance of two rectangles' central point.
 */
-float CentersDistance(const Rect& r1, const Rect& r2);
+inline float CentersDistance(const Rect& r1, const Rect& r2) {
+    Vec2 diff = r1.Center() - r2.Center();
+    return diff.Length();
+}
 
-float Deg2Rad(const float& deg);
-float Rad2Deg(const float& rad);
+inline Vec2 Rotate(const Vec2& v, const float& angle) {
+    float cs = cosf(angle), sn = sinf(angle);
+    return Vec2(v.x*cs - v.y*sn, v.x*sn + v.y*cs);
+}
 
-float randf();
+static inline Vec2 Normalize(const Vec2& v) {
+    return v * (1.0f / v.Length());
+}
 
 } // end Mat;
 

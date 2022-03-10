@@ -76,7 +76,7 @@ Vec2& Vec2::operator=(const Vec2& v) {
     return *this;
 }
 
-Vec2 Vec2::operator+(const Vec2& v) {
+Vec2 Vec2::operator+(const Vec2& v) const {
     return Vec2(x+v.x,y+v.y);
 }
 
@@ -86,7 +86,7 @@ Vec2& Vec2::operator+=(const Vec2& v) {
     return *this;
 }
 
-Vec2 Vec2::operator-(const Vec2& v) {
+Vec2 Vec2::operator-(const Vec2& v) const {
     return Vec2(x-v.x, y-v.y);
 }
 
@@ -96,7 +96,7 @@ Vec2& Vec2::operator-=(const Vec2& v) {
     return *this;
 }
 
-Vec2 Vec2::operator*(const float& num) {
+Vec2 Vec2::operator*(const float& num) const {
     return Vec2(x*num, y*num);
 }
 
@@ -135,7 +135,7 @@ float Vec2::Dot(const Vec2& v) const {
 
 bool Vec2::IsNormalized() const {
     // return (std::abs(x) <= 1.001 && std::abs(y) <= 1.001);    // ? How to properly handle fp imprecision? 
-    return std::abs(this->Length() - 1.0f) < 0.01f;
+    return std::abs(this->Length() - 1.0f) < EPS;
 }
 
 float Vec2::Length() const {
@@ -143,13 +143,11 @@ float Vec2::Length() const {
 }
 
 Vec2 Vec2::Normalized() const {
-    return Vec2(x/Length(), y/Length());
+    return Normalize(*this);
 }
 
 Vec2 Vec2::Rotated(const float& rad) const {
-    float x1 = float(x*cos(rad) - y*sin(rad));
-    float y1 = float(y*cos(rad) + x*sin(rad));
-    return Vec2(x1, y1);
+    return Rotate(*this, rad);
 }
 
 float Vec2::Det(const Vec2& v1, const Vec2& v2) {
@@ -158,24 +156,6 @@ float Vec2::Det(const Vec2& v1, const Vec2& v2) {
 
 float Vec2::Dot(const Vec2& v1, const Vec2& v2) {
     return v1.x*v2.x + v1.y*v2.y;   // dot = x1*x2 + y1*y2
-}
-
-// ---Functions
-float Deg2Rad(const float& deg) {
-    return PI*deg/180;
-}
-
-float Rad2Deg(const float& rad) {
-    return 180*rad/PI;
-}
-
-float randf() {
-    return (float)rand()/(float)RAND_MAX;
-}
-
-float CentersDistance(const Rect& r1, const Rect& r2) {
-    Vec2 diff = r1.Center() - r2.Center();
-    return diff.Length();
 }
 
 } // end of namespace mat
