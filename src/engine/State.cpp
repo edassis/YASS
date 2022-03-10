@@ -46,7 +46,7 @@ State::State() : music(), currentCamera(new Camera()) {
     penguinGO->box.Centralize(mat::Vec2(500.0f, 280.0f));
     penguinGO->AddComponent(*penguin);
     auto wpPenguin = AddObject(*penguinGO);
-
+    player = wpPenguin;
     GetCamera().Follow(wpPenguin);
 }
 
@@ -158,4 +158,8 @@ std::weak_ptr<GameObject> State::GetObjectPtr(GameObject& go) {
 
 Camera& State::GetCamera() {
     return *currentCamera;
+}
+
+std::weak_ptr<GameObject> State::GetPlayerPointer() {
+    return player;
 }

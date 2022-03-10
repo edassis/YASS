@@ -24,11 +24,11 @@ PenguinBody::PenguinBody(GameObject& associated) : Component(associated) {
     associated.AddComponent(*rpSprite);
     associated.AddComponent(*rpCollider);
 
-    player = this;
+    // player = this;
 }
 
 PenguinBody::~PenguinBody() {
-    player = nullptr;
+    // player = nullptr;
 }
 
 void PenguinBody::Start() {
@@ -101,11 +101,6 @@ void PenguinBody::Update(float dt) {
     speed.y = std::max(std::min(speed.y, maxSpeed), -maxSpeed);
 
     associated.box.SetPos(dest);
-
-    // Check if penguin's body died.
-    if (hp <= 0) {
-        associated.RequestDelete();
-    }
 }
 
 void PenguinBody::Render() {}
@@ -113,8 +108,20 @@ void PenguinBody::Render() {}
 bool PenguinBody::Is(std::string type) { return type == "PenguinBody"; }
 
 void PenguinBody::NotifyCollision(const GameObject& other) {
-    if(auto spBullet = std::dynamic_pointer_cast<Bullet>(other.GetComponent("Bullet").lock())) {
-        // Take damage
+    auto spBullet = std::dynamic_pointer_cast<Bullet>(other.GetComponent("Bullet").lock());
+    if(!spBullet) return;
+
+    auto spPlayer = Game::GetState().GetPlayerPointer().lock();
+    
+    // Take damage
+    // If Penguin shoot with IsTargetPlayer off it's possible to cause a self injure xD 
+    if(spBullet->IsTargetPlayer() && spPlayer.get() == &associated
+            || !spBullet->IsTargetPlayer()) {
         hp -= spBullet->GetDamage();
+    }
+
+    if(hp <= 0) {
+        associated.RequestDelete();
+        if(spPlayer.get() == &associated) Game::GetState().GetCamera().Unfollow();
     }
 }

@@ -12,6 +12,7 @@ class State {
         std::weak_ptr<Sprite> bg;
         Music music;
         std::shared_ptr<Camera> currentCamera;
+        std::weak_ptr<GameObject> player;
         std::vector<std::shared_ptr<GameObject>> objectArray;
         
         bool quitRequested;
@@ -35,6 +36,7 @@ class State {
 
         void AddEnemy(int mouseX, int mouseY);
         Camera& GetCamera();
+        std::weak_ptr<GameObject> GetPlayerPointer();
 };
 
 #endif

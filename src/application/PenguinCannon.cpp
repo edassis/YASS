@@ -24,7 +24,8 @@ void PenguinCannon::Shoot() {
     const auto BULLET_MAX_DIST = 3000.0f;
     
     auto* rpBulletGO = new GameObject();
-    auto* rpBullet = new Bullet(*rpBulletGO, associated.angle, BULLET_SPEED, BULLET_DAMAGE, BULLET_MAX_DIST, "assets/img/penguinbullet.png", 4, 0.12f);
+    auto* rpBullet = new Bullet(*rpBulletGO, associated.angle, BULLET_SPEED,
+            BULLET_DAMAGE, BULLET_MAX_DIST, "assets/img/penguinbullet.png", 4, 0.12f, false);
 
     mat::Vec2 startPos;
     if(auto spBodyGO = wpBody.lock()) {

@@ -14,7 +14,7 @@ class PenguinBody : public Component {
         int hp;
 
     public:
-        PenguinBody* player;
+        // PenguinBody* player;
         
         PenguinBody(GameObject& associated);
         ~PenguinBody();

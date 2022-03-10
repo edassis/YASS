@@ -12,11 +12,14 @@ class Bullet : public Component {
         mat::Vec2 speed;
         float distanceLeft;
         int damage;
+        bool targetsPlayer;
     
     public:
-        Bullet(GameObject& associated, float angle, float speed, int damage, float maxDistance, std::string spritePath, int frameCount = 1, float frameTime = 0.0f);
+        Bullet(GameObject& associated, float angle, float speed, int damage, float maxDistance, std::string spritePath, int frameCount = 1, float frameTime = 0.0, bool targetsPlayer = true);
 
-        int GetDamage();
+        int GetDamage() const;
+        bool IsTargetPlayer() const;
+
         void Update(float dt) override;
         void Render() override;
         bool Is(std::string type) override;

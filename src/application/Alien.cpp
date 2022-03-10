@@ -134,11 +134,6 @@ void Alien::Update(float dt) {
     // } else {
     //     std::cout << "Warning! Alien::Update() couldn't find the Sprite's pointer." << std::endl;
     // }
-
-    // * Dead.
-    if (hp <= 0) {
-        associated.RequestDelete();
-    }
 }
 
 void Alien::Render() {}
@@ -152,8 +147,13 @@ Alien::Action::Action(ActionType type, float x, float y) {
 }
 
 void Alien::NotifyCollision(const GameObject& other) {
-    if(auto spBullet = std::dynamic_pointer_cast<Bullet>(other.GetComponent("Bullet").lock())) {
-        // Take damage
-        hp -= spBullet->GetDamage();
+    auto spBullet = std::dynamic_pointer_cast<Bullet>(other.GetComponent("Bullet").lock());
+    if(!spBullet || spBullet->IsTargetPlayer()) return;
+    
+    // Take damage
+    hp -= spBullet->GetDamage();
+    
+    if (hp <= 0) {
+        associated.RequestDelete();
     }
 }
