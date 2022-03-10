@@ -16,6 +16,7 @@ class GameObject {
 
     public:
         mat::Rect box;
+        float angle;
 
         GameObject();
         ~GameObject();

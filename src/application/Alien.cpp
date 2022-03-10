@@ -5,13 +5,16 @@
 #include "engine/InputManager.h"
 #include "engine/Game.h"
 #include "engine/Mat.h"
+#include "engine/Collider.h"
 
 Alien::Alien(GameObject& associated, int nMinion) : Component(associated) {
     this->hp = 30;
     this->nMinion = nMinion;
 
     auto* rpSprite = new Sprite(associated, "assets/img/alien.png");
+    auto* rpCollider = new Collider(associated);
     associated.AddComponent(*rpSprite);
+    associated.AddComponent(*rpCollider);
 }
 
 Alien::~Alien() {}
@@ -123,13 +126,13 @@ void Alien::Update(float dt) {
     }
 
     // * Rotate Alien's Sprite
-    auto angle = mat::Deg2Rad(-25.0f) * dt;
-    if( auto spSprite = std::dynamic_pointer_cast<Sprite>(associated.GetComponent("Sprite").lock()) ) {
-        angle += spSprite->GetAngle();
-        spSprite->SetAngle(angle);
-    } else {
-        std::cout << "Warning! Alien::Update() couldn't find the Sprite's pointer." << std::endl;
-    }
+    auto angleStep = mat::Deg2Rad(-25.0f) * dt;
+    associated.angle += angleStep;
+    // if( auto spSprite = std::dynamic_pointer_cast<Sprite>(associated.GetComponent("Sprite").lock()) ) {
+    //     spSprite->SetAngle(associated.angle);
+    // } else {
+    //     std::cout << "Warning! Alien::Update() couldn't find the Sprite's pointer." << std::endl;
+    // }
 
     // * Dead.
     if (hp <= 0) {

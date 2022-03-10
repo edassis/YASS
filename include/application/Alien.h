@@ -29,8 +29,8 @@ class Alien : public Component {
         Alien(GameObject& associated, int nMinion);
         ~Alien();
 
-        void Start();
         /* Component */
+        void Start() override;
         void Update(float dt) override;
         void Render() override;
         bool Is(std::string type) override;

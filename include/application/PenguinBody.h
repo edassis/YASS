@@ -10,7 +10,7 @@ class PenguinBody : public Component {
         std::weak_ptr<GameObject> wpCannon;
         mat::Vec2 speed;
         int linearSpeed;
-        float angle;
+        // float angle;
         int hp;
 
     public:

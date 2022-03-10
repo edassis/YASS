@@ -10,6 +10,7 @@ class Collider: public Component {
     private:
         mat::Vec2 scale;
         mat::Vec2 offset;
+        // float angle;
 
     public:
         // bool enableDebug;
@@ -20,10 +21,15 @@ class Collider: public Component {
 
         void SetScale(mat::Vec2 scale);
         void SetOffset(mat::Vec2 offset);
+        // void SetAngle(float angle);
+        // float GetAngle();
 
         void Update(float dt) override;
         void Render() override;
         bool Is(std::string type) override;
+
+        bool IsColliding(const Collider& collider) const;
+        static bool IsColliding(mat::Rect& a, mat::Rect& b, float angleOfA, float angleOfB);
 };
 
 #endif

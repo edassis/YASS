@@ -1,6 +1,7 @@
 #include "engine/Bullet.h"
 #include "engine/GameObject.h"
 #include "engine/Sprite.h"
+#include "engine/Collider.h"
 
 Bullet::Bullet(GameObject& associated, float angle, float speed, int damage, float maxDistance, std::string spritePath, int frameCount, float frameTime) : Component(associated) {
     this->damage = damage;
@@ -8,13 +9,16 @@ Bullet::Bullet(GameObject& associated, float angle, float speed, int damage, flo
     this->speed = this->speed.Rotated(angle);
     this->distanceLeft = maxDistance;
 
-    auto* pSprite = new Sprite(associated, spritePath, frameCount, frameTime);
-    associated.AddComponent(*pSprite);
-    
+    auto* rpSprite = new Sprite(associated, spritePath, frameCount, frameTime);
+    auto* rpCollider = new Collider(associated);
+    associated.AddComponent(*rpSprite);
+    associated.AddComponent(*rpCollider);
+
+    associated.angle = angle; 
     // * Update angle.
     if (auto spSprite = std::dynamic_pointer_cast<Sprite>(associated.GetComponent("Sprite").lock()) ) {
         spSprite->SetScale(2.0f, 2.0f);
-        spSprite->SetAngle(angle);
+        // spSprite->SetAngle(angle);
     } else {
         std::cout << "Warning! Bullet::Update() couldn't find the Sprite's pointer." << std::endl;
     }

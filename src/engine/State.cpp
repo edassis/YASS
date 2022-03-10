@@ -10,6 +10,7 @@
 #include "engine/TileSet.h"
 #include "engine/InputManager.h"
 #include "engine/CameraFollower.h"
+#include "engine/Collider.h"
 
 #include "application/Alien.h"
 #include "application/PenguinBody.h"
@@ -41,6 +42,8 @@ State::State() : music(), currentCamera(new Camera()) {
     // AddObject(*alienGO);
 
     auto* penguinGO = new GameObject();
+    // auto* penguinCamFol = new CameraFollower(*penguinGO);
+    // penguinGO->AddComponent(*penguinCamFol);
     auto* penguin = new PenguinBody(*penguinGO);
     penguinGO->box.Centralize(mat::Vec2(500.0f, 280.0f));
     penguinGO->AddComponent(*penguin);

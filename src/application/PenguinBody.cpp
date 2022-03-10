@@ -4,6 +4,7 @@
 #include "engine/InputManager.h"
 #include "engine/GameObject.h"
 #include "engine/Sprite.h"
+#include "engine/Collider.h"
 #include "engine/State.h"
 #include <memory>
 
@@ -13,12 +14,14 @@
 
 PenguinBody::PenguinBody(GameObject& associated) : Component(associated) {
     speed = {0.0f, 0.0f};
-    angle = 0.0f;
+    // angle = 0.0f;
     linearSpeed = 0;        // ? How should I use this?
     hp = 10;
     
     auto* rpSprite = new Sprite(associated, "assets/img/penguin.png");
+    auto* rpCollider = new Collider(associated);
     associated.AddComponent(*rpSprite);
+    associated.AddComponent(*rpCollider);
 
     player = this;
 }
@@ -66,20 +69,20 @@ void PenguinBody::Update(float dt) {
         incSpeed -= acc * dt;
     }
     
-    angle += incAngle;
-    angle += angle + mat::EPS < 0.0f ? 2*mat::PI : 0.0f;
-    angle = std::fmod(angle, 2*mat::PI);
+    associated.angle += incAngle;
+    associated.angle += associated.angle + mat::EPS < 0.0f ? 2*mat::PI : 0.0f;
+    associated.angle = std::fmod(associated.angle, 2*mat::PI);
 
-    if(std::fabs(incAngle) - mat::EPS > 0.0f) { // Check if angle changed.
-        if( auto spSprite = std::dynamic_pointer_cast<Sprite>(associated.GetComponent("Sprite").lock()) ) {
-            spSprite->SetAngle(angle);
-        } else {
-            std::cout << "Warning! PenguinBody::Update() couldn't find the Sprite's pointer." << std::endl;
-        }
-    }
+    // if(std::fabs(incAngle) - mat::EPS > 0.0f) { // Check if angle changed.
+    //     if( auto spSprite = std::dynamic_pointer_cast<Sprite>(associated.GetComponent("Sprite").lock()) ) {
+    //         spSprite->SetAngle(associated.angle);
+    //     } else {
+    //         std::cout << "Warning! PenguinBody::Update() couldn't find the Sprite's pointer." << std::endl;
+    //     }
+    // }
     
     mat::Vec2 speedIncVec(incSpeed, 0.0f);
-    speedIncVec = speedIncVec.Rotated(angle);
+    speedIncVec = speedIncVec.Rotated(associated.angle);
 
     speed += speedIncVec;
 

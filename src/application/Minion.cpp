@@ -4,16 +4,19 @@
 #include "engine/Mat.h"
 #include "engine/Bullet.h"
 #include "engine/Game.h"
+#include "engine/Collider.h"
 
 Minion::Minion(GameObject& associated, std::weak_ptr<GameObject> alienCenter, float arcOffsetDeg) : Component(associated), alienCenter(alienCenter) {
     this->arcDeg = arcOffsetDeg;
 
     auto* rpSprite = new Sprite(associated, "assets/img/minion.png");
+    auto* rpCollider = new Collider(associated);
     float scale = mat::randf() * 1.5f;
     scale = std::max(1.0f, scale);
     rpSprite->SetScale(scale, scale);
 
     associated.AddComponent(*rpSprite);
+    associated.AddComponent(*rpCollider);
 }
 
 void Minion::Update(float dt) {
@@ -27,13 +30,13 @@ void Minion::Update(float dt) {
 
         associated.box.Centralize(pos);
 
-        auto angle = spPivot->box.Center().AngleToPoint(associated.box.Center());
+        associated.angle = spPivot->box.Center().AngleToPoint(associated.box.Center());
         
-        if( auto spSprite = std::dynamic_pointer_cast<Sprite>(associated.GetComponent("Sprite").lock()) )  {
-            spSprite->SetAngle(angle);  // * Considers normal vector poiting downwards.
-        } else {
-            std::cout << "Warning! Minion::Update() couldn't find the Sprite's pointer." << std::endl;
-        }
+        // if( auto spSprite = std::dynamic_pointer_cast<Sprite>(associated.GetComponent("Sprite").lock()) )  {
+        //     spSprite->SetAngle(associated.angle);  // * Considers normal vector poiting downwards.
+        // } else {
+        //     std::cout << "Warning! Minion::Update() couldn't find the Sprite's pointer." << std::endl;
+        // }
     }
     else {
         associated.RequestDelete();

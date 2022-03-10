@@ -2,15 +2,18 @@
 #include "application/PenguinBody.h"
 #include "engine/Bullet.h"
 #include "engine/Sprite.h"
+#include "engine/Collider.h"
 #include "engine/InputManager.h"
 #include "engine/Game.h"
 
 PenguinCannon::PenguinCannon(GameObject& associated, std::weak_ptr<GameObject> penguinBody) : Component(associated) {
-    angle = 0.0f;
+    // angle = 0.0f;
     wpBody = penguinBody;
 
     auto* rpSprite = new Sprite(associated, "assets/img/cubngun.png");
+    auto* rpCollider = new Collider(associated);
     associated.AddComponent(*rpSprite);
+    associated.AddComponent(*rpCollider);
 }
 
 PenguinCannon::~PenguinCannon() {}
@@ -21,7 +24,7 @@ void PenguinCannon::Shoot() {
     const auto BULLET_MAX_DIST = 3000.0f;
     
     auto* rpBulletGO = new GameObject();
-    auto* rpBullet = new Bullet(*rpBulletGO, angle, BULLET_SPEED, BULLET_DAMAGE, BULLET_MAX_DIST, "assets/img/penguinbullet.png", 4, 0.12f);
+    auto* rpBullet = new Bullet(*rpBulletGO, associated.angle, BULLET_SPEED, BULLET_DAMAGE, BULLET_MAX_DIST, "assets/img/penguinbullet.png", 4, 0.12f);
 
     mat::Vec2 startPos;
     if(auto spBodyGO = wpBody.lock()) {
@@ -30,7 +33,7 @@ void PenguinCannon::Shoot() {
 
         startPos.x += (float)spBodySprite->GetWidth();
 
-        startPos = startPos.Rotated(angle);
+        startPos = startPos.Rotated(associated.angle);
 
         startPos += associated.box.Center();
     }
@@ -56,12 +59,12 @@ void PenguinCannon::Update(float dt) {
     associated.box.Centralize(spBodyGO->box.Center());
     
     // Points cannon to mouse
-    angle = associated.box.Center().AngleToPoint(mousePos);
-    if( auto spSprite = std::dynamic_pointer_cast<Sprite>(associated.GetComponent("Sprite").lock()) ) {
-        spSprite->SetAngle(angle);
-    } else {
-        std::cout << "Warning! PenguinCannon::Update() couldn't find the Sprite's pointer." << std::endl;
-    }
+    associated.angle = associated.box.Center().AngleToPoint(mousePos);
+    // if( auto spSprite = std::dynamic_pointer_cast<Sprite>(associated.GetComponent("Sprite").lock()) ) {
+    //     spSprite->SetAngle(associated.angle);
+    // } else {
+    //     std::cout << "Warning! PenguinCannon::Update() couldn't find the Sprite's pointer." << std::endl;
+    // }
 
     if(inputManager.KeyPress(KEYS::LEFT_MOUSE_BUTTON)) {
         Shoot();

@@ -10,7 +10,7 @@
 class PenguinCannon : public Component {
     private:
         std::weak_ptr<GameObject> wpBody;
-        float angle;
+        // float angle;
 
     public:
         PenguinCannon(GameObject& associated, std::weak_ptr<GameObject> penguinBody);

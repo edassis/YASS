@@ -21,7 +21,7 @@ Sprite::Sprite(GameObject& associated) : Component(associated) {
     this->width = 0;
     this->height = 0;
     this->scale = mat::Vec2(1.0f, 1.0f);
-    this->angleDeg = 0.0f;
+    // this->angleDeg = 0.0f;
 }   
 
 Sprite::Sprite(GameObject& associated, std::string file, int frameCount, float frameTime) : Component(associated), frameCount(frameCount), frameTime(frameTime) {
@@ -29,7 +29,7 @@ Sprite::Sprite(GameObject& associated, std::string file, int frameCount, float f
     this->timeElapsed = 0.0f;
 
     this->scale = mat::Vec2(1.0f, 1.0f);
-    this->angleDeg = 0.0f;
+    // this->angleDeg = 0.0f;
 
     this->Open(file);
 }
@@ -71,7 +71,8 @@ void Sprite::Render(float x, float y, float w, float h) {   // * Specific of Spr
     dstRect.w = int(round(w) * scale.x);
     dstRect.h = int(round(h) * scale.y);
 
-    int _error = SDL_RenderCopyEx(Game::GetInstance().GetRenderer(), texture, &clipRect, &dstRect, angleDeg, nullptr, SDL_FLIP_NONE);
+    int _error = SDL_RenderCopyEx(Game::GetInstance().GetRenderer(),
+            texture, &clipRect, &dstRect, mat::Rad2Deg(associated.angle), nullptr, SDL_FLIP_NONE);
     if(_error) {
         std::cout << "Error! Sprite::Render() failed to render: " << SDL_GetError() << std::endl;
     }
@@ -123,9 +124,9 @@ void Sprite::SetScale(float x, float y) {
     associated.box.Centralize(centerPoint);
 }
 
-void Sprite::SetAngle(const float& rad) {
-    angleDeg = mat::Rad2Deg(rad);
-}
+// void Sprite::SetAngle(const float& rad) {
+//     angleDeg = mat::Rad2Deg(rad);
+// }
 
 void Sprite::SetFrame(int frame) {
     if(frame < 0 || frame >= frameCount) {
@@ -165,6 +166,6 @@ mat::Vec2 Sprite::GetScale() {
     return scale;
 }
 
-float Sprite::GetAngle() {
-    return mat::Deg2Rad(angleDeg);
-}
+// float Sprite::GetAngle() {
+//     return mat::Deg2Rad(angleDeg);
+// }
