@@ -61,7 +61,7 @@ void GameObject::RemoveComponent(Component& cpt) {
     }
 }
 
-std::weak_ptr<Component> GameObject::GetComponent(std::string type) {
+std::weak_ptr<Component> GameObject::GetComponent(std::string type) const {
     for(auto& cpt : components) {
         if(cpt->Is(type)) {
             return cpt;
@@ -69,4 +69,10 @@ std::weak_ptr<Component> GameObject::GetComponent(std::string type) {
     }
 
     return std::weak_ptr<Component>{};
+}
+
+void GameObject::NotifyCollision(const GameObject& other) const {
+    for(auto& cpt : components) {
+        cpt->NotifyCollision(other);
+    }
 }

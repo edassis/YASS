@@ -63,3 +63,14 @@ void Minion::Shoot(mat::Vec2 target) {
 
     Game::GetState().AddObject(*rpBulletGO);
 }
+
+void Minion::NotifyCollision(const GameObject& other) {
+    if(auto spBullet = std::dynamic_pointer_cast<Bullet>(other.GetComponent("Bullet").lock())) {
+        // Notify alienCenter to take damage
+        if(auto spAlien = alienCenter.lock()) {
+            spAlien->NotifyCollision(other);
+        } else {
+            std::cout << "Minion::NotifyCollision() unable to access `alienCenter`." << std::endl;
+        }
+    }
+}

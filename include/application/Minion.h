@@ -12,12 +12,13 @@ class Minion : public Component {
 
     public:
         Minion(GameObject& associated, std::weak_ptr<GameObject> alienCenter, float arcOffsetDeg = 0.0f);
+        
+        void Shoot(mat::Vec2 target);
 
         void Update(float dt) override;
         void Render() override;
         bool Is(std::string type) override;
-
-        void Shoot(mat::Vec2 target);
+        void NotifyCollision(const GameObject& other) override;
 };
 
 #endif

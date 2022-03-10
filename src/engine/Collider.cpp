@@ -102,11 +102,11 @@ void Collider::Render() {
 
 bool Collider::Is(std::string type) { return type == "Collider"; }
 
-bool Collider::IsColliding(const Collider& collider) const {
-    return IsColliding(associated.box, collider.associated.box, associated.angle, collider.associated.angle);
+bool Collider::IsColliding(const mat::Rect& otherBox, const float& otherAngle) const {
+    return IsColliding(box, otherBox, associated.angle, otherAngle);
 }
 
-bool Collider::IsColliding(mat::Rect& a, mat::Rect& b, float angleOfA, float angleOfB) {
+bool Collider::IsColliding(const mat::Rect& a, const mat::Rect& b, const float& angleOfA, const float& angleOfB) {
 	mat::Vec2 A[] = { 
 		mat::Vec2( a.x, a.y + a.h ),
 		mat::Vec2( a.x + a.w, a.y + a.h ),

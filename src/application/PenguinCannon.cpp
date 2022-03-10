@@ -74,3 +74,14 @@ void PenguinCannon::Update(float dt) {
 void PenguinCannon::Render() {}
 
 bool PenguinCannon::Is(std::string type) { return type == "PenguinCannon"; }
+
+void PenguinCannon::NotifyCollision(const GameObject& other) {
+    if(auto spBullet = std::dynamic_pointer_cast<Bullet>(other.GetComponent("Bullet").lock())) {
+        // Notify alienCenter to take damage
+        if(auto spBody = wpBody.lock()) {
+            spBody->NotifyCollision(other);
+        } else {
+            std::cout << "PenguinCollision::NotifyCollision() unable to access `alienCenter`." << std::endl;
+        }
+    }
+}

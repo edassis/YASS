@@ -28,8 +28,8 @@ class Collider: public Component {
         void Render() override;
         bool Is(std::string type) override;
 
-        bool IsColliding(const Collider& collider) const;
-        static bool IsColliding(mat::Rect& a, mat::Rect& b, float angleOfA, float angleOfB);
+        bool IsColliding(const mat::Rect& otherBox, const float& otherAngle) const;
+        static bool IsColliding(const mat::Rect& a, const mat::Rect& b, const float& angleOfA, const float& angleOfB);
 };
 
 #endif

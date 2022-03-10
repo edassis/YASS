@@ -42,3 +42,10 @@ void Bullet::Update(float dt) {
 void Bullet::Render() {}
 
 bool Bullet::Is(std::string type) { return type == "Bullet"; }
+
+void Bullet::NotifyCollision(const GameObject& other) {
+    if(!other.GetComponent("Bullet").lock()) {
+        // If not bullet, request deletion
+        associated.RequestDelete();
+    }
+}

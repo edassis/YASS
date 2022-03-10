@@ -6,6 +6,7 @@
 #include "engine/Game.h"
 #include "engine/Mat.h"
 #include "engine/Collider.h"
+#include "engine/Bullet.h"
 
 Alien::Alien(GameObject& associated, int nMinion) : Component(associated) {
     this->hp = 30;
@@ -148,4 +149,11 @@ bool Alien::Is(std::string type) { return type == "Alien"; }
 Alien::Action::Action(ActionType type, float x, float y) {
     this->type = type;
     this->pos = mat::Vec2(x, y);
+}
+
+void Alien::NotifyCollision(const GameObject& other) {
+    if(auto spBullet = std::dynamic_pointer_cast<Bullet>(other.GetComponent("Bullet").lock())) {
+        // Take damage
+        hp -= spBullet->GetDamage();
+    }
 }

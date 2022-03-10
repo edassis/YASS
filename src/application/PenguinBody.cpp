@@ -5,6 +5,7 @@
 #include "engine/GameObject.h"
 #include "engine/Sprite.h"
 #include "engine/Collider.h"
+#include "engine/Bullet.h"
 #include "engine/State.h"
 #include <memory>
 
@@ -110,3 +111,10 @@ void PenguinBody::Update(float dt) {
 void PenguinBody::Render() {}
 
 bool PenguinBody::Is(std::string type) { return type == "PenguinBody"; }
+
+void PenguinBody::NotifyCollision(const GameObject& other) {
+    if(auto spBullet = std::dynamic_pointer_cast<Bullet>(other.GetComponent("Bullet").lock())) {
+        // Take damage
+        hp -= spBullet->GetDamage();
+    }
+}

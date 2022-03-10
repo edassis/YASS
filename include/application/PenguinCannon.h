@@ -21,6 +21,7 @@ class PenguinCannon : public Component {
         void Update(float dt) override;
         void Render() override;
         bool Is(std::string type) override;
+        void NotifyCollision(const GameObject& other) override;
 };
 
 #endif

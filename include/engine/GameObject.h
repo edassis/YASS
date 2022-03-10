@@ -29,7 +29,8 @@ class GameObject {
         void RequestDelete();
         std::weak_ptr<Component> AddComponent(Component& cpt);
         void RemoveComponent(Component& cpt);
-        std::weak_ptr<Component> GetComponent(std::string type);
+        std::weak_ptr<Component> GetComponent(std::string type) const;
+        void NotifyCollision(const GameObject& other) const;
 };
 
 #endif
