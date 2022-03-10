@@ -12,9 +12,10 @@ class Collider: public Component {
         mat::Vec2 offset;
 
     public:
+        // bool enableDebug;
         mat::Rect box;
 
-        Collider(GameObject& associated, mat::Vec2 scale = {1, 1}, mat::Vec2 offset = {0,0});
+        Collider(GameObject& associated, mat::Vec2 scale = {1,1}, mat::Vec2 offset = {0,0});
         ~Collider();
 
         void SetScale(mat::Vec2 scale);

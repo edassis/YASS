@@ -4,7 +4,7 @@
 #include <cmath>
 namespace mat {
 
-const float PI = 3.141593f;
+const float PI = acosf(-1.0);
 const float EPS = 1e-6f;
 
 class Vec2;

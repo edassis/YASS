@@ -30,7 +30,6 @@
         "CHERE_INVOKING": "1",
     },
     "cmake.configureOnOpen": false,
-    "C_Cpp.errorSquiggles": "Enabled",
     "files.associations": {
         "*.asm": "asm",
         "*.s": "asm",
@@ -89,4 +88,6 @@
         "cinttypes": "cpp",
         "typeinfo": "cpp"
     },
+    "C_Cpp.codeAnalysis.clangTidy.enabled": true,
+    "C_Cpp.intelliSenseEngineFallback": "Enabled",
 }
