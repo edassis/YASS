@@ -86,16 +86,16 @@ void PenguinBody::Update(float dt) {
 
     speed += speedIncVec;
 
-    auto dest = associated.box.GetPos() + speed;
-
     // If not accelerating, should apply friction
     if(std::fabs(incSpeed) < mat::EPS) {
         // if friction greater than speed should use the remanescent speed value as friction
         mat::Vec2 frictionVec(std::min(friction, speed.Length())*dt); 
-        frictionVec = frictionVec.Rotated(dest.Angle());
+        frictionVec = frictionVec.Rotated(speed.Angle());
         speed -= frictionVec;
     } 
     
+    auto dest = associated.box.GetPos() + speed;
+
     speed.x = std::max(std::min(speed.x, maxSpeed), -maxSpeed);
     speed.y = std::max(std::min(speed.y, maxSpeed), -maxSpeed);
 
