@@ -53,7 +53,7 @@ void Bullet::NotifyCollision(const GameObject& other) {
     auto spPlayer = Game::GetState().GetPlayerPointer().lock();
 
     // Otherwise, check if should collide only with player or not.
-    if(IsTargetPlayer() && spPlayer.get() == &other || !IsTargetPlayer()) {
+    if(IsTargetPlayer() && (spPlayer.get() == &other || !IsTargetPlayer())) {
         // If not bullet, request deletion
         associated.RequestDelete();
     }

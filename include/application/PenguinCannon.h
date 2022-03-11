@@ -5,12 +5,14 @@
 #include "engine/Component.h"
 #include "engine/GameObject.h"
 #include "engine/Mat.h"
+#include "engine/Timer.h"
 #include <memory>
 
 class PenguinCannon : public Component {
     private:
         std::weak_ptr<GameObject> wpBody;
-        // float angle;
+        Timer timer;
+        float lastShootTime;
 
     public:
         PenguinCannon(GameObject& associated, std::weak_ptr<GameObject> penguinBody);

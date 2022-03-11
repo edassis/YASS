@@ -7,13 +7,11 @@
 #include "engine/Game.h"
 
 PenguinCannon::PenguinCannon(GameObject& associated, std::weak_ptr<GameObject> penguinBody) : Component(associated) {
-    // angle = 0.0f;
+    lastShootTime = 0.f;
     wpBody = penguinBody;
 
-    auto* rpSprite = new Sprite(associated, "assets/img/cubngun.png");
-    auto* rpCollider = new Collider(associated);
-    associated.AddComponent(*rpSprite);
-    associated.AddComponent(*rpCollider);
+    associated.AddComponent(*new Sprite(associated, "assets/img/cubngun.png"));
+    associated.AddComponent(*new Collider(associated));
 }
 
 PenguinCannon::~PenguinCannon() {}
@@ -22,7 +20,7 @@ void PenguinCannon::Shoot() {
     const auto BULLET_DAMAGE = 3;
     const auto BULLET_SPEED = 300.0f;
     const auto BULLET_MAX_DIST = 3000.0f;
-    
+
     auto* rpBulletGO = new GameObject();
     auto* rpBullet = new Bullet(*rpBulletGO, associated.angle, BULLET_SPEED,
             BULLET_DAMAGE, BULLET_MAX_DIST, "assets/img/penguinbullet.png", 4, 0.12f, false);
@@ -50,10 +48,14 @@ void PenguinCannon::Update(float dt) {
         associated.RequestDelete();
         return;
     }
+    
+    // * If Timer was a true component I didn't need to do that.
+    // * But would handle pointers.
+    timer.Update(dt);
 
     auto& inputManager = InputManager::GetInstance();
     auto& camera = Game::GetState().GetCamera();
-    auto mousePos = mat::Vec2(inputManager.GetMouseX(), inputManager.GetMouseY());
+    auto mousePos = mat::Vec2((float)inputManager.GetMouseX(), (float)inputManager.GetMouseY());
     mousePos += camera.GetPos();
 
     // Centralize cannon over body 
@@ -67,8 +69,12 @@ void PenguinCannon::Update(float dt) {
     //     std::cout << "Warning! PenguinCannon::Update() couldn't find the Sprite's pointer." << std::endl;
     // }
 
-    if(inputManager.KeyPress(KEYS::LEFT_MOUSE_BUTTON)) {
+    const auto BULLET_SHOOT_INTERVAL = 0.4f;
+
+    if(inputManager.IsKeyDown(KEYS::LEFT_MOUSE_BUTTON)
+            && BULLET_SHOOT_INTERVAL < timer.GetTime() - lastShootTime) {
         Shoot();
+        lastShootTime = timer.GetTime();
     }
 }
 
