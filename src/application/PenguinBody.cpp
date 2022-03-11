@@ -115,8 +115,8 @@ void PenguinBody::NotifyCollision(const GameObject& other) {
     
     // Take damage
     // If Penguin shoot with IsTargetPlayer off it's possible to cause a self injure xD 
-    if(spBullet->IsTargetPlayer() && (spPlayer.get() == &associated
-            || !spBullet->IsTargetPlayer())) {
+    if((spBullet->IsTargetPlayer() && spPlayer.get() == &associated)
+            || !spBullet->IsTargetPlayer()) {
         hp -= spBullet->GetDamage();
     }
 
