@@ -155,11 +155,11 @@ void Sprite::SetFrameTime(float frameTime) {
 }
 
 int Sprite::GetWidth() {
-    return (int)round(this->width * GetScale().x);
+    return (int)floor((float)this->width * GetScale().x);
 }
 
 int Sprite::GetHeight() {
-    return (int)round(this->height * GetScale().y);
+    return (int)floor((float)this->height * GetScale().y);
 }
 
 mat::Vec2 Sprite::GetScale() {
