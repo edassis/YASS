@@ -5,7 +5,11 @@
 #include "engine/SDL_include.h"
 #include "engine/Component.h"
 #include "engine/Mat.h"
+#include "engine/Timer.h"
 #include <iostream>
+#include <limits>
+
+const auto floatMax = std::numeric_limits<float>::max();
 
 class Sprite : public Component {
     private:
@@ -17,6 +21,9 @@ class Sprite : public Component {
         float frameTime;
         float timeElapsed;
 
+        float lifeSpan;
+        Timer age;
+
         mat::Vec2 scale;
         // float angleDeg;    // degrees
 
@@ -27,7 +34,7 @@ class Sprite : public Component {
 
     public:
         Sprite(GameObject& associated);
-        Sprite(GameObject& associated, std::string file, int frameCount = 1, float frameTime = 1);
+        Sprite(GameObject& associated, std::string file, int frameCount = 1, float frameTime = 1, float lifeSpan = floatMax);
         ~Sprite();
 
         void Open(std::string file);

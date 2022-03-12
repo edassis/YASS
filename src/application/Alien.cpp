@@ -2,6 +2,7 @@
 #include "application/Minion.h"
 #include "engine/GameObject.h"
 #include "engine/Sprite.h"
+#include "engine/Sound.h"
 #include "engine/InputManager.h"
 #include "engine/Game.h"
 #include "engine/Mat.h"
@@ -91,6 +92,7 @@ void Alien::Update(float dt) {
             } 
             case task.SHOOT:
             {
+                break;  // !!!!!!!!
                 bool warning = false;
                 
                 float minDist = 1e6f;  // * 1 million of pixels is okay as max value I think.
@@ -155,5 +157,14 @@ void Alien::NotifyCollision(const GameObject& other) {
     
     if (hp <= 0) {
         associated.RequestDelete();
+
+        auto* rpSpriteGO = new GameObject();
+        rpSpriteGO->AddComponent(*new Sprite(*rpSpriteGO, "assets/img/aliendeath.png", 4, 0.1f, 4*0.1f));
+        auto* rpSpriteSound = new Sound(*rpSpriteGO, "assets/audio/boom.wav");
+        rpSpriteGO->AddComponent(*rpSpriteSound);
+        Game::GetState().AddObject(*rpSpriteGO);
+
+        rpSpriteGO->box.Centralize(associated.box.Center());
+        rpSpriteSound->Play();
     }
 }

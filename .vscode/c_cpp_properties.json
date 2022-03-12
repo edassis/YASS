@@ -30,8 +30,8 @@
             "compilerPath": "/usr/bin/gcc",
             "cStandard": "c17",
             "cppStandard": "c++17",
-            "intelliSenseMode": "${default}"
-            // "configurationProvider": "ms-vscode.cmake-tools"
+            "intelliSenseMode": "${default}",
+            "configurationProvider": "ms-vscode.cmake-tools"
         }
     ],
     "version": 4

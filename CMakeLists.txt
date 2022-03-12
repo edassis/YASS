@@ -44,7 +44,7 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 endif()
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-    set(SDL2_PATH "C:/dev/SDL2-mingw64/i686-w64-mingw32")
+  set(SDL2_PATH "C:/dev/SDL2-mingw64/i686-w64-mingw32")
 endif()
 
 # SDL2 https://github.com/aminosbh/sdl2-cmake-modules
@@ -59,8 +59,7 @@ find_package(SDL2_mixer REQUIRED)
 # Executable
 add_executable(${PROJECT_NAME} ${src_files})
 #target_include_directories(${PROJECT_NAME} PRIVATE "${header_dir}" "/opt/homebrew/include/SDL2" "${SDL2_PATH}/include")
-target_include_directories(${PROJECT_NAME} PRIVATE "${SDL2_INCLUDE_DIRS}")
-target_include_directories(${PROJECT_NAME} PRIVATE "${header_dir}")
+target_include_directories(${PROJECT_NAME} PRIVATE "${SDL2_INCLUDE_DIRS}" "${header_dir}")
 target_link_libraries(${PROJECT_NAME} PUBLIC SDL2::Main SDL2::TTF SDL2::Image SDL2::Mixer)
 
 # cmake_print_variables(INCLUDE_DIRECTORIES)

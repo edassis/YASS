@@ -1,5 +1,4 @@
 #include "engine/Sprite.h"
-#include <limits>
 
 #define INCLUDE_SDL
 #define INCLUDE_SDL_IMAGE
@@ -9,12 +8,14 @@
 #include "engine/GameObject.h"
 #include <iostream>
 #include <cmath>
+#include <limits>
 
 Sprite::Sprite(GameObject& associated) : Component(associated) {
+    this->frameCurrent = 0;
     this->frameCount = 1;
     this->frameTime = std::numeric_limits<decltype(this->frameTime)>::max();
-    this->frameCurrent = 0;
     this->timeElapsed = 0.0f;
+    this->lifeSpan = std::numeric_limits<decltype(this->lifeSpan)>::max();
 
     this->texture = nullptr;
     
@@ -24,9 +25,12 @@ Sprite::Sprite(GameObject& associated) : Component(associated) {
     // this->angleDeg = 0.0f;
 }   
 
-Sprite::Sprite(GameObject& associated, std::string file, int frameCount, float frameTime) : Component(associated), frameCount(frameCount), frameTime(frameTime) {
+Sprite::Sprite(GameObject& associated, std::string file, int frameCount, float frameTime, float lifeSpan) : Component(associated) {
     this->frameCurrent = 0;
+    this->frameCount = frameCount;
+    this->frameTime = frameTime;
     this->timeElapsed = 0.0f;
+    this->lifeSpan = lifeSpan;
 
     this->scale = mat::Vec2(1.0f, 1.0f);
     // this->angleDeg = 0.0f;
@@ -85,10 +89,16 @@ bool Sprite::IsOpen() {
 void Sprite::Update(float dt) {
     // ? Should store total running time? (Is telling the current frame time).
     timeElapsed += dt;
+    age.Update(dt);
     
     if(frameTime < timeElapsed) {
         SetFrame((frameCurrent+1)%frameCount);
         timeElapsed = 0.0f;
+    }
+
+    if(age.GetTime() > lifeSpan) {
+        // too old 
+        associated.RequestDelete();
     }
 }
 
