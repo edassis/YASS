@@ -22,9 +22,10 @@ AlwaysBreakAfterDefinitionReturnType: None
 AlwaysBreakAfterReturnType: None
 AlwaysBreakBeforeMultilineStrings: false
 AlwaysBreakTemplateDeclarations: No
-reakBeforeBraces: Attach
+BreakBeforeBraces: Attach
 IndentWidth: 4
 # IndentCaseLabels: false
-ColumnLimit: 0
+ColumnLimit: 80
 UseCRLF: false
 UseTab: Never
+...
