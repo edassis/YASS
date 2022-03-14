@@ -1,2 +1,0 @@
-CompilerFlags:
-    Add: [-I/home/eduardo/Documents/Repos/SDL_engine/include/application, -I/home/eduardo/Documents/Repos/SDL_engine/include/engine]

@@ -3,6 +3,7 @@
 
 #include "engine/Component.h"
 #include "engine/Mat.h"
+#include "engine/Timer.h"
 #include <string>
 #include <vector>
 #include <queue>
@@ -10,24 +11,34 @@
 
 class Alien : public Component {
     private:
-        class Action {
-            public:
-                enum ActionType {MOVE, SHOOT};
-                ActionType type;
-                mat::Vec2 pos;
+        enum AlienState { MOVING, RESTING };
+        AlienState state;
+        float currentTime;
+        Timer restTimer;
+        mat::Vec2 destination; 
+        // class Action {
+        //     public:
+        //         enum ActionType {MOVE, SHOOT};
+        //         ActionType type;
+        //         mat::Vec2 pos;
 
-                Action(ActionType type, float x, float y);
-        };
+        //         Action(ActionType type, float x, float y);
+        // };
 
         int hp;
         mat::Vec2 speed;
         int nMinion;
-        std::queue<Action> taskQueue;
+        // std::queue<Action> taskQueue;
         std::vector<std::weak_ptr<GameObject>> minionArray;
+
+        void Shoot(float dt);
+        void Move(float dt);
 
     public:
         Alien(GameObject& associated, int nMinion);
         ~Alien();
+
+        static int alienCount;
 
         /* Component */
         void Start() override;

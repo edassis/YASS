@@ -12,4 +12,4 @@ cmake -G "Unix Makefiles" -B build -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=$
 # cmake -G "Unix Makefiles" -B build -DCMAKE_BUILD_TYPE=Debug -Wno-dev
 
 # Build
-cmake --build build
+cmake --build build -j 6
