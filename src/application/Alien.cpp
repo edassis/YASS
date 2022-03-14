@@ -54,148 +54,68 @@ void Alien::Update(float dt) {
 
     const auto curPos = associated.box.GetPos();
 
+    auto spPlayer = Game::GetState().GetPlayerPointer().lock();
+    if(!spPlayer) {
+        std::cout << "Warning! Alien::Update() not able to find player." << std::endl;
+        return;
+    }
+
     switch (state) {
         case RESTING:
             // resting time finished, move to player
             if(restTimer.GetTime() - currentTime > 2.f) {
-                if(auto spPlayer = Game::GetState().GetPlayerPointer().lock()) {
-                    destination = spPlayer->box.Center();
-                    state = MOVING;
-                } else {
-                    std::cout << "Warning! Alien::Update() not able to find player." << std::endl;
-                }
+                destination = spPlayer->box.GetPos();
+                state = MOVING;
             }
             break;
         case MOVING:
+            Move(dt);
             // Arrived in destination
             if((curPos - destination).Length() < mat::EPS) {
                 Shoot(dt);
                 currentTime = restTimer.GetTime();
                 state = RESTING;
-            } else {
-                // Move to destination
-                Move(dt);
             }
             break;
         default:
             break;
     }
 
-    // auto& inputManager = InputManager::GetInstance();
-    // auto& camera = Game::GetState().GetCamera();
-    
-    // mat::Vec2 clickPos((float)inputManager.GetMouseX(), (float)inputManager.GetMouseY());
-    // clickPos += camera.GetPos();
-
-    // if (inputManager.KeyPress(KEYS::LEFT_MOUSE_BUTTON)) {  // Shoot
-    //     taskQueue.emplace(Action::SHOOT, clickPos.x, clickPos.y);
-    // }
-    // if (inputManager.KeyPress(KEYS::RIGHT_MOUSE_BUTTON)) {    // Move
-    //     taskQueue.emplace(Action::MOVE, clickPos.x, clickPos.y);
-    // }
-
-    // // * Process tasks.
-    // if (taskQueue.size()) {
-    //     auto& task = taskQueue.front();
-
-    //     switch (task.type) {
-    //         case task.MOVE:
-    //         {   // Creates scope for local variables.
-    //             const float maxSpeed = 12.0f;
-    //             const float acc = 4.0f;
-    //             const auto boxOffset = mat::Vec2(associated.box.w/2, associated.box.h/2); // * Top left corner.
-                
-    //             auto posI = associated.box.GetPos(); 
-    //             auto posF = task.pos - boxOffset;
-    //             auto posDelta = posF - posI;
-
-    //             speed += posDelta.Normalized() * acc * dt;
-    //             speed.x = std::max(std::min(maxSpeed, speed.x), -maxSpeed);
-    //             speed.y = std::max(std::min(maxSpeed, speed.y), -maxSpeed);
-                
-    //             auto nextPos = posI + speed;
-                
-    //             if (posI.DistanceTo(nextPos) >= posI.DistanceTo(posF)) {   // * Arrived
-    //                 speed.x = speed.y = 0.0f;
-
-    //                 associated.box.SetPos(posF);
-
-    //                 taskQueue.pop();
-    //             }
-    //             else {  // add speed
-    //                 associated.box.x += speed.x;
-    //                 associated.box.y += speed.y; 
-    //             }
-    //             break;
-    //         } 
-    //         case task.SHOOT:
-    //         {
-    //             break;  // !!!!!!!!
-    //             bool warning = false;
-                
-    //             float minDist = 1e6f;  // * 1 million of pixels is okay as max value I think.
-    //             std::shared_ptr<Minion> spMinion;
-    //             warning = true;
-    //             for(auto& wpMinionGO : minionArray) {
-    //                 if (auto spMinionGOCheck = wpMinionGO.lock()) {
-    //                     auto newDist = spMinionGOCheck->box.Center().DistanceTo(task.pos);
-    //                     if (minDist > newDist) {
-    //                         minDist = newDist;
-    //                         spMinion = std::dynamic_pointer_cast<Minion>(spMinionGOCheck->GetComponent("Minion").lock());
-                            
-    //                         warning = false;
-    //                     }
-    //                 } 
-
-    //                 if (warning) {
-    //                     std::cout << "Warning! Alien::Update() failed to retrieve Minion pointer.(1)" << std::endl;
-    //                 }
-    //             }
-
-    //             if(spMinion) {
-    //                 spMinion->Shoot(task.pos);
-    //             } else {
-    //                 std::cout << "Warning! Alien::Update() failed to retrieve Minion pointer.(2)" << std::endl;
-    //             }
-                
-    //             taskQueue.pop();
-    //             break;
-    //         }
-    //         default:
-    //             break;
-    //     }
-    // }
-
     // * Rotate Alien's Sprite
     auto angleStep = mat::Deg2Rad(-25.0f) * dt;
     associated.angle += angleStep;
-    // if( auto spSprite = std::dynamic_pointer_cast<Sprite>(associated.GetComponent("Sprite").lock()) ) {
-    //     spSprite->SetAngle(associated.angle);
-    // } else {
-    //     std::cout << "Warning! Alien::Update() couldn't find the Sprite's pointer." << std::endl;
-    // }
 }
 
 void Alien::Shoot(float dt) {
-    // Retrieve the closest minion from player. 
     std::shared_ptr<Minion> spMinion;
+    std::shared_ptr<GameObject> spPlayer;
+    
+    spPlayer = Game::GetState().GetPlayerPointer().lock();
+    if(!spPlayer) {
+        std::cout << "Warning! Alien::Shoot() failed to retrieve Player pointer." << std::endl;
+        return;
+    }
+
+    auto target = spPlayer->box.Center();
+
     float minDist = 1e6f;
+    // Retrieve the closest minion from player. 
     for(auto& wpMinionGO : minionArray) {
         if (auto spMinionGO = wpMinionGO.lock()) {
-            auto newDist = spMinionGO->box.Center().DistanceTo(destination);
-            if (minDist > newDist) {
-                minDist = newDist;
+            auto minionDist = spMinionGO->box.Center().DistanceTo(target);
+            if (minDist > minionDist) {
+                minDist = minionDist;
                 spMinion = std::dynamic_pointer_cast<Minion>(spMinionGO->GetComponent("Minion").lock());
             }
         } else {
-            std::cout << "Warning! Alien::Update() failed to retrieve MinionGO pointer." << std::endl;
+            std::cout << "Warning! Alien::Shoot() failed to retrieve MinionGO pointer." << std::endl;
         }
     }
 
     if(spMinion) {
-        spMinion->Shoot(destination);
+        spMinion->Shoot(target);
     } else {
-        std::cout << "Warning! Alien::Update() failed to retrieve Minion pointer." << std::endl;
+        std::cout << "Warning! Alien::Shoot() failed to retrieve Minion pointer." << std::endl;
     }
 }
 
@@ -205,18 +125,28 @@ void Alien::Move(float dt) {
     
     const auto curPos = associated.box.GetPos();
 
-    auto direction = destination - curPos;
-    direction = direction.Normalized();
+    if((destination - curPos).Length() < mat::EPS) {
+        // Already in destination
+        return;
+    }
+
+    auto direction = (destination - curPos).Normalized();
 
     speed += direction * acc * dt;
-    speed.x = std::max(std::min(maxSpeed, speed.x), -maxSpeed);
-    speed.y = std::max(std::min(maxSpeed, speed.y), -maxSpeed);
-    
+
+    if(speed.Length() > maxSpeed) {
+        speed = speed.Normalized() * maxSpeed;
+    }
+   
     auto nextPos = curPos + speed;
+    // std::cout << "direction: " << direction.x << ' ' << direction.y << std::endl;
+    // std::cout << "speed: " << speed.x << ' ' << speed.y << std::endl;
+    // std::cout << "curPos: " << curPos.x << ' ' << curPos.y << std::endl;
+    // std::cout << "nextPos: " << nextPos.x << ' ' << nextPos.y << std::endl;
+    // std::cout << "destination: " << destination.x << ' ' << destination.y << std::endl;
     
-    if (curPos.DistanceTo(nextPos) >= curPos.DistanceTo(destination)) {   // * Arrived
+    if (curPos.DistanceTo(destination) < curPos.DistanceTo(nextPos)) {   // * Arrived
         speed.x = speed.y = 0.0f;
-        associated.box.SetPos(destination);
         nextPos = destination;
     }
     associated.box.SetPos(nextPos);
@@ -225,12 +155,6 @@ void Alien::Move(float dt) {
 void Alien::Render() {}
 
 bool Alien::Is(std::string type) { return type == "Alien"; }
-
-// /* Inner class Action */
-// Alien::Action::Action(ActionType type, float x, float y) {
-//     this->type = type;
-//     this->pos = mat::Vec2(x, y);
-// }
 
 void Alien::NotifyCollision(const GameObject& other) {
     auto spBullet = std::dynamic_pointer_cast<Bullet>(other.GetComponent("Bullet").lock());
@@ -242,13 +166,13 @@ void Alien::NotifyCollision(const GameObject& other) {
     if (hp <= 0) {
         associated.RequestDelete();
 
+        // Explosion animation
         auto* rpSpriteGO = new GameObject();
         rpSpriteGO->AddComponent(*new Sprite(*rpSpriteGO, "assets/img/aliendeath.png", 4, 0.1f, 4*0.1f));
         auto* rpSpriteSound = new Sound(*rpSpriteGO, "assets/audio/boom.wav");
         rpSpriteGO->AddComponent(*rpSpriteSound);
-        Game::GetState().AddObject(*rpSpriteGO);
-
         rpSpriteGO->box.Centralize(associated.box.Center());
         rpSpriteSound->Play();
+        Game::GetState().AddObject(*rpSpriteGO);
     }
 }

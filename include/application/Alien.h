@@ -16,19 +16,10 @@ class Alien : public Component {
         float currentTime;
         Timer restTimer;
         mat::Vec2 destination; 
-        // class Action {
-        //     public:
-        //         enum ActionType {MOVE, SHOOT};
-        //         ActionType type;
-        //         mat::Vec2 pos;
-
-        //         Action(ActionType type, float x, float y);
-        // };
 
         int hp;
         mat::Vec2 speed;
         int nMinion;
-        // std::queue<Action> taskQueue;
         std::vector<std::weak_ptr<GameObject>> minionArray;
 
         void Shoot(float dt);
