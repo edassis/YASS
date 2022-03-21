@@ -3,6 +3,7 @@
 
 #include "engine/State.h"
 #include <iostream>
+#include <stack>
 #include <memory>
 #include <cmath>
 
@@ -19,6 +20,8 @@ class Game {
         SDL_Window* window;
         SDL_Renderer* renderer;
         // * State is a Singleton
+        std::unique_ptr<State> storedState;
+        std::stack<std::unique_ptr<State>> stateStack;
 
         uint32_t frameStart;    // Last frame in ms.
         float dt;             // Delta in s.
@@ -33,11 +36,13 @@ class Game {
         Game(const Game&) = delete;
         Game(const Game&&) = delete;
         void operator=(const Game&) = delete;
-
+        
+        void Push(std::unique_ptr<State> state);
+        
         void Run();
 
         SDL_Renderer* GetRenderer();    // * SDL can fail making renderer be nullptr
-        static State& GetState();
+        State* GetState();
         static Game& GetInstance();
 
         float GetDeltaTime();

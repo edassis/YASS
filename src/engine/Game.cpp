@@ -51,6 +51,7 @@ Game::Game(std::string title, int width, int height) {
 
     this->window = window;
     this->renderer = renderer;
+    this->storedState = nullptr;
     // this->state = unique_ptr<State> (new State());  // * Infinite loop
 
     frameStart = SDL_GetTicks();
@@ -58,6 +59,8 @@ Game::Game(std::string title, int width, int height) {
 }
 
 Game::~Game() {
+    // if(storedState) delete storedState;
+
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
 
@@ -71,15 +74,34 @@ Game::~Game() {
 
 // Game main loop
 void Game::Run() {
-    GetState().Start();
+    if(!storedState) {
+        std::cout << "Error! Initial state not defined." << std::endl;
+        return;
+    }
+    Push(std::move(storedState));
+    storedState = nullptr;
 
-    while(!GetState().QuitRequested()) {
+    GetState()->Start();
+
+    while(GetState()) {
+        if(GetState()->QuitRequested()) {
+            stateStack.pop();
+            continue;
+        }
+
+        if(storedState) {
+            GetState()->Pause();
+            Push(std::move(storedState));
+            storedState = nullptr;
+            GetState()->Start();
+        }
+
         CalculateDeltaTime();
 
         InputManager::GetInstance().Update();
 
-        GetState().Update(dt);
-        GetState().Render();
+        GetState()->Update(dt);
+        GetState()->Render();
         SDL_RenderPresent(renderer);
 
         SDL_Delay(FRAME_DURATION);
@@ -90,11 +112,22 @@ SDL_Renderer* Game::GetRenderer() {
     return renderer;
 }
 
-State& Game::GetState() {
-    static State state;
-    return state;
+State* Game::GetState() {
+    if(stateStack.empty()) {
+        return nullptr;
+    }
+
+    return stateStack.top().get();
 }
 
+void Game::Push(std::unique_ptr<State> state) {
+    if(!state) {
+        std::cout << "Warning! Game::Push() called with state = null." << std::endl;
+        return;
+    }
+
+    storedState = std::move(state);
+}
 
 Game& Game::GetInstance() {
     static Game instance;
