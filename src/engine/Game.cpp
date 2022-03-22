@@ -79,8 +79,6 @@ void Game::Run() {
         return;
     }
     stateStack.push(std::move(storedState));
-    storedState = nullptr;
-
     GetState()->Start();
 
     while(GetState()) {
@@ -88,13 +86,14 @@ void Game::Run() {
             stateStack.pop();
             if(GetState()) {
                 GetState()->Resume();
+            } else {
+                break;
             }
         }
 
         if(storedState) {
             GetState()->Pause();
             stateStack.push(std::move(storedState));
-            storedState = nullptr;
             GetState()->Start();
         }
 
