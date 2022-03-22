@@ -78,7 +78,7 @@ void Game::Run() {
         std::cout << "Error! Initial state not defined." << std::endl;
         return;
     }
-    Push(std::move(storedState));
+    stateStack.push(std::move(storedState));
     storedState = nullptr;
 
     GetState()->Start();
@@ -93,7 +93,7 @@ void Game::Run() {
 
         if(storedState) {
             GetState()->Pause();
-            Push(std::move(storedState));
+            stateStack.push(std::move(storedState));
             storedState = nullptr;
             GetState()->Start();
         }
@@ -122,14 +122,13 @@ State* Game::GetState() {
     return stateStack.top().get();
 }
 
-void Game::Push(std::unique_ptr<State> state) {
+void Game::Push(State* state) {
     if(!state) {
         std::cout << "Warning! Game::Push() called with state = null." << std::endl;
         return;
     }
 
-    // storedState = std::unique_ptr<State>(state);
-    storedState = std::move(state);
+    storedState = std::unique_ptr<State>(state);
 }
 
 Game& Game::GetInstance() {

@@ -11,7 +11,7 @@ int main(int argc, char** argv) {
     srand( (unsigned)time(NULL) );
     
     Game& myGame = Game::GetInstance();
-    myGame.Push(std::unique_ptr<StageState>(new StageState()));
+    myGame.Push(new StageState());
     myGame.Run();
 
     return 0;
