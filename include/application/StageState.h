@@ -32,8 +32,8 @@ class StageState : public State {
 
         void LoadAssets() override;
         
-        void UpdateArray(float dt) override;
-        void RenderArray() override;
+        // void UpdateArray(float dt) override;
+        // void RenderArray() override;
 
         void Update(float dt = 0.0) override;
         void Render() override;

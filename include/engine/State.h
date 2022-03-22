@@ -16,8 +16,8 @@ class State {
         std::vector<std::shared_ptr<GameObject>> objectArray;        
         
         void StartArray();
-        virtual void UpdateArray(float dt) =0;
-        virtual void RenderArray() =0;
+        virtual void UpdateArray(float dt) {};
+        virtual void RenderArray() {};
         
         std::shared_ptr<Camera> currentCamera;
         std::weak_ptr<GameObject> player;
@@ -27,10 +27,10 @@ class State {
         virtual ~State();
 
         virtual void LoadAssets() =0;
-        virtual void Update(float dt) =0;
-        virtual void Render() =0;
+        virtual void Update(float dt);
+        virtual void Render();
 
-        virtual void Start() =0;
+        virtual void Start();
         virtual void Pause() =0;
         virtual void Resume() =0;
 

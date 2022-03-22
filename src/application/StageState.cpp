@@ -1,4 +1,4 @@
-#include "engine/StageState.h"
+#include "application/StageState.h"
 
 #define INCLUDE_SDL
 #include "engine/SDL_include.h"
@@ -52,17 +52,8 @@ StageState::StageState() : bgMusic() {
 StageState::~StageState() {}
 
 void StageState::Start() {
-    LoadAssets();
-
-    for(uint32_t i = 0; i < objectArray.size(); i++) {
-        objectArray[i]->Start();
-    }
-    started = true;
+    State::Start(); 
 }
-
-// bool StageState::QuitRequested() {
-//     return this->quitRequested;
-// }
 
 void StageState::LoadAssets() {
     // Pré-carrega os assets.
@@ -77,48 +68,10 @@ void StageState::LoadAssets() {
 }
 
 void StageState::Update(float dt) {
-    // Atualização dos estados das entidades, testes de colisões e checagem relativa de encerramento do jogo.
     quitRequested = InputManager::GetInstance().QuitRequested();
     quitRequested |= InputManager::GetInstance().KeyPress(KEYS::ESCAPE_KEY);
 
-    struct ColliderInfo {
-        std::shared_ptr<GameObject> spGO;
-        std::shared_ptr<Collider> spCollider;
-    };
-    std::vector<ColliderInfo> activeColliders;
-
-    // Update GameObjects 
-    for(uint32_t i = 0; i < objectArray.size();) {
-        objectArray[i]->Update(dt);
-
-        if(objectArray[i]->IsDead()) {
-            objectArray.erase(objectArray.begin()+i);
-            continue;
-        } 
-
-        auto spGO = objectArray[i];
-        if(auto spCollider = std::dynamic_pointer_cast<Collider>(spGO->GetComponent("Collider").lock())) {
-            activeColliders.push_back(ColliderInfo{spGO, spCollider});
-        }
-
-        i++;
-    }
-    
-    // Check collisions
-    for(uint32_t i = 0; i < activeColliders.size(); i++) {
-        for(uint32_t j = i+1; j < activeColliders.size(); j++) {
-            auto ColliderInfo1 = activeColliders[i];
-            auto ColliderInfo2 = activeColliders[j];
-
-            if(ColliderInfo1.spCollider->IsColliding(ColliderInfo2.spCollider->box, ColliderInfo2.spGO->angle)) {
-                // Notify both
-                ColliderInfo1.spGO->NotifyCollision(*ColliderInfo2.spGO);
-                ColliderInfo2.spGO->NotifyCollision(*ColliderInfo1.spGO);
-            }
-        }
-    }
-
-    currentCamera->Update(dt);
+    State::Update(dt);
 }
 
 void StageState::Render() {
@@ -127,11 +80,9 @@ void StageState::Render() {
     //     bgSprite->Render();
     // }
 
-    for(auto it = objectArray.begin(); it != objectArray.end(); it++) {
-        (*it)->Render();
-    }
+    State::Render();
 }
 
-void StageState::UpdateArray(float dt) {}
+// void StageState::UpdateArray(float dt) {}
 
-void StageState::RenderArray() {}
+// void StageState::RenderArray() {}
