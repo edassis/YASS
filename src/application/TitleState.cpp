@@ -4,9 +4,11 @@
 #include "engine/Sprite.h"
 #include "engine/GameObject.h"
 #include "engine/InputManager.h"
+#include "engine/CameraFollower.h"
 
 TitleState::TitleState() {
     auto* titleGO = new GameObject();
+    titleGO->AddComponent(*new CameraFollower(*titleGO));
     titleGO->AddComponent(*new Sprite(*titleGO, "assets/img/title.jpg"));
     AddObject(*titleGO);
 }
@@ -24,8 +26,9 @@ void TitleState::Resume() {}
 TitleState::~TitleState() {}
 
 void TitleState::Update(float dt) {
-    auto nextState = InputManager::GetInstance().QuitRequested();
-    nextState |= InputManager::GetInstance().KeyPress(KEYS::ESCAPE_KEY);
+    quitRequested = InputManager::GetInstance().QuitRequested();
+    quitRequested |= InputManager::GetInstance().KeyPress(KEYS::ESCAPE_KEY);
+    auto nextState = InputManager::GetInstance().KeyPress(KEYS::SPACE_KEY);
 
     if(nextState) {
         Game::GetInstance().Push(new StageState());

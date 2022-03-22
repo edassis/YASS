@@ -2,9 +2,21 @@
 #include "engine/Camera.h"
 #include "engine/Collider.h"
 
-State::State() : currentCamera(new Camera()) {}
+State::State() : currentCamera(new Camera()) {
+    popRequested = false;
+    quitRequested = false;
+}
 
 State::~State() {}
+
+void State::Start() {
+    LoadAssets();
+
+    for(uint32_t i = 0; i < objectArray.size(); i++) {
+        objectArray[i]->Start();
+    }
+    started = true;
+}
 
 void State::StartArray() {}
 
@@ -88,13 +100,4 @@ void State::Render() {
     for(auto it = objectArray.begin(); it != objectArray.end(); it++) {
         (*it)->Render();
     }
-}
-
-void State::Start() {
-    LoadAssets();
-
-    for(uint32_t i = 0; i < objectArray.size(); i++) {
-        objectArray[i]->Start();
-    }
-    started = true;
 }
