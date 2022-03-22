@@ -1,5 +1,5 @@
 #include "engine/Game.h"
-#include "engine/StageState.h"
+#include "application/TitleState.h"
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -11,7 +11,7 @@ int main(int argc, char** argv) {
     srand( (unsigned)time(NULL) );
     
     Game& myGame = Game::GetInstance();
-    myGame.Push(new StageState());
+    myGame.Push(new TitleState());
     myGame.Run();
 
     return 0;
