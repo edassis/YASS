@@ -86,7 +86,9 @@ void Game::Run() {
     while(GetState()) {
         if(GetState()->QuitRequested()) {
             stateStack.pop();
-            continue;
+            if(GetState()) {
+                GetState()->Resume();
+            }
         }
 
         if(storedState) {
