@@ -14,7 +14,9 @@ Music::Music(std::string file) {
     this->Play();
 }
 
-Music::~Music() {}
+Music::~Music() {
+    Stop();     // SDL's music plays in another thread, so we must stop her manually.
+}
 
 void Music::Play(int times) {
     int _error = Mix_PlayMusic(this->music, times);
