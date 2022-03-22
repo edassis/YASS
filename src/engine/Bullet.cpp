@@ -50,7 +50,7 @@ void Bullet::NotifyCollision(const GameObject& other) {
     // If other is bullet do nothing.
     if(spBullet) return; 
     
-    auto spPlayer = Game::GetState().GetPlayerPointer().lock();
+    auto spPlayer = Game::GetInstance().GetState()->GetPlayerPointer().lock();
 
     // Otherwise, check if it should collide only with player or not.
     if((IsTargetPlayer() && spPlayer.get() == &other)

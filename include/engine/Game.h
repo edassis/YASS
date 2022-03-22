@@ -21,6 +21,7 @@ class Game {
         SDL_Renderer* renderer;
         // * State is a Singleton
         std::unique_ptr<State> storedState;
+        // State* storedState;
         std::stack<std::unique_ptr<State>> stateStack;
 
         uint32_t frameStart;    // Last frame in ms.
@@ -37,6 +38,7 @@ class Game {
         Game(const Game&&) = delete;
         void operator=(const Game&) = delete;
         
+        // void Push(State* state);
         void Push(std::unique_ptr<State> state);
         
         void Run();

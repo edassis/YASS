@@ -4,39 +4,42 @@
 #include "engine/Sprite.h"
 #include "engine/Music.h"
 #include "engine/Camera.h"
+#include "engine/State.h"
 #include <vector>
 #include <memory>
 
-class StageState {
+class TileSet;
+
+class StageState : public State {
     private:
-        std::weak_ptr<Sprite> bg;
-        Music music;
-        std::shared_ptr<Camera> currentCamera;
-        std::weak_ptr<GameObject> player;
-        std::vector<std::shared_ptr<GameObject>> objectArray;
-        
-        bool quitRequested;
-        bool started;
+        // std::weak_ptr<Sprite> bg;
+        // Music music;
+        Music bgMusic;
+        // std::vector<std::shared_ptr<GameObject>> objectArray;
+        // 
+        // bool quitRequested;
+        // bool started;
+        Sprite* bgSprite;
+        TileSet* tileSet;
         
     public:
         StageState();
         ~StageState();
 
-        void Start();
+        void Start() override;
+        void Pause() override {};
+        void Resume() override {};
 
-        bool QuitRequested();
-        void LoadAssets();
+        void LoadAssets() override;
+        
+        void UpdateArray(float dt) override;
+        void RenderArray() override;
 
-        void Update(float dt = 0.0);
-        void Render();
+        void Update(float dt = 0.0) override;
+        void Render() override;
         void Input();
 
-        std::weak_ptr<GameObject> AddObject(GameObject& go);
-        std::weak_ptr<GameObject> GetObjectPtr(GameObject& go);
-
         void AddEnemy(int mouseX, int mouseY);
-        Camera& GetCamera();
-        std::weak_ptr<GameObject> GetPlayerPointer();
 };
 
 #endif

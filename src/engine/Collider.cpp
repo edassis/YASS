@@ -76,7 +76,7 @@ void Collider::Render() {
 #ifdef DEBUG
 	mat::Vec2 center( box.Center() );
 	SDL_Point points[5];
-	auto& camera = Game::GetState().GetCamera();
+	auto& camera = Game::GetInstance().GetState()->GetCamera();
 
 	mat::Vec2 point = (mat::Vec2(box.x, box.y) - center).Rotated(associated.angle)
 			+ center - camera.GetPos();

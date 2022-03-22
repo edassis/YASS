@@ -17,21 +17,20 @@
 
 #include <iostream>
 
-State::State() : music(), currentCamera(new Camera()) {
+StageState::StageState() : bgMusic() {
     quitRequested = false;
     started = false;
 
     GameObject* BGGameObj = new GameObject();
     CameraFollower* BGGameFol = new CameraFollower(*BGGameObj);
     BGGameObj->AddComponent(*BGGameFol);
-    Sprite* BGSprite = new Sprite(*BGGameObj);
-    auto pBGSprite = BGGameObj->AddComponent(*BGSprite).lock();
-    this->bg = std::dynamic_pointer_cast<Sprite>(pBGSprite);
+    bgSprite = new Sprite(*BGGameObj);
+    BGGameObj->AddComponent(*bgSprite);
     AddObject(*BGGameObj);
 
     GameObject* TMGameObj = new GameObject();
-	TileSet* TMTileSet = new TileSet(64, 64, "assets/img/tileset.png");
-    TileMap* TM = new TileMap(*TMGameObj, "assets/map/tileMap.txt", TMTileSet);
+	tileSet = new TileSet(64, 64, "assets/img/tileset.png");
+    TileMap* TM = new TileMap(*TMGameObj, "assets/map/tileMap.txt", tileSet);
     TMGameObj->AddComponent(*TM);
     AddObject(*TMGameObj);
 
@@ -50,9 +49,9 @@ State::State() : music(), currentCamera(new Camera()) {
     GetCamera().Follow(wpPenguin);
 }
 
-State::~State() {}
+StageState::~StageState() {}
 
-void State::Start() {
+void StageState::Start() {
     LoadAssets();
 
     for(uint32_t i = 0; i < objectArray.size(); i++) {
@@ -61,23 +60,23 @@ void State::Start() {
     started = true;
 }
 
-bool State::QuitRequested() {
-    return this->quitRequested;
-}
+// bool StageState::QuitRequested() {
+//     return this->quitRequested;
+// }
 
-void State::LoadAssets() {
+void StageState::LoadAssets() {
     // Pré-carrega os assets.
-    if(auto pBG = bg.lock()) {
-        pBG->Open("assets/img/ocean.jpg");
+    if(bgSprite) {
+        bgSprite->Open("assets/img/ocean.jpg");
     }
 
-    // this->music.Open("assets/audio/stageState.ogg");
-    if(this->music.IsOpen()) {
-        this->music.Play();
+    bgMusic.Open("assets/audio/stageState.ogg");
+    if(bgMusic.IsOpen()) {
+        bgMusic.Play();
     }
 }
 
-void State::Update(float dt) {
+void StageState::Update(float dt) {
     // Atualização dos estados das entidades, testes de colisões e checagem relativa de encerramento do jogo.
     quitRequested = InputManager::GetInstance().QuitRequested();
     quitRequested |= InputManager::GetInstance().KeyPress(KEYS::ESCAPE_KEY);
@@ -122,44 +121,17 @@ void State::Update(float dt) {
     currentCamera->Update(dt);
 }
 
-void State::Render() {
+void StageState::Render() {
     // Renderização do estado do jogo (entidades, cenários, HUD, etc.).
-    auto spBG = bg.lock();
-    if(spBG) {
-        spBG->Render();
-    }
+    // if(bgSprite) {
+    //     bgSprite->Render();
+    // }
 
     for(auto it = objectArray.begin(); it != objectArray.end(); it++) {
         (*it)->Render();
     }
 }
 
-std::weak_ptr<GameObject> State::AddObject(GameObject& go) {
-    if(started) {
-        go.Start();
-    }
+void StageState::UpdateArray(float dt) {}
 
-    auto spGO = std::shared_ptr<GameObject>(&go);
-    
-    objectArray.push_back(spGO);
-
-    return std::weak_ptr<GameObject>(spGO);
-}
-
-std::weak_ptr<GameObject> State::GetObjectPtr(GameObject& go) {
-    for(auto& each : objectArray) {
-        if(each.get() == &go) {
-            return std::weak_ptr<GameObject>(each);
-        }
-    }
-
-    return std::weak_ptr<GameObject>();
-}
-
-Camera& State::GetCamera() {
-    return *currentCamera;
-}
-
-std::weak_ptr<GameObject> State::GetPlayerPointer() {
-    return player;
-}
+void StageState::RenderArray() {}

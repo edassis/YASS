@@ -30,7 +30,7 @@ Alien::~Alien() {
 
 void Alien::Start() {
     // * Populate minionArray with "these objects" equally spaced.
-    auto wpAlien = Game::GetState().GetObjectPtr(associated);
+    auto wpAlien = Game::GetInstance().GetState()->GetObjectPtr(associated);
     if(wpAlien.lock() == nullptr) {
         std::cout << "Warning! Alien::Start() not found Alien pointer." << std::endl;
         return;
@@ -42,7 +42,7 @@ void Alien::Start() {
         auto* rpMinionGO = new GameObject();
         auto* rpMinion = new Minion(*rpMinionGO, wpAlien, arc);
         rpMinionGO->AddComponent(*rpMinion);
-        auto wpMinionGO = Game::GetState().AddObject(*rpMinionGO);
+        auto wpMinionGO = Game::GetInstance().GetState()->AddObject(*rpMinionGO);
         minionArray.push_back(wpMinionGO);
 
         arc += arcStep;
@@ -54,7 +54,7 @@ void Alien::Update(float dt) {
 
     const auto curPos = associated.box.GetPos();
 
-    auto spPlayer = Game::GetState().GetPlayerPointer().lock();
+    auto spPlayer = Game::GetInstance().GetState()->GetPlayerPointer().lock();
     if(!spPlayer) {
         std::cout << "Warning! Alien::Update() not able to find player." << std::endl;
         return;
@@ -90,7 +90,7 @@ void Alien::Shoot(float dt) {
     std::shared_ptr<Minion> spMinion;
     std::shared_ptr<GameObject> spPlayer;
     
-    spPlayer = Game::GetState().GetPlayerPointer().lock();
+    spPlayer = Game::GetInstance().GetState()->GetPlayerPointer().lock();
     if(!spPlayer) {
         std::cout << "Warning! Alien::Shoot() failed to retrieve Player pointer." << std::endl;
         return;
@@ -173,6 +173,6 @@ void Alien::NotifyCollision(const GameObject& other) {
         rpSpriteGO->AddComponent(*rpSpriteSound);
         rpSpriteGO->box.Centralize(associated.box.Center());
         rpSpriteSound->Play();
-        Game::GetState().AddObject(*rpSpriteGO);
+        Game::GetInstance().GetState()->AddObject(*rpSpriteGO);
     }
 }

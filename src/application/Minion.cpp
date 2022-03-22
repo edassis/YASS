@@ -61,7 +61,7 @@ void Minion::Shoot(mat::Vec2 target) {
 
     rpBulletGO->AddComponent(*rpBullet);
 
-    Game::GetState().AddObject(*rpBulletGO);
+    Game::GetInstance().GetState()->AddObject(*rpBulletGO);
 }
 
 void Minion::NotifyCollision(const GameObject& other) {

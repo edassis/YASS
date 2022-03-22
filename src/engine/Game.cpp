@@ -128,6 +128,7 @@ void Game::Push(std::unique_ptr<State> state) {
         return;
     }
 
+    // storedState = std::unique_ptr<State>(state);
     storedState = std::move(state);
 }
 

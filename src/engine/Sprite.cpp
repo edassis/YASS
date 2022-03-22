@@ -6,6 +6,7 @@
 #include "engine/Game.h"
 #include "engine/Resources.h"
 #include "engine/GameObject.h"
+#include "engine/Camera.h"
 #include <iostream>
 #include <cmath>
 #include <limits>
@@ -58,7 +59,7 @@ void Sprite::Open(std::string file) {
 }
 
 void Sprite::Render() {
-    const auto& cameraPos = Game::GetState().GetCamera().GetPos();
+    const auto& cameraPos = Game::GetInstance().GetState()->GetCamera().GetPos();
 
     float renderX = associated.box.x - cameraPos.x;
     float renderY = associated.box.y - cameraPos.y;

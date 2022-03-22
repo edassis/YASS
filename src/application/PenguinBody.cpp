@@ -7,6 +7,7 @@
 #include "engine/Collider.h"
 #include "engine/Bullet.h"
 #include "engine/State.h"
+#include "engine/Camera.h"
 #include <memory>
 
 // https://stackoverflow.com/questions/38696440/a-standard-way-for-getting-variable-name-at-compile-time
@@ -32,13 +33,13 @@ PenguinBody::~PenguinBody() {
 }
 
 void PenguinBody::Start() {
-    auto wpBody = Game::GetState().GetObjectPtr(associated);
+    auto wpBody = Game::GetInstance().GetState()->GetObjectPtr(associated);
 
     auto* rpCannonGO = new GameObject();
     auto* rpCannon = new PenguinCannon(*rpCannonGO, wpBody);
     rpCannonGO->AddComponent(*rpCannon);
 
-    this->wpCannon = Game::GetState().AddObject(*rpCannonGO);
+    this->wpCannon = Game::GetInstance().GetState()->AddObject(*rpCannonGO);
 }
 
 void PenguinBody::Update(float dt) {
@@ -111,7 +112,7 @@ void PenguinBody::NotifyCollision(const GameObject& other) {
     auto spBullet = std::dynamic_pointer_cast<Bullet>(other.GetComponent("Bullet").lock());
     if(!spBullet) return;
 
-    auto spPlayer = Game::GetState().GetPlayerPointer().lock();
+    auto spPlayer = Game::GetInstance().GetState()->GetPlayerPointer().lock();
     
     // Take damage
     // If Penguin shoot with IsTargetPlayer off it's possible to cause a self injure xD 
@@ -122,6 +123,6 @@ void PenguinBody::NotifyCollision(const GameObject& other) {
 
     if(hp <= 0) {
         associated.RequestDelete();
-        if(spPlayer.get() == &associated) Game::GetState().GetCamera().Unfollow();
+        if(spPlayer.get() == &associated) Game::GetInstance().GetState()->GetCamera().Unfollow();
     }
 }

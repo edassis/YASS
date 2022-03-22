@@ -2,6 +2,7 @@
 #include "engine/Game.h"
 #include "engine/TileSet.h"
 #include "engine/GameObject.h"
+#include "engine/Camera.h"
 #include <iostream>
 #include <fstream>
 #include <regex>
@@ -94,7 +95,7 @@ void TileMap::RenderLayer(int layer, int cameraX, int cameraY) {
 }
 
 void TileMap::Render() {
-    const auto& cameraPos = Game::GetState().GetCamera().GetPos();
+    const auto& cameraPos = Game::GetInstance().GetState()->GetCamera().GetPos();
     
     for(int layer = 0; layer < mapDepth; layer++) {
         RenderLayer(layer, int(cameraPos.x) >> layer, int(cameraPos.y) >> layer);   // * Simple parallax effect.

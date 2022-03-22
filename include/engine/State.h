@@ -5,6 +5,8 @@
 #include <memory>
 #include "engine/GameObject.h"
 
+class Camera;
+
 class State {
     protected:
         bool popRequested;
@@ -16,6 +18,9 @@ class State {
         void StartArray();
         virtual void UpdateArray(float dt) =0;
         virtual void RenderArray() =0;
+        
+        std::shared_ptr<Camera> currentCamera;
+        std::weak_ptr<GameObject> player;
 
     public:
         State();
@@ -29,11 +34,15 @@ class State {
         virtual void Pause() =0;
         virtual void Resume() =0;
 
-        virtual std::weak_ptr<GameObject> AddObject(GameObject& go) =0;
-        virtual std::weak_ptr<GameObject> GetObjectPtr(GameObject& go) =0;
+        virtual std::weak_ptr<GameObject> AddObject(GameObject& go);
+        virtual std::weak_ptr<GameObject> GetObjectPtr(GameObject& go);
 
         bool PoolRequested();
         bool QuitRequested();
+
+        Camera& GetCamera();
+        std::weak_ptr<GameObject> GetPlayerPointer();
+
 };
 
 #endif

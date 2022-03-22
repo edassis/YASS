@@ -5,6 +5,7 @@
 #include "engine/Collider.h"
 #include "engine/InputManager.h"
 #include "engine/Game.h"
+#include "engine/Camera.h"
 
 PenguinCannon::PenguinCannon(GameObject& associated, std::weak_ptr<GameObject> penguinBody) : Component(associated) {
     lastShootTime = 0.f;
@@ -39,7 +40,7 @@ void PenguinCannon::Shoot() {
     rpBulletGO->box.Centralize(startPos);
 
     rpBulletGO->AddComponent(*rpBullet);
-    Game::GetState().AddObject(*rpBulletGO);
+    Game::GetInstance().GetState()->AddObject(*rpBulletGO);
 }
 
 void PenguinCannon::Update(float dt) {
@@ -54,7 +55,7 @@ void PenguinCannon::Update(float dt) {
     timer.Update(dt);
 
     auto& inputManager = InputManager::GetInstance();
-    auto& camera = Game::GetState().GetCamera();
+    auto& camera = Game::GetInstance().GetState()->GetCamera();
     auto mousePos = mat::Vec2((float)inputManager.GetMouseX(), (float)inputManager.GetMouseY());
     mousePos += camera.GetPos();
 
