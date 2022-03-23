@@ -5,10 +5,11 @@
 #include "engine/SDL_include.h"
 #include "engine/Component.h"
 #include <iostream>
+#include <memory>
 
 class Sound : public Component {
     private:
-        Mix_Chunk* chunk;
+        std::shared_ptr<Mix_Chunk> chunk;
         int channel;
     public:
         Sound(GameObject& associated);

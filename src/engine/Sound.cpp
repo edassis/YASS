@@ -16,7 +16,7 @@ Sound::~Sound() {
 }
 
 void Sound::Play(int times) {
-    channel = Mix_PlayChannel(-1, chunk, times-1);
+    channel = Mix_PlayChannel(-1, chunk.get(), times-1);
     if(channel == -1) {
         std::cout << "Error! Sound::Play() failed to play a sound: " << Mix_GetError() << std::endl;
     }

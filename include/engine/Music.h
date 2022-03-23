@@ -4,10 +4,11 @@
 #define INCLUDE_SDL_MIXER
 #include "engine/SDL_include.h"
 #include <iostream>
+#include <memory>
 
 class Music {
     private:
-        Mix_Music* music;
+        std::shared_ptr<Mix_Music> music;
     public:
         Music();
         Music(std::string file);

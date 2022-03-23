@@ -44,7 +44,7 @@ Sprite::~Sprite() {}
 void Sprite::Open(std::string file) {
     this->texture = Resources::GetInstance().GetImage(file); 
 
-    int _error = SDL_QueryTexture(this->texture, nullptr, nullptr, &this->width, &this->height);
+    int _error = SDL_QueryTexture(this->texture.get(), nullptr, nullptr, &this->width, &this->height);
     if(_error) {
         std::cout << "Error! Sprite::Open() failed to query texture: " << SDL_GetError() << std::endl;
         return;
@@ -77,7 +77,7 @@ void Sprite::Render(float x, float y, float w, float h) {   // * Specific of Spr
     dstRect.h = int(round(h) * scale.y);
 
     int _error = SDL_RenderCopyEx(Game::GetInstance().GetRenderer(),
-            texture, &clipRect, &dstRect, mat::Rad2Deg(associated.angle), nullptr, SDL_FLIP_NONE);
+            texture.get(), &clipRect, &dstRect, mat::Rad2Deg(associated.angle), nullptr, SDL_FLIP_NONE);
     if(_error) {
         std::cout << "Error! Sprite::Render() failed to render: " << SDL_GetError() << std::endl;
     }

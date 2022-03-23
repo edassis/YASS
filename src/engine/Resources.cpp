@@ -4,73 +4,90 @@
 
 Resources::Resources() {}
 
-Resources::~Resources() {
-    ClearImages();
-    ClearMusics();
-    ClearSounds();
-}
+Resources::~Resources() {}
 
-SDL_Texture* Resources::GetImage(std::string file) {
+std::shared_ptr<SDL_Texture> Resources::GetImage(std::string file) {
     auto it = imageTable.find(file);
     if(it != imageTable.end()) return it->second; 
 
-    SDL_Texture* image = IMG_LoadTexture(Game::GetInstance().GetRenderer(), file.c_str());
-    if(image == nullptr) {
+    auto spImage = std::shared_ptr<SDL_Texture>(IMG_LoadTexture(Game::GetInstance().GetRenderer(), file.c_str()),
+            [](SDL_Texture* texture) {
+                SDL_DestroyTexture(texture);
+            }
+    );
+    if(!spImage) {
         std::cout << "Error! Resources::GetImage() failed to load image: " << IMG_GetError() << std::endl;
-        return nullptr;
+        return {};
     }
 
-    imageTable.emplace(file, image);
-    return image;
+    imageTable.emplace(file, spImage);
+    return spImage;
 }
 
 void Resources::ClearImages() {
-    for(auto& pair : imageTable) {
-        SDL_DestroyTexture(pair.second);
+    for(auto it = imageTable.begin(); it != imageTable.end();) {
+        if(it->second.unique()) {
+            it = imageTable.erase(it);
+        } else {
+            it++;
+        }
     }
-    imageTable.clear();
 }
 
-Mix_Music* Resources::GetMusic(std::string file) {
+std::shared_ptr<Mix_Music> Resources::GetMusic(std::string file) {
     auto it = musicTable.find(file);
     if(it != musicTable.end()) return it->second;
 
-    Mix_Music* music = Mix_LoadMUS(file.c_str());
-    if(music == nullptr) {
+    auto spMusic = std::shared_ptr<Mix_Music>(Mix_LoadMUS(file.c_str()), 
+            [](Mix_Music* music) {
+                Mix_FreeMusic(music);
+            }
+    );
+    if(!spMusic) {
         std::cout << "Error! Resources::GetMusic() failed to load music: " << Mix_GetError() << std::endl;
-        return nullptr;
+        return {};
     }
     
-    musicTable.emplace(file, music);
-    return music;
+    musicTable.emplace(file, spMusic);
+    return spMusic;
 }
 
 void Resources::ClearMusics() {
-    for(auto& pair : musicTable) {
-        Mix_FreeMusic(pair.second);
+    for(auto it = musicTable.begin(); it != musicTable.end();) {
+        if(it->second.unique()) {
+            it = musicTable.erase(it);
+        } else {
+            it++;
+        }
     }
-    musicTable.clear();
 }
 
-Mix_Chunk* Resources::GetSound(std::string file) {
+std::shared_ptr<Mix_Chunk> Resources::GetSound(std::string file) {
     auto it = soundTable.find(file);
     if(it != soundTable.end()) return it->second;
 
-    Mix_Chunk* sound = Mix_LoadWAV(file.c_str());
-    if(sound == nullptr) {
+    auto spSound = std::shared_ptr<Mix_Chunk>(Mix_LoadWAV(file.c_str()),
+            [](Mix_Chunk* sound) {
+                Mix_FreeChunk(sound); 
+            }
+    );
+    if(!spSound) {
         std::cout << "Error! Resources::GetSound() failed to load sound: " << Mix_GetError() << std::endl;
-        return nullptr;
+        return {};
     }
     
-    soundTable.emplace(file, sound);
-    return sound;
+    soundTable.emplace(file, spSound);
+    return spSound;
 }
 
 void Resources::ClearSounds() {
-    for(auto& pair : soundTable) {
-        Mix_FreeChunk(pair.second);
+    for(auto it = soundTable.begin(); it != soundTable.end();) {
+        if(it->second.unique()) {
+            it = soundTable.erase(it);
+        } else {
+            it++;
+        }
     }
-    soundTable.clear();
 }
 
 Resources& Resources::GetInstance() {

@@ -4,6 +4,7 @@
 #include "engine/SDL_include.h"
 #include "engine/Game.h"
 #include "engine/InputManager.h"
+#include "engine/Resources.h"
 
 Game::Game(std::string title, int width, int height) {
     int _error = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER);
@@ -84,6 +85,10 @@ void Game::Run() {
     while(GetState()) {
         if(GetState()->QuitRequested()) {
             stateStack.pop();
+            Resources::GetInstance().ClearImages();
+            Resources::GetInstance().ClearMusics();
+            Resources::GetInstance().ClearSounds();
+            
             if(GetState()) {
                 GetState()->Resume();
             } else {

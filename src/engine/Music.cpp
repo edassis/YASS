@@ -10,8 +10,8 @@ Music::Music() {
 }
 
 Music::Music(std::string file) {
-    this->Open(file);
-    this->Play();
+    Open(file);
+    Play();
 }
 
 Music::~Music() {
@@ -19,7 +19,7 @@ Music::~Music() {
 }
 
 void Music::Play(int times) {
-    int _error = Mix_PlayMusic(this->music, times);
+    int _error = Mix_PlayMusic(music.get(), times);
     if(_error) {
         std::cout << "Error! Music::Play() failed to play a music:" << Mix_GetError() << std::endl;
     }
@@ -33,9 +33,9 @@ void Music::Stop(int msToStop) {
 }
 
 void Music::Open(std::string file) {
-    this->music = Resources::GetInstance().GetMusic(file);
+    music = Resources::GetInstance().GetMusic(file);
 }
 
 bool Music::IsOpen() {
-    return (this->music != nullptr) ? true : false;
+    return (music != nullptr) ? true : false;
 }

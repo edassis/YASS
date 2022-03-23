@@ -8,6 +8,7 @@
 #include "engine/Timer.h"
 #include <iostream>
 #include <limits>
+#include <memory>
 
 const auto floatMax = std::numeric_limits<float>::max();
 
@@ -27,7 +28,7 @@ class Sprite : public Component {
         mat::Vec2 scale;
         // float angleDeg;    // degrees
 
-        SDL_Texture* texture;
+        std::shared_ptr<SDL_Texture> texture;
         SDL_Rect clipRect;
 
         void UpdateBoxSize();       
