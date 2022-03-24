@@ -7,89 +7,87 @@ namespace mat {
 const float PI = acosf(-1.0);
 const float EPS = 1e-6f;
 
-class Vec2;
+struct Vec2;
 
-class Rect {
-    public:
-        float x, y, w, h;
-        
-        Rect(float = 0.0f, float = 0.0f, float = 0.0f, float = 0.0f);
-        ~Rect();  
+struct Rect {
+    float x, y, w, h;
+    
+    Rect(float = 0.0f, float = 0.0f, float = 0.0f, float = 0.0f);
+    ~Rect();  
 
-        // Rect operator+(const Vec2& v);
-        Vec2 GetPos();
-        void SetPos(const Vec2& v);
-        void SetPos(const float& x, const float& y);
+    // Rect operator+(const Vec2& v);
+    Vec2 GetPos();
+    void SetPos(const Vec2& v);
+    void SetPos(const float& x, const float& y);
 
-        /**
-         * Returns the rectangle's central point. 
-         */
-        Vec2 Center() const;
-        void Centralize(const Rect& r);
-        void Centralize(const Vec2& v);
-        /**
-         * Check if @p v is inside of the rectangle.
-         */
-        bool Contains(const Vec2& v) const;
-        float CentersDistance(const Rect& r); 
+    /**
+     * Returns the rectangle's central point. 
+     */
+    Vec2 Center() const;
+    void Centralize(const Rect& r);
+    void Centralize(const Vec2& v);
+    /**
+     * Check if @p v is inside of the rectangle.
+     */
+    bool Contains(const Vec2& v) const;
+    float CentersDistance(const Rect& r); 
 };
 
-class Vec2 {
-    public:
-        float x, y;
-        
-        Vec2(float = 0.0f, float = 0.0f);
-        Vec2(const Vec2& v);
-        ~Vec2();
+struct Vec2 {
+    float x, y;
+    
+    Vec2(float = 0.0f, float = 0.0f);
+    Vec2(const Vec2& v);
+    ~Vec2();
 
-        Vec2& operator=(const Vec2& v);
-        bool operator==(const Vec2& v) = delete;
-        
-        Vec2 operator+(const Vec2& v) const;
-        Vec2& operator+=(const Vec2& v); 
-        
-        Vec2 operator-(const Vec2& v) const;
-        Vec2& operator-=(const Vec2& v);
-        
-        Vec2 operator*(const float& x) const;
-        Vec2& operator*=(const float& x);
+    Vec2& operator=(const Vec2& v);
+    bool operator==(const Vec2& v) = delete;
+    
+    Vec2 operator+(const Vec2& v) const;
+    Vec2& operator+=(const Vec2& v); 
+    
+    Vec2 operator-(const Vec2& v) const;
+    Vec2& operator-=(const Vec2& v);
+    
+    Vec2 operator*(const float& x) const;
+    Vec2& operator*=(const float& x);
 
-        /**
-         * Returns the angle between this vector and positive X axis (1, 0).
-         */
-        float Angle() const;
-        /**
-         * Returns the angle formed by the line connecting the two points and X axis.
-         */
-        float AngleToPoint(const Vec2& v) const;
-        /**
-         * Distance to another point.
-         */
-        float DistanceTo(const Vec2& v) const;
-        /**
-         * Dot product of two vectors (produto interno).
-         */
-        float Dot(const Vec2& v) const;
-        /**
-         * Checks if vector is normalized. Considers epsilon = 0.01
-         */ 
-        bool IsNormalized() const;
-        /** 
-         * Magnitude of the vector.
-         */
-        float Length() const;
-        /**
-         * Normalize the vector.
-         */
-        Vec2 Normalized() const;
-        /**
-         * Rotates the vector by the amount specified (radians).
-         */
-        Vec2 Rotated(const float& rad) const;
-        
-        static float Det(const Vec2& v1, const Vec2& v2);
-        
-        static float Dot(const Vec2& v1, const Vec2& v2);
+    /**
+     * Returns the angle between this vector and positive X axis (1, 0).
+     */
+    float Angle() const;
+    /**
+     * Returns the angle formed by the line connecting the two points and X axis.
+     */
+    float AngleToPoint(const Vec2& v) const;
+    /**
+     * Distance to another point.
+     */
+    float DistanceTo(const Vec2& v) const;
+    /**
+     * Dot product of two vectors (produto interno).
+     */
+    float Dot(const Vec2& v) const;
+    /**
+     * Checks if vector is normalized. Considers epsilon = 0.01
+     */ 
+    bool IsNormalized() const;
+    /** 
+     * Magnitude of the vector.
+     */
+    float Length() const;
+    /**
+     * Normalize the vector.
+     */
+    Vec2 Normalized() const;
+    /**
+     * Rotates the vector by the amount specified (radians).
+     */
+    Vec2 Rotated(const float& rad) const;
+    
+    static float Det(const Vec2& v1, const Vec2& v2);
+    
+    static float Dot(const Vec2& v1, const Vec2& v2);
 };
 
 // ---Functions
