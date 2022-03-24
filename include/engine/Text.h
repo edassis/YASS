@@ -7,14 +7,35 @@
 #include "engine/Component.h"
 #include "engine/GameObject.h"
 #include <string>
+#include <memory>
+
+struct deleter_texture {
+    void operator()(SDL_Texture* texture) {
+        SDL_DestroyTexture(texture);
+    }
+};
+
+// template <typename D, D fn>
+// struct deleter_from_fn {
+//     template <typename T>
+//     constexpr void operator()(T* arg) const {
+//         fn(arg);
+//     }
+// };
+
+// template <typename T, typename D, D fn>
+// using my_unique_ptr = std::unique_ptr<T, deleter_from_fn<D, fn>>;
+
+// // usage:
+// my_unique_ptr<Bar, decltype(&destroy), destroy> p{create()};
 
 class Text : public Component {
     public:
         enum TextStyle {SOLID, SHADED, BLENDED};
 
     private:
-        TTF_Font* font;
-        SDL_Texture* texture;
+        std::shared_ptr<TTF_Font> font;
+        std::unique_ptr<SDL_Texture, deleter_texture> texture;
 
         std::string text;
         TextStyle style;
