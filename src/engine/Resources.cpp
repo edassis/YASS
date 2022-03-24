@@ -90,6 +90,34 @@ void Resources::ClearSounds() {
     }
 }
 
+std::shared_ptr<TTF_Font> Resources::GetFont(std::string file, int fontSize) {
+    auto it = fontTable.find(file+std::to_string(fontSize));
+    if(it != fontTable.end()) return it->second;
+
+    auto spFont = std::shared_ptr<TTF_Font>(TTF_OpenFont(file.c_str(), fontSize),
+            [](TTF_Font* font) {
+                TTF_CloseFont(font); 
+            }
+    );
+    if(!spFont) {
+        std::cout << "Error! Resources::GetFont() failed to load font: " << TTF_GetError() << std::endl;
+        return {};
+    }
+    
+    fontTable.emplace(file+std::to_string(fontSize), spFont);
+    return spFont;
+}
+
+void Resources::ClearFonts() {
+    for(auto it = fontTable.begin(); it != fontTable.end();) {
+        if(it->second.unique()) {
+            it = fontTable.erase(it);
+        } else {
+            it++;
+        }
+    }
+}
+
 Resources& Resources::GetInstance() {
     static Resources rsc;
     return rsc; 
