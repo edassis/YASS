@@ -1,6 +1,7 @@
 #define INCLUDE_SDL
 #define INCLUDE_SDL_IMAGE
 #define INCLUDE_SDL_MIXER
+#define INCLUDE_SDL_TTF
 #include "engine/SDL_include.h"
 #include "engine/Game.h"
 #include "engine/InputManager.h"
@@ -23,6 +24,12 @@ Game::Game(std::string title, int width, int height) {
     _bitmask = Mix_Init(MIX_INIT_MP3); // é inicilizado automaticamente quando utilizado
     if(!_bitmask) {
         std::cout << "Error! Game::Game() failed to initialize Mix: " << Mix_GetError() << std::endl;
+        throw 1;
+    }
+
+    _error = TTF_Init();
+    if(_error) {
+        std::cout << "Error! Game::Game() failed to initialize TTF: " << TTF_GetError() << std::endl;
         throw 1;
     }
 
@@ -60,10 +67,10 @@ Game::Game(std::string title, int width, int height) {
 }
 
 Game::~Game() {
-    // if(storedState) delete storedState;
-
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
+
+    TTF_Quit();
 
     SDL_CloseAudio();
     Mix_Quit();
