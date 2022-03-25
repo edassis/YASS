@@ -89,7 +89,7 @@ void Game::Run() {
     stateStack.push(std::move(storedState));
     GetState()->Start();
 
-    while(GetState()) {
+    while(true) {
         if(GetState()->QuitRequested()) {
             stateStack.pop();
             Resources::GetInstance().ClearImages();
@@ -98,8 +98,6 @@ void Game::Run() {
             
             if(GetState()) {
                 GetState()->Resume();
-            } else {
-                break;
             }
         }
 
@@ -108,6 +106,8 @@ void Game::Run() {
             stateStack.push(std::move(storedState));
             GetState()->Start();
         }
+        
+        if(!GetState()) break;
 
         CalculateDeltaTime();
 

@@ -12,15 +12,12 @@ class TileSet;
 
 class StageState : public State {
     private:
-        // std::weak_ptr<Sprite> bg;
-        // Music music;
         Music bgMusic;
-        // std::vector<std::shared_ptr<GameObject>> objectArray;
-        // 
-        // bool quitRequested;
-        // bool started;
+
         Sprite* bgSprite;
         TileSet* tileSet;
+
+        std::vector<std::weak_ptr<Component>> aliens;
         
     public:
         StageState();

@@ -14,13 +14,12 @@
 
 #include "application/Alien.h"
 #include "application/PenguinBody.h"
+#include "application/GameData.h"
+#include "application/EndState.h"
 
 #include <iostream>
 
 StageState::StageState() : bgMusic() {
-    quitRequested = false;
-    started = false;
-
     GameObject* BGGameObj = new GameObject();
     CameraFollower* BGGameFol = new CameraFollower(*BGGameObj);
     BGGameObj->AddComponent(*BGGameFol);
@@ -36,8 +35,8 @@ StageState::StageState() : bgMusic() {
 
     auto* alienGO = new GameObject();
     auto* alien = new Alien(*alienGO, 3);
+    aliens.push_back(alienGO->AddComponent(*alien));
     alienGO->box.Centralize(mat::Vec2(300.0f, 200.0f));
-    alienGO->AddComponent(*alien);
     AddObject(*alienGO);
 
     auto* penguinGO = new GameObject();
@@ -70,6 +69,30 @@ void StageState::LoadAssets() {
 void StageState::Update(float dt) {
     quitRequested = InputManager::GetInstance().QuitRequested();
     quitRequested |= InputManager::GetInstance().KeyPress(KEYS::ESCAPE_KEY);
+
+    auto spPlayer = GetPlayerPointer().lock();
+    if(!spPlayer) {
+        // Player died
+        GameData::GetInstance().playerVictory = false;
+    }
+    
+    // Caso os aliens acabem:
+    bool hasEnemies = false;
+    for(auto& wpAlien : aliens) {
+        auto spAlien = wpAlien.lock();
+        if(spAlien) {
+            hasEnemies = true; 
+            break;
+        }
+    }
+    if(!hasEnemies) {
+        GameData::GetInstance().playerVictory = true;
+    }
+
+    if(!hasEnemies || !spPlayer) {
+        quitRequested = true;   
+        Game::GetInstance().Push(new EndState());
+    }
 
     State::Update(dt);
 }

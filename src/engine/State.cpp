@@ -5,6 +5,7 @@
 State::State() : currentCamera(new Camera()) {
     popRequested = false;
     quitRequested = false;
+    started = false;
 }
 
 State::~State() {}
