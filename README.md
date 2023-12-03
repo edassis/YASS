@@ -1,4 +1,4 @@
-# SDL engine
+# Yet Another Simple SDL Framework
 
 Provides some abstraction over SDL2 API through classes and patterns that are commonly utilized in game development.
 
